@@ -4,7 +4,7 @@ platform :ios do
 	desc "Description of what the lane does"
 	lane :beta do
 		cocoapods(use_bundle_exec: false)
-		match(type: 'appstore')
+		# match(type: 'appstore')
 		gym(export_method: 'app-store')
 		pilot
 	end
