@@ -1,0 +1,5 @@
+.build
+*.xcworkspace/
+Pods
+*.app*
+*.ipa
