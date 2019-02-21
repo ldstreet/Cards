@@ -3,7 +3,9 @@
 target 'Cards' do
 	use_frameworks!
 
+	pod 'LDSiOSKit', :path => '../LDSiOSKit'
 	pod 'CardsKit', :path => '../CardsKit'
+	pod 'LoginModule', :path => '../LoginModule'
 
 	target 'CardsTests' do
 		inherit! :search_paths

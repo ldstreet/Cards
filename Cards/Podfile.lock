@@ -1,16 +1,28 @@
 PODS:
-  - CardsKit (0.0.1)
+  - CardsKit (0.0.1):
+    - LDSiOSKit
+  - LDSiOSKit (0.0.1)
+  - LoginModule (0.0.1):
+    - LDSiOSKit
 
 DEPENDENCIES:
   - CardsKit (from `../CardsKit`)
+  - LDSiOSKit (from `../LDSiOSKit`)
+  - LoginModule (from `../LoginModule`)
 
 EXTERNAL SOURCES:
   CardsKit:
     :path: "../CardsKit"
+  LDSiOSKit:
+    :path: "../LDSiOSKit"
+  LoginModule:
+    :path: "../LoginModule"
 
 SPEC CHECKSUMS:
-  CardsKit: 04a1155e3fe696b30538cf99c963b4d25427b104
+  CardsKit: 760f8a3541835bdc275c5183815983425cae77a1
+  LDSiOSKit: 569c3ec9de1e3af6fc3646df2a847086a2448c2a
+  LoginModule: d2f5821ae0cc9e390844d336489dc0f8a5da9c02
 
-PODFILE CHECKSUM: 07a2d13e62a048c356570eb4019fb57792286ceb
+PODFILE CHECKSUM: dec351f6c81b3e4dbb77852d5226a27824013316
 
 COCOAPODS: 1.5.3
