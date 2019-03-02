@@ -21,9 +21,9 @@ public enum Environment: String, EnvironmentProvider {
         case .local:
             return URL(static: "http://localhost:8080")
         case .develop:
-            return URL(static: "https://cards-develop.vapor.cloud")
+            return URL(static: "https://card-develop.vapor.cloud")
         case .production:
-            return URL(static: "https://cards.vapor.cloud")
+            return URL(static: "https://card.vapor.cloud")
         }
     }
 }
