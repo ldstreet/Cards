@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name         = 'CardsKit'
+  spec.name         = 'LoginModule'
   spec.version      = '0.0.1'
   spec.license      = { :type => 'BSD' }
   spec.homepage     = 'https://github.com/ldstreet/Cards'
@@ -7,7 +7,7 @@ Pod::Spec.new do |spec|
   spec.summary      = 'Building blocks for Cards'
   spec.ios.deployment_target  = '12.1'
   spec.source       = { :git => 'https://github.com/ldstreet/Cards', :tag => '#{spec.version}' }
-  spec.source_files = 'Sources/CardsKit/**/*.{swift}'
+  spec.source_files = 'Sources/LoginModule/**/*.{swift}'
   spec.framework    = 'UIKit'
 
   spec.dependency 'LDSiOSKit'

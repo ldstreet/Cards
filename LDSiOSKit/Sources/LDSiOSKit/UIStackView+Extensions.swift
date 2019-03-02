@@ -5,6 +5,7 @@
 //  Created by Luke Street on 2/9/19.
 //
 
+#if os(iOS)
 import UIKit
 
 extension UIStackView {
@@ -12,3 +13,4 @@ extension UIStackView {
         views.forEach(self.addArrangedSubview)
     }
 }
+#endif

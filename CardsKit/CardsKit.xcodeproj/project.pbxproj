@@ -21,12 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2A5F6D8A220C71C10088B219 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F6D89220C71C10088B219 /* UIView+Constraints.swift */; };
-		2A5F6D8C220C72F00088B219 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F6D8B220C72F00088B219 /* NSLayoutConstraint+Extensions.swift */; };
+		2A283F152215B00500A639A8 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A283F142215B00500A639A8 /* World.swift */; };
 		2A834E91220F9BDF002E29D4 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E90220F9BDF002E29D4 /* CardsViewController.swift */; };
 		2A834E93220F9BFE002E29D4 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E92220F9BFE002E29D4 /* CardsCell.swift */; };
-		2A834E95220F9C2D002E29D4 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E94220F9C2D002E29D4 /* UIStackView+Extensions.swift */; };
 		2A834E97220F9C57002E29D4 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E96220F9C57002E29D4 /* CreateCardViewController.swift */; };
+		2A8355C722152944002E29D4 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8355C622152944002E29D4 /* Environment.swift */; };
 		OBJ_22 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Card.swift */; };
 		OBJ_29 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_40 /* CardsKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* CardsKitTests.swift */; };
@@ -52,13 +51,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A283F142215B00500A639A8 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		2A5F6D87220BD57E0088B219 /* Prototype.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Prototype.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2A5F6D89220C71C10088B219 /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
-		2A5F6D8B220C72F00088B219 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
 		2A834E90220F9BDF002E29D4 /* CardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
 		2A834E92220F9BFE002E29D4 /* CardsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
-		2A834E94220F9C2D002E29D4 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		2A834E96220F9C57002E29D4 /* CreateCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
+		2A8355C622152944002E29D4 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		"CardsKit::CardsKit::Product" /* CardsKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CardsKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CardsKit::CardsKitTests::Product" /* CardsKitTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CardsKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_12 /* CardsKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsKitTests.swift; sourceTree = "<group>"; };
@@ -86,16 +84,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2A5F6D88220C71910088B219 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2A5F6D89220C71C10088B219 /* UIView+Constraints.swift */,
-				2A5F6D8B220C72F00088B219 /* NSLayoutConstraint+Extensions.swift */,
-				2A834E94220F9C2D002E29D4 /* UIStackView+Extensions.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2A834E8C220F9BA6002E29D4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +116,14 @@
 				2A834E92220F9BFE002E29D4 /* CardsCell.swift */,
 			);
 			path = Cards;
+			sourceTree = "<group>";
+		};
+		2A8355C522152936002E29D4 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				2A8355C622152944002E29D4 /* Environment.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		OBJ_10 /* Tests */ = {
@@ -179,9 +175,10 @@
 		OBJ_8 /* CardsKit */ = {
 			isa = PBXGroup;
 			children = (
+				2A8355C522152936002E29D4 /* Network */,
 				2A834E8D220F9BB0002E29D4 /* Screens */,
-				2A5F6D88220C71910088B219 /* Common */,
 				2A834E8C220F9BA6002E29D4 /* Models */,
+				2A283F142215B00500A639A8 /* World.swift */,
 			);
 			name = CardsKit;
 			path = Sources/CardsKit;
@@ -270,12 +267,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				2A283F152215B00500A639A8 /* World.swift in Sources */,
 				2A834E91220F9BDF002E29D4 /* CardsViewController.swift in Sources */,
-				2A5F6D8C220C72F00088B219 /* NSLayoutConstraint+Extensions.swift in Sources */,
+				2A8355C722152944002E29D4 /* Environment.swift in Sources */,
 				2A834E97220F9C57002E29D4 /* CreateCardViewController.swift in Sources */,
-				2A834E95220F9C2D002E29D4 /* UIStackView+Extensions.swift in Sources */,
 				OBJ_22 /* Card.swift in Sources */,
-				2A5F6D8A220C71C10088B219 /* UIView+Constraints.swift in Sources */,
 				2A834E93220F9BFE002E29D4 /* CardsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

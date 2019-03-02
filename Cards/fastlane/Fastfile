@@ -2,9 +2,17 @@ default_platform(:ios)
 
 platform :ios do
 	desc "Description of what the lane does"
-	lane :beta do
+	lane :beta do |params|
+		environment = params[:environment] ?? "develop"
+
 		cocoapods(use_bundle_exec: false)
 		match(type: 'appstore')
+		update_plist( # Advanced processing: find URL scheme for particular key and replace value
+ 			plist_path: "path/to/Info.plist",
+  			block: proc do |plist|
+    			plist["environment"] = environment
+  			end
+		)
 		gym(export_method: 'app-store')
 		pilot
 	end

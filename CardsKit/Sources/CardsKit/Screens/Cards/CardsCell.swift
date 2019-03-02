@@ -5,6 +5,7 @@
 //  Created by Luke Street on 2/9/19.
 //
 
+#if os(iOS)
 import UIKit
 
 class CardCell: UICollectionViewCell {
@@ -20,7 +21,6 @@ class CardCell: UICollectionViewCell {
     
     lazy var nameLabel = makeFieldLabel()
     lazy var titleLabel = makeFieldLabel()
-    lazy var subTitleLabel = makeFieldLabel()
     lazy var emailLabel = makeFieldLabel()
     lazy var phoneLabel = makeFieldLabel()
     lazy var addressLabel = makeFieldLabel()
@@ -51,7 +51,6 @@ class CardCell: UICollectionViewCell {
             stackView.addArrangedSubviews([
                 nameLabel,
                 titleLabel,
-                subTitleLabel,
                 emailLabel,
                 phoneLabel,
                 addressLabel
@@ -64,9 +63,9 @@ class CardCell: UICollectionViewCell {
     func configure(with card: Card) {
         nameLabel.text = "\(card.firstName) \(card.lastName)"
         titleLabel.text = card.title
-        subTitleLabel.text = card.subTitle
         emailLabel.text = card.emailAddress
         phoneLabel.text = card.phoneNumber
         addressLabel.text = card.address
     }
 }
+#endif

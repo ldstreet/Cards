@@ -5,6 +5,7 @@
 //  Created by Luke Street on 2/7/19.
 //
 
+#if os(iOS)
 import UIKit
 
 extension NSLayoutConstraint {
@@ -18,3 +19,4 @@ extension NSLayoutConstraint {
         return self
     }
 }
+#endif

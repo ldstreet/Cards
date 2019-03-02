@@ -1,0 +1,13 @@
+platform :ios, '12.1'
+
+target 'LoginModule' do
+	use_frameworks!
+
+	pod 'LDSiOSKit', :path => '../LDSiOSKit'
+
+	target 'LoginModuleTests' do
+		inherit! :search_paths
+
+
+	end
+end

@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+public protocol EnvironmentProvider {
+    var url: URL { get }
+}

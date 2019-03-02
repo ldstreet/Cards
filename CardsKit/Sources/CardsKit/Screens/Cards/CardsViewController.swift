@@ -5,7 +5,10 @@
 //  Created by Luke Street on 2/9/19.
 //
 
+#if os(iOS)
 import UIKit
+import LDSiOSKit
+import PassKit
 
 public class CardsViewController: UICollectionViewController {
     
@@ -32,6 +35,21 @@ public class CardsViewController: UICollectionViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(tappedAddButton))
         
+        let request = Request<Environment, [Card]>(
+            using: Current.environment,
+            path: "cards"
+        )
+        
+        request.send { result in
+            DispatchQueue.main.async {
+                do {
+                    self.cards = try result.get()
+                    self.collectionView.reloadData()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
         super.viewDidLoad()
     }
     
@@ -47,13 +65,10 @@ public class CardsViewController: UICollectionViewController {
     }
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("Trying to layout cell!")
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell", for: indexPath) as? CardCell else {
-            print("Failed to layout cell!")
             return .init()
         }
         cell.configure(with: cards[indexPath.row])
-        print("Cell Configured!")
         return cell
     }
     
@@ -64,6 +79,26 @@ public class CardsViewController: UICollectionViewController {
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
+    override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let card = cards[indexPath.item]
+        let request = Request<Environment, Data>(
+            using: Current.environment,
+            path: "share",
+            method: card.post,
+            headers: [:]
+        )
+        request.send { result in
+            switch result {
+            case .success(let data):
+                let pass = try! PKPass(data: data)
+                let vc = PKAddPassesViewController(pass: pass)!
+                self.present(vc, animated: true, completion: nil)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 extension CardsViewController: UICollectionViewDelegateFlowLayout {
@@ -71,3 +106,4 @@ extension CardsViewController: UICollectionViewDelegateFlowLayout {
         return .init(width: 300, height: 300)
     }
 }
+#endif

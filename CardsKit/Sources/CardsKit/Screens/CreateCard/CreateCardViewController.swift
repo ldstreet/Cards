@@ -5,6 +5,7 @@
 //  Created by Luke Street on 2/9/19.
 //
 
+#if os(iOS)
 import UIKit
 
 class CreateCardViewController: UIViewController {
@@ -21,13 +22,40 @@ class CreateCardViewController: UIViewController {
         return sv
     }()
     
-    private lazy var firstNameTextField = makeTextField(placeholderText: "First Name")
-    private lazy var lastNameTextField = makeTextField(placeholderText: "Last Name")
-    private lazy var titleTextField = makeTextField(placeholderText: "Title")
-    private lazy var subTitleTextField = makeTextField(placeholderText: "Subtitle")
-    private lazy var emailTextField = makeTextField(placeholderText: "Email Address")
-    private lazy var phoneTextField = makeTextField(placeholderText: "Phone Number")
-    private lazy var addressTextField = makeTextField(placeholderText: "Address")
+    private lazy var firstNameTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "First Name")
+        textField.textContentType = .name
+        return textField
+    }()
+    
+    private lazy var lastNameTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "Last Name")
+        textField.textContentType = .name
+        return textField
+    }()
+    private lazy var titleTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "Title")
+        textField.textContentType = .jobTitle
+        return textField
+    }()
+    private lazy var emailTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "Email Address")
+        textField.textContentType = .emailAddress
+        textField.keyboardType = .emailAddress
+        return textField
+    }()
+    private lazy var phoneTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "Phone Number")
+        textField.textContentType = .telephoneNumber
+        textField.keyboardType = .phonePad
+        return textField
+    }()
+    private lazy var addressTextField: UITextField = {
+        let textField = self.makeTextField(placeholderText: "Address")
+        textField.textContentType = .fullStreetAddress
+        textField.keyboardType = .default
+        return textField
+    }()
     
     init(completion: @escaping (Card) -> Void) {
         self.completion = completion
@@ -54,7 +82,6 @@ class CreateCardViewController: UIViewController {
             firstNameTextField,
             lastNameTextField,
             titleTextField,
-            subTitleTextField,
             emailTextField,
             phoneTextField,
             addressTextField
@@ -71,15 +98,13 @@ class CreateCardViewController: UIViewController {
         let card = Card(
             firstName: firstNameTextField.text ?? "",
             lastName: lastNameTextField.text ?? "",
-            emailAddress: addressTextField.text ?? "",
+            emailAddress: emailTextField.text ?? "",
             phoneNumber: phoneTextField.text ?? "",
             title: titleTextField.text ?? "",
-            subTitle: subTitleTextField.text ?? "",
             address: addressTextField.text ?? ""
         )
         completion(card)
         navigationController?.popViewController(animated: true)
     }
-    
-    
 }
+#endif
