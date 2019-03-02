@@ -8,10 +8,10 @@ ARG env
 RUN apt-get -qq update && apt-get -q -y install \
   tzdata \
   && rm -r /var/lib/apt/lists/*
-WORKDIR /app
+WORKDIR /app/CardsServer
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
-RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
+RUN swift build -c release && mv `swift build -c release --show-bin-path` /build/bin
 
 # Production image
 FROM ubuntu:16.04
@@ -20,13 +20,14 @@ RUN apt-get -qq update && apt-get install -y \
   libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
   tzdata \
   && rm -r /var/lib/apt/lists/*
-WORKDIR /app
+WORKDIR /app/CardsServer
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
-# Uncomment the next line if you need to load resources from the `Public` directory
-#COPY --from=builder /app/Public ./Public
-# Uncommand the next line if you are using Leaf
-#COPY --from=builder /app/Resources ./Resources
+
+COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
+COPY --from=builder /app/CardsServer/PassCerts ./PassStaging
+COPY --from=builder /app/CardsServer/PassCerts ./PassTemplate
+
 ENV ENVIRONMENT=$env
 
 ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
