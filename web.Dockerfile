@@ -8,7 +8,7 @@ ARG env
 RUN apt-get -qq update && apt-get -q -y install \
   tzdata \
   && rm -r /var/lib/apt/lists/*
-WORKDIR /app
+WORKDIR /CardsServer/app
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
 RUN swift build -c release && mv `swift build -c release --show-bin-path` /build/bin
