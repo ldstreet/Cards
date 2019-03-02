@@ -25,7 +25,6 @@ COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
 
 COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
-COPY --from=builder /app/CardsServer/PassStaging ./PassStaging
 COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
 
 ENV ENVIRONMENT=$env
