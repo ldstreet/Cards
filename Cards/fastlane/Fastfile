@@ -8,7 +8,7 @@ platform :ios do
 		cocoapods(use_bundle_exec: false)
 		match(type: 'appstore')
 		update_plist( # Advanced processing: find URL scheme for particular key and replace value
- 			plist_path: "path/to/Info.plist",
+ 			plist_path: "Cards/Info.plist",
   			block: proc do |plist|
     			plist["environment"] = environment
   			end
