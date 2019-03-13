@@ -9,11 +9,11 @@
 /* Begin PBXAggregateTarget section */
 		"CardsKit::CardsKitPackageTests::ProductTarget" /* CardsKitPackageTests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = OBJ_31 /* Build configuration list for PBXAggregateTarget "CardsKitPackageTests" */;
+			buildConfigurationList = OBJ_64 /* Build configuration list for PBXAggregateTarget "CardsKitPackageTests" */;
 			buildPhases = (
 			);
 			dependencies = (
-				OBJ_34 /* PBXTargetDependency */,
+				OBJ_67 /* PBXTargetDependency */,
 			);
 			name = CardsKitPackageTests;
 			productName = CardsKitPackageTests;
@@ -21,27 +21,56 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2A283F152215B00500A639A8 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A283F142215B00500A639A8 /* World.swift */; };
-		2A834E91220F9BDF002E29D4 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E90220F9BDF002E29D4 /* CardsViewController.swift */; };
-		2A834E93220F9BFE002E29D4 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E92220F9BFE002E29D4 /* CardsCell.swift */; };
-		2A834E97220F9C57002E29D4 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A834E96220F9C57002E29D4 /* CreateCardViewController.swift */; };
-		2A8355C722152944002E29D4 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8355C622152944002E29D4 /* Environment.swift */; };
-		OBJ_22 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Card.swift */; };
-		OBJ_29 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_40 /* CardsKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* CardsKitTests.swift */; };
-		OBJ_41 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* XCTestManifests.swift */; };
-		OBJ_43 /* CardsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CardsKit::CardsKit::Product" /* CardsKit.framework */; };
+		2AA1AF3622336F0500A96FF3 /* CreateCardCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA1AF3522336F0500A96FF3 /* CreateCardCameraViewController.swift */; };
+		2ACC429A2237F05400AA9EB0 /* FirebaseOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACC42992237F05400AA9EB0 /* FirebaseOCR.swift */; };
+		OBJ_100 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* Package.swift */; };
+		OBJ_47 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Card.swift */; };
+		OBJ_48 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Environment.swift */; };
+		OBJ_49 /* CardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CardsCell.swift */; };
+		OBJ_50 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* CardsViewController.swift */; };
+		OBJ_51 /* CreateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* CreateCardViewController.swift */; };
+		OBJ_52 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* World.swift */; };
+		OBJ_54 /* LDSiOSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "LDSiOSKit::LDSiOSKit::Product" /* LDSiOSKit.framework */; };
+		OBJ_62 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_73 /* CardsKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* CardsKitTests.swift */; };
+		OBJ_74 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* XCTestManifests.swift */; };
+		OBJ_76 /* CardsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "CardsKit::CardsKit::Product" /* CardsKit.framework */; };
+		OBJ_77 /* LDSiOSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "LDSiOSKit::LDSiOSKit::Product" /* LDSiOSKit.framework */; };
+		OBJ_84 /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* EnvironmentProvider.swift */; };
+		OBJ_85 /* LDSiOSKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* LDSiOSKit.swift */; };
+		OBJ_86 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NSLayoutConstraint+Extensions.swift */; };
+		OBJ_87 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Request.swift */; };
+		OBJ_88 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Result.swift */; };
+		OBJ_89 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Reusable.swift */; };
+		OBJ_90 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* UIColor+Extensions.swift */; };
+		OBJ_91 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* UIStackView+Extensions.swift */; };
+		OBJ_92 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* UIView+Constraints.swift */; };
+		OBJ_93 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* URL+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2A5F6D85220BB7E80088B219 /* PBXContainerItemProxy */ = {
+		2AA1AF3122336EDC00A96FF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "LDSiOSKit::LDSiOSKit";
+			remoteInfo = LDSiOSKit;
+		};
+		2AA1AF3222336EDC00A96FF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = "CardsKit::CardsKit";
 			remoteInfo = CardsKit;
 		};
-		2A5F6D86220BB7EA0088B219 /* PBXContainerItemProxy */ = {
+		2AA1AF3322336EDC00A96FF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "LDSiOSKit::LDSiOSKit";
+			remoteInfo = LDSiOSKit;
+		};
+		2AA1AF3422336EDC00A96FF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
@@ -51,104 +80,164 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2A283F142215B00500A639A8 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
-		2A5F6D87220BD57E0088B219 /* Prototype.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Prototype.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		2A834E90220F9BDF002E29D4 /* CardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
-		2A834E92220F9BFE002E29D4 /* CardsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
-		2A834E96220F9C57002E29D4 /* CreateCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
-		2A8355C622152944002E29D4 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		2AA1AF3522336F0500A96FF3 /* CreateCardCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardCameraViewController.swift; sourceTree = "<group>"; };
+		2AA1AF372234BA5700A96FF3 /* Prototype.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Prototype.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		2ACC42992237F05400AA9EB0 /* FirebaseOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseOCR.swift; sourceTree = "<group>"; };
 		"CardsKit::CardsKit::Product" /* CardsKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CardsKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"CardsKit::CardsKitTests::Product" /* CardsKitTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CardsKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_12 /* CardsKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsKitTests.swift; sourceTree = "<group>"; };
-		OBJ_13 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		"LDSiOSKit::LDSiOSKit::Product" /* LDSiOSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LDSiOSKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_10 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		OBJ_12 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		OBJ_15 /* CardsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsCell.swift; sourceTree = "<group>"; };
+		OBJ_16 /* CardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
+		OBJ_18 /* CreateCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardViewController.swift; sourceTree = "<group>"; };
+		OBJ_19 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		OBJ_22 /* CardsKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsKitTests.swift; sourceTree = "<group>"; };
+		OBJ_23 /* XCTestManifests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
+		OBJ_27 /* EnvironmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
+		OBJ_28 /* LDSiOSKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDSiOSKit.swift; sourceTree = "<group>"; };
+		OBJ_29 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
+		OBJ_30 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		OBJ_31 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		OBJ_32 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		OBJ_33 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		OBJ_34 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
+		OBJ_35 /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
+		OBJ_36 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
+		OBJ_37 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = /Users/ldstreet/iOS/Cards/LDSiOSKit/Package.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_23 /* Frameworks */ = {
+		OBJ_53 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				OBJ_54 /* LDSiOSKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_42 /* Frameworks */ = {
+		OBJ_75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_43 /* CardsKit.framework in Frameworks */,
+				OBJ_76 /* CardsKit.framework in Frameworks */,
+				OBJ_77 /* LDSiOSKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2A834E8C220F9BA6002E29D4 /* Models */ = {
+		2ACC42982237F04200AA9EB0 /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* Card.swift */,
+				2ACC42992237F05400AA9EB0 /* FirebaseOCR.swift */,
 			);
-			path = Models;
+			path = Scanner;
 			sourceTree = "<group>";
 		};
-		2A834E8D220F9BB0002E29D4 /* Screens */ = {
+		OBJ_11 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				2A834E8F220F9BC3002E29D4 /* Cards */,
-				2A834E8E220F9BBD002E29D4 /* CreateCard */,
-			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
-		2A834E8E220F9BBD002E29D4 /* CreateCard */ = {
-			isa = PBXGroup;
-			children = (
-				2A834E96220F9C57002E29D4 /* CreateCardViewController.swift */,
-			);
-			path = CreateCard;
-			sourceTree = "<group>";
-		};
-		2A834E8F220F9BC3002E29D4 /* Cards */ = {
-			isa = PBXGroup;
-			children = (
-				2A834E90220F9BDF002E29D4 /* CardsViewController.swift */,
-				2A834E92220F9BFE002E29D4 /* CardsCell.swift */,
-			);
-			path = Cards;
-			sourceTree = "<group>";
-		};
-		2A8355C522152936002E29D4 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				2A8355C622152944002E29D4 /* Environment.swift */,
+				OBJ_12 /* Environment.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
 		};
-		OBJ_10 /* Tests */ = {
+		OBJ_13 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_11 /* CardsKitTests */,
+				OBJ_14 /* Cards */,
+				OBJ_17 /* CreateCard */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		OBJ_14 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_15 /* CardsCell.swift */,
+				OBJ_16 /* CardsViewController.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
+		OBJ_17 /* CreateCard */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_18 /* CreateCardViewController.swift */,
+				2AA1AF3522336F0500A96FF3 /* CreateCardCameraViewController.swift */,
+			);
+			path = CreateCard;
+			sourceTree = "<group>";
+		};
+		OBJ_20 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_21 /* CardsKitTests */,
 			);
 			name = Tests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_11 /* CardsKitTests */ = {
+		OBJ_21 /* CardsKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* CardsKitTests.swift */,
-				OBJ_13 /* XCTestManifests.swift */,
+				OBJ_22 /* CardsKitTests.swift */,
+				OBJ_23 /* XCTestManifests.swift */,
 			);
 			name = CardsKitTests;
 			path = Tests/CardsKitTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_14 /* Products */ = {
+		OBJ_24 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				"CardsKit::CardsKitTests::Product" /* CardsKitTests.xctest */,
+				OBJ_25 /* LDSiOSKit */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		OBJ_25 /* LDSiOSKit */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_26 /* LDSiOSKit */,
+				OBJ_37 /* Package.swift */,
+			);
+			name = LDSiOSKit;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_26 /* LDSiOSKit */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_27 /* EnvironmentProvider.swift */,
+				OBJ_28 /* LDSiOSKit.swift */,
+				OBJ_29 /* NSLayoutConstraint+Extensions.swift */,
+				OBJ_30 /* Request.swift */,
+				OBJ_31 /* Result.swift */,
+				OBJ_32 /* Reusable.swift */,
+				OBJ_33 /* UIColor+Extensions.swift */,
+				OBJ_34 /* UIStackView+Extensions.swift */,
+				OBJ_35 /* UIView+Constraints.swift */,
+				OBJ_36 /* URL+Extension.swift */,
+			);
+			name = LDSiOSKit;
+			path = ../LDSiOSKit/Sources/LDSiOSKit;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_38 /* Products */ = {
+			isa = PBXGroup;
+			children = (
 				"CardsKit::CardsKit::Product" /* CardsKit.framework */,
+				"LDSiOSKit::LDSiOSKit::Product" /* LDSiOSKit.framework */,
+				"CardsKit::CardsKitTests::Product" /* CardsKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -156,11 +245,12 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				2A5F6D87220BD57E0088B219 /* Prototype.playground */,
 				OBJ_6 /* Package.swift */,
+				2AA1AF372234BA5700A96FF3 /* Prototype.playground */,
 				OBJ_7 /* Sources */,
-				OBJ_10 /* Tests */,
-				OBJ_14 /* Products */,
+				OBJ_20 /* Tests */,
+				OBJ_24 /* Dependencies */,
+				OBJ_38 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -175,28 +265,38 @@
 		OBJ_8 /* CardsKit */ = {
 			isa = PBXGroup;
 			children = (
-				2A8355C522152936002E29D4 /* Network */,
-				2A834E8D220F9BB0002E29D4 /* Screens */,
-				2A834E8C220F9BA6002E29D4 /* Models */,
-				2A283F142215B00500A639A8 /* World.swift */,
+				2ACC42982237F04200AA9EB0 /* Scanner */,
+				OBJ_9 /* Models */,
+				OBJ_11 /* Network */,
+				OBJ_13 /* Screens */,
+				OBJ_19 /* World.swift */,
 			);
 			name = CardsKit;
 			path = Sources/CardsKit;
 			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_10 /* Card.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
 		"CardsKit::CardsKit" /* CardsKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_18 /* Build configuration list for PBXNativeTarget "CardsKit" */;
+			buildConfigurationList = OBJ_43 /* Build configuration list for PBXNativeTarget "CardsKit" */;
 			buildPhases = (
-				OBJ_21 /* Sources */,
-				OBJ_23 /* Frameworks */,
+				OBJ_46 /* Sources */,
+				OBJ_53 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				OBJ_55 /* PBXTargetDependency */,
 			);
 			name = CardsKit;
 			productName = CardsKit;
@@ -205,15 +305,16 @@
 		};
 		"CardsKit::CardsKitTests" /* CardsKitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_36 /* Build configuration list for PBXNativeTarget "CardsKitTests" */;
+			buildConfigurationList = OBJ_69 /* Build configuration list for PBXNativeTarget "CardsKitTests" */;
 			buildPhases = (
-				OBJ_39 /* Sources */,
-				OBJ_42 /* Frameworks */,
+				OBJ_72 /* Sources */,
+				OBJ_75 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_44 /* PBXTargetDependency */,
+				OBJ_78 /* PBXTargetDependency */,
+				OBJ_79 /* PBXTargetDependency */,
 			);
 			name = CardsKitTests;
 			productName = CardsKitTests;
@@ -222,9 +323,9 @@
 		};
 		"CardsKit::SwiftPMPackageDescription" /* CardsKitPackageDescription */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_25 /* Build configuration list for PBXNativeTarget "CardsKitPackageDescription" */;
+			buildConfigurationList = OBJ_58 /* Build configuration list for PBXNativeTarget "CardsKitPackageDescription" */;
 			buildPhases = (
-				OBJ_28 /* Sources */,
+				OBJ_61 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -232,6 +333,36 @@
 			);
 			name = CardsKitPackageDescription;
 			productName = CardsKitPackageDescription;
+			productType = "com.apple.product-type.framework";
+		};
+		"LDSiOSKit::LDSiOSKit" /* LDSiOSKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_80 /* Build configuration list for PBXNativeTarget "LDSiOSKit" */;
+			buildPhases = (
+				OBJ_83 /* Sources */,
+				OBJ_94 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LDSiOSKit;
+			productName = LDSiOSKit;
+			productReference = "LDSiOSKit::LDSiOSKit::Product" /* LDSiOSKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"LDSiOSKit::SwiftPMPackageDescription" /* LDSiOSKitPackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_96 /* Build configuration list for PBXNativeTarget "LDSiOSKitPackageDescription" */;
+			buildPhases = (
+				OBJ_99 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LDSiOSKitPackageDescription;
+			productName = LDSiOSKitPackageDescription;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -250,7 +381,7 @@
 				en,
 			);
 			mainGroup = OBJ_5;
-			productRefGroup = OBJ_14 /* Products */;
+			productRefGroup = OBJ_38 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -258,123 +389,96 @@
 				"CardsKit::SwiftPMPackageDescription" /* CardsKitPackageDescription */,
 				"CardsKit::CardsKitPackageTests::ProductTarget" /* CardsKitPackageTests */,
 				"CardsKit::CardsKitTests" /* CardsKitTests */,
+				"LDSiOSKit::LDSiOSKit" /* LDSiOSKit */,
+				"LDSiOSKit::SwiftPMPackageDescription" /* LDSiOSKitPackageDescription */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_21 /* Sources */ = {
+		OBJ_46 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				2A283F152215B00500A639A8 /* World.swift in Sources */,
-				2A834E91220F9BDF002E29D4 /* CardsViewController.swift in Sources */,
-				2A8355C722152944002E29D4 /* Environment.swift in Sources */,
-				2A834E97220F9C57002E29D4 /* CreateCardViewController.swift in Sources */,
-				OBJ_22 /* Card.swift in Sources */,
-				2A834E93220F9BFE002E29D4 /* CardsCell.swift in Sources */,
+				OBJ_47 /* Card.swift in Sources */,
+				2ACC429A2237F05400AA9EB0 /* FirebaseOCR.swift in Sources */,
+				OBJ_48 /* Environment.swift in Sources */,
+				OBJ_49 /* CardsCell.swift in Sources */,
+				OBJ_50 /* CardsViewController.swift in Sources */,
+				2AA1AF3622336F0500A96FF3 /* CreateCardCameraViewController.swift in Sources */,
+				OBJ_51 /* CreateCardViewController.swift in Sources */,
+				OBJ_52 /* World.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_28 /* Sources */ = {
+		OBJ_61 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_29 /* Package.swift in Sources */,
+				OBJ_62 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_39 /* Sources */ = {
+		OBJ_72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_40 /* CardsKitTests.swift in Sources */,
-				OBJ_41 /* XCTestManifests.swift in Sources */,
+				OBJ_73 /* CardsKitTests.swift in Sources */,
+				OBJ_74 /* XCTestManifests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_83 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_84 /* EnvironmentProvider.swift in Sources */,
+				OBJ_85 /* LDSiOSKit.swift in Sources */,
+				OBJ_86 /* NSLayoutConstraint+Extensions.swift in Sources */,
+				OBJ_87 /* Request.swift in Sources */,
+				OBJ_88 /* Result.swift in Sources */,
+				OBJ_89 /* Reusable.swift in Sources */,
+				OBJ_90 /* UIColor+Extensions.swift in Sources */,
+				OBJ_91 /* UIStackView+Extensions.swift in Sources */,
+				OBJ_92 /* UIView+Constraints.swift in Sources */,
+				OBJ_93 /* URL+Extension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_100 /* Package.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_34 /* PBXTargetDependency */ = {
+		OBJ_55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "LDSiOSKit::LDSiOSKit" /* LDSiOSKit */;
+			targetProxy = 2AA1AF3122336EDC00A96FF3 /* PBXContainerItemProxy */;
+		};
+		OBJ_67 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "CardsKit::CardsKitTests" /* CardsKitTests */;
-			targetProxy = 2A5F6D86220BB7EA0088B219 /* PBXContainerItemProxy */;
+			targetProxy = 2AA1AF3422336EDC00A96FF3 /* PBXContainerItemProxy */;
 		};
-		OBJ_44 /* PBXTargetDependency */ = {
+		OBJ_78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = "CardsKit::CardsKit" /* CardsKit */;
-			targetProxy = 2A5F6D85220BB7E80088B219 /* PBXContainerItemProxy */;
+			targetProxy = 2AA1AF3222336EDC00A96FF3 /* PBXContainerItemProxy */;
+		};
+		OBJ_79 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "LDSiOSKit::LDSiOSKit" /* LDSiOSKit */;
+			targetProxy = 2AA1AF3322336EDC00A96FF3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		OBJ_19 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = CardsKit;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = CardsKit;
-			};
-			name = Debug;
-		};
-		OBJ_20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKit_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = CardsKit;
-				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = CardsKit;
-			};
-			name = Release;
-		};
-		OBJ_26 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Debug;
-		};
-		OBJ_27 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD = /usr/bin/true;
-				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
-				SWIFT_VERSION = 4.2;
-			};
-			name = Release;
-		};
 		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -394,66 +498,12 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "SWIFT_PACKAGE DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
-		};
-		OBJ_32 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		OBJ_33 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		OBJ_37 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKitTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = CardsKitTests;
-			};
-			name = Debug;
-		};
-		OBJ_38 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKitTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
-				SWIFT_VERSION = 4.2;
-				TARGET_NAME = CardsKitTests;
-			};
-			name = Release;
 		};
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -468,25 +518,202 @@
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
+		OBJ_44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CardsKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = CardsKit;
+			};
+			name = Debug;
+		};
+		OBJ_45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = CardsKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = CardsKit;
+			};
+			name = Release;
+		};
+		OBJ_59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		OBJ_60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		OBJ_65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		OBJ_70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKitTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = CardsKitTests;
+			};
+			name = Debug;
+		};
+		OBJ_71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/CardsKitTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = CardsKitTests;
+			};
+			name = Release;
+		};
+		OBJ_81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/LDSiOSKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = LDSiOSKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = LDSiOSKit;
+			};
+			name = Debug;
+		};
+		OBJ_82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = CardsKit.xcodeproj/LDSiOSKit_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = LDSiOSKit;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 4.2;
+				TARGET_NAME = LDSiOSKit;
+			};
+			name = Release;
+		};
+		OBJ_97 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		OBJ_98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4.2 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJ_18 /* Build configuration list for PBXNativeTarget "CardsKit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJ_19 /* Debug */,
-				OBJ_20 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		OBJ_2 /* Build configuration list for PBXProject "CardsKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -496,29 +723,56 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_25 /* Build configuration list for PBXNativeTarget "CardsKitPackageDescription" */ = {
+		OBJ_43 /* Build configuration list for PBXNativeTarget "CardsKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_26 /* Debug */,
-				OBJ_27 /* Release */,
+				OBJ_44 /* Debug */,
+				OBJ_45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_31 /* Build configuration list for PBXAggregateTarget "CardsKitPackageTests" */ = {
+		OBJ_58 /* Build configuration list for PBXNativeTarget "CardsKitPackageDescription" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_32 /* Debug */,
-				OBJ_33 /* Release */,
+				OBJ_59 /* Debug */,
+				OBJ_60 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_36 /* Build configuration list for PBXNativeTarget "CardsKitTests" */ = {
+		OBJ_64 /* Build configuration list for PBXAggregateTarget "CardsKitPackageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_37 /* Debug */,
-				OBJ_38 /* Release */,
+				OBJ_65 /* Debug */,
+				OBJ_66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_69 /* Build configuration list for PBXNativeTarget "CardsKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_70 /* Debug */,
+				OBJ_71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_80 /* Build configuration list for PBXNativeTarget "LDSiOSKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_81 /* Debug */,
+				OBJ_82 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_96 /* Build configuration list for PBXNativeTarget "LDSiOSKitPackageDescription" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_97 /* Debug */,
+				OBJ_98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

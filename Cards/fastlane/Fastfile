@@ -10,7 +10,7 @@ platform :ios do
 		update_plist( # Advanced processing: find URL scheme for particular key and replace value
  			plist_path: "Cards/Info.plist",
   			block: proc do |plist|
-    			plist["environment"] = environment
+    			plist["environment"] = "production"
   			end
 		)
 		gym(export_method: 'app-store')

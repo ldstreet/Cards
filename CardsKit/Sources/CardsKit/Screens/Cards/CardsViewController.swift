@@ -10,7 +10,7 @@ import UIKit
 import LDSiOSKit
 import PassKit
 
-public class CardsViewController: UICollectionViewController {
+internal class CardsViewController: UICollectionViewController {
     
     private var cards: [Card]
     
@@ -56,12 +56,33 @@ public class CardsViewController: UICollectionViewController {
     @objc
     private func tappedAddButton() {
         
-        let createCardVC = CreateCardViewController { card in
-            self.cards.append(card)
-            self.collectionView.reloadData()
-        }
+        let actionSheet = UIAlertController(
+            title: "Create Card",
+            message: "Scan card from your camera or enter manually?",
+            preferredStyle: .actionSheet
+        )
         
-        navigationController?.pushViewController(createCardVC, animated: true)
+        actionSheet.addAction(
+            .init(title: "Scan", style: .default, handler: { action in
+                let createCardCameraVC = CreateCardCameraViewController { card in
+                    self.cards.append(card)
+                    self.collectionView.reloadData()
+                }
+                self.navigationController?.pushViewController(createCardCameraVC, animated: true)
+            })
+        )
+        
+        actionSheet.addAction(
+            .init(title: "Manual", style: .default, handler: { action in
+                let createCardVC = CreateCardViewController { card in
+                    self.cards.append(card)
+                    self.collectionView.reloadData()
+                }
+                self.navigationController?.pushViewController(createCardVC, animated: true)
+            })
+        )
+        
+        present(actionSheet, animated: true)
     }
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -25,40 +25,54 @@ class CreateCardViewController: UIViewController {
     private lazy var firstNameTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "First Name")
         textField.textContentType = .name
+        textField.text = cardBuilder.firstName
         return textField
     }()
     
     private lazy var lastNameTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "Last Name")
         textField.textContentType = .name
+        textField.text = cardBuilder.lastName
         return textField
     }()
+    
     private lazy var titleTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "Title")
         textField.textContentType = .jobTitle
+        textField.text = cardBuilder.title
         return textField
     }()
+    
     private lazy var emailTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "Email Address")
         textField.textContentType = .emailAddress
         textField.keyboardType = .emailAddress
+        textField.text = cardBuilder.emailAddress
         return textField
     }()
+    
     private lazy var phoneTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "Phone Number")
         textField.textContentType = .telephoneNumber
         textField.keyboardType = .phonePad
+        textField.text = cardBuilder.phoneNumber
         return textField
     }()
+    
     private lazy var addressTextField: UITextField = {
         let textField = self.makeTextField(placeholderText: "Address")
         textField.textContentType = .fullStreetAddress
         textField.keyboardType = .default
+        textField.text = cardBuilder.address
         return textField
     }()
     
-    init(completion: @escaping (Card) -> Void) {
+    private var cardBuilder: CardBuilder
+    
+    
+    init(cardBuilder: CardBuilder = .init(), completion: @escaping (Card) -> Void) {
         self.completion = completion
+        self.cardBuilder = cardBuilder
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,10 +80,23 @@ class CreateCardViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        switch textField {
+            case firstNameTextField: cardBuilder.firstName = textField.text
+            case lastNameTextField: cardBuilder.lastName = textField.text
+            case titleTextField: cardBuilder.title = textField.text
+            case emailTextField: cardBuilder.emailAddress = textField.text
+            case phoneTextField: cardBuilder.phoneNumber = textField.text
+            case addressTextField: cardBuilder.address = textField.text
+            default: break
+        }
+    }
+    
     private func makeTextField(placeholderText: String) -> UITextField {
         let textField = UITextField()
         textField.placeholder = placeholderText
         textField.borderStyle = .roundedRect
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return textField
     }
     
@@ -77,6 +104,7 @@ class CreateCardViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(false, animated: false)
         
         stackView.addArrangedSubviews([
             firstNameTextField,
@@ -95,16 +123,32 @@ class CreateCardViewController: UIViewController {
     
     @objc
     private func tappedDoneButton() {
-        let card = Card(
-            firstName: firstNameTextField.text ?? "",
-            lastName: lastNameTextField.text ?? "",
-            emailAddress: emailTextField.text ?? "",
-            phoneNumber: phoneTextField.text ?? "",
-            title: titleTextField.text ?? "",
-            address: addressTextField.text ?? ""
-        )
-        completion(card)
-        navigationController?.popViewController(animated: true)
+        do {
+            completion(try cardBuilder.build())
+            navigationController?.popViewController(animated: true)
+        } catch {
+            let errorAlert = UIAlertController(title: "Missing Fields", message: "Not all require fields have been filled out.", preferredStyle: .alert)
+            errorAlert.addAction(
+                .init(
+                    title: "Continue",
+                    style: .default
+                )
+                { _ in
+                    errorAlert.dismiss(animated: true, completion: nil)
+                }
+            )
+            
+            errorAlert.addAction(
+                .init(
+                    title: "Cancel",
+                    style: .destructive
+                    )
+                { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+            )
+            present(errorAlert, animated: true, completion: nil)
+        }
     }
 }
 #endif

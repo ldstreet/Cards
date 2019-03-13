@@ -69,6 +69,22 @@ extension UIView {
             return center(direction, in: view)
         }
     }
+    
+    @discardableResult
+    public func size(width: CGFloat? = nil, height: CGFloat? = nil) -> [NSLayoutConstraint] {
+        return [
+            {
+                guard let width = width else { return nil }
+                return widthAnchor.constraint(equalToConstant: width).activate()
+            }(),
+            
+            {
+                guard let height = height else { return nil }
+                return heightAnchor.constraint(equalToConstant: height).activate()
+            }()
+            
+            ].compactMap{ $0 }
+    }
 }
 
 public extension Array where Element == UIView.Direction {

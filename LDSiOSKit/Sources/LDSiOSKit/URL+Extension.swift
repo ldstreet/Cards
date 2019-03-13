@@ -15,3 +15,12 @@ extension URL {
         self = url
     }
 }
+
+extension Optional {
+    public func unwrap(elseThrow error: Error) throws -> Wrapped {
+        switch self {
+        case .some(let wrapped): return wrapped
+        case .none: throw error
+        }
+    }
+}

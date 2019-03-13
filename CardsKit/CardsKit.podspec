@@ -11,5 +11,4 @@ Pod::Spec.new do |spec|
   spec.framework    = 'UIKit'
 
   spec.dependency 'LDSiOSKit'
-
 end
