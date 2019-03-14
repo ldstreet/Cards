@@ -1,8 +1,5 @@
 PODS:
   - CardsKit (0.0.1):
-    - Firebase/Core
-    - Firebase/MLVision
-    - Firebase/MLVisionTextModel
     - LDSiOSKit
   - Firebase/Core (5.18.0):
     - Firebase/CoreOnly
@@ -101,6 +98,9 @@ PODS:
 
 DEPENDENCIES:
   - CardsKit (from `../CardsKit`)
+  - Firebase/Core
+  - Firebase/MLVision
+  - Firebase/MLVisionTextModel
   - LDSiOSKit (from `../LDSiOSKit`)
   - LoginModule (from `../LoginModule`)
 
@@ -131,7 +131,7 @@ EXTERNAL SOURCES:
     :path: "../LoginModule"
 
 SPEC CHECKSUMS:
-  CardsKit: ba9e3be680505eb73a99d8e7da3831ba68a6b78d
+  CardsKit: d4c2dd3b89db32e25c1cf8c8c579dcc854ec0b02
   Firebase: 02f3281965c075426141a0ce1277e9de6649cab9
   FirebaseAnalytics: 23851fe602c872130a2c5c55040b302120346cc2
   FirebaseCore: 52f851b30e11360f1e67cf04b1edfebf0a47a2d3
@@ -150,6 +150,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
 
-PODFILE CHECKSUM: d02c8fe7bb27ef9bf4eedbb0065f351c1772950d
+PODFILE CHECKSUM: 1891fc425b75a48a4b63fc2db03f14b7e9a3bbdb
 
 COCOAPODS: 1.6.1
