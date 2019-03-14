@@ -104,7 +104,6 @@ class CreateCardViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        navigationController?.setNavigationBarHidden(false, animated: false)
         
         stackView.addArrangedSubviews([
             firstNameTextField,
@@ -121,11 +120,17 @@ class CreateCardViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .done, target: self, action: #selector(tappedDoneButton))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     @objc
     private func tappedDoneButton() {
         do {
             completion(try cardBuilder.build())
-            navigationController?.popViewController(animated: true)
+            navigationController?.popToRootViewController(animated: true)
         } catch {
             let errorAlert = UIAlertController(title: "Missing Fields", message: "Not all require fields have been filled out.", preferredStyle: .alert)
             errorAlert.addAction(

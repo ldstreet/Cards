@@ -35,7 +35,7 @@ internal class CreateCardCameraViewController: UIViewController, LockLandscape {
     
     private var takePhotoButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+        button.setBackgroundImage(#imageLiteral(resourceName: "circle"), for: .normal)
         button.addTarget(self, action: #selector(tappedTakePhotoButton), for: .touchUpInside)
         return button
     }()
@@ -63,7 +63,6 @@ internal class CreateCardCameraViewController: UIViewController, LockLandscape {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        navigationController?.setNavigationBarHidden(true, animated: false)
         
         guard
             let backCamera =  AVCaptureDevice.default(for: .video),
@@ -85,14 +84,20 @@ internal class CreateCardCameraViewController: UIViewController, LockLandscape {
         
         view.addSubview(takePhotoButton)
         takePhotoButton.center(.vertically, in: view)
-        takePhotoButton.pin(.trailing, to: view, offsetBy: 15)
-        takePhotoButton.size(width: 200, height: 200)
+        takePhotoButton.pin(.trailing, to: view, offsetBy: 25)
+        takePhotoButton.size(width: 75, height: 75)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     func updatePreviewLayer() {
         self.videoPreviewLayer.frame = self.view.layer.frame
-        self.videoPreviewLayer.connection?.videoOrientation = UIDevice.current.orientation.avCaptureOrientation
+        self.videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.landscapeRight
         
         let path = UIBezierPath(rect: self.view.layer.frame)
         
@@ -116,40 +121,94 @@ internal class CreateCardCameraViewController: UIViewController, LockLandscape {
     @objc
     private func tappedTakePhotoButton() {
         photoOutput.capturePhoto(with: .init(), delegate: self)
+        
     }
 }
 
 extension CreateCardCameraViewController: AVCapturePhotoCaptureDelegate {
+
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        let cgimage = photo
-            .cgImageRepresentation()?
-            .takeUnretainedValue()
-            //.cropping(to: cutoutFrame)
-        if let image = cgimage.map(UIImage.init) {
-            Alien.convert(image) { result in
-                do {
-                    let builder = try Current.createCardBuilder(try result.get())
-                    let createCardVC = CreateCardViewController(cardBuilder: builder, completion: self.completion)
-                    self.navigationController?.pushViewController(createCardVC, animated: true)
-                } catch {
-                    print(error)
-                }
-                
+        let outputRect = videoPreviewLayer.metadataOutputRectConverted(fromLayerRect: cutoutFrame)
+        guard
+            let cgImage = photo
+                .cgImageRepresentation()?
+                .takeUnretainedValue()
+        else { return }
+        
+        let width = CGFloat(cgImage.width)
+        let height = CGFloat(cgImage.height)
+        let cropRect = CGRect(x: outputRect.origin.x * width, y: outputRect.origin.y * height, width: outputRect.size.width * width, height: outputRect.size.height * height)
+        guard let croppedCGImage = cgImage.cropping(to: cropRect) else { return }
+        let image = UIImage(cgImage: croppedCGImage)//.imageRotatedByDegrees(degrees: 180, flip: false)
+        
+        Alien.convert(image) { result in
+            do {
+                let builder = try Current.createCardBuilder(try result.get())
+                let createCardVC = CreateCardViewController(cardBuilder: builder, completion: self.completion)
+                self.navigationController?.pushViewController(createCardVC, animated: true)
+            } catch {
+                print(error)
             }
+
         }
     }
 }
 
-
+extension UIImage {
+    
+    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
+        //        let radiansToDegrees: (CGFloat) -> CGFloat = {
+        //            return $0 * (180.0 / CGFloat.pi)
+        //        }
+        let degreesToRadians: (CGFloat) -> CGFloat = {
+            return $0 / 180.0 * CGFloat.pi
+        }
+        
+        // calculate the size of the rotated view's containing box for our drawing space
+        let rotatedViewBox = UIView(frame: CGRect(origin: .zero, size: size))
+        let t = CGAffineTransform(rotationAngle: degreesToRadians(degrees));
+        rotatedViewBox.transform = t
+        let rotatedSize = rotatedViewBox.frame.size
+        
+        // Create the bitmap context
+        UIGraphicsBeginImageContext(rotatedSize)
+        let bitmap = UIGraphicsGetCurrentContext()
+        
+        // Move the origin to the middle of the image so we will rotate and scale around the center.
+        bitmap?.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
+        
+        //   // Rotate the image context
+        bitmap?.rotate(by: degreesToRadians(degrees))
+        
+        // Now, draw the rotated/scaled image into the context
+        var yFlip: CGFloat
+        
+        if(flip){
+            yFlip = CGFloat(-1.0)
+        } else {
+            yFlip = CGFloat(1.0)
+        }
+        
+        bitmap?.scaleBy(x: yFlip, y: -1.0)
+        let rect = CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height)
+        
+        bitmap?.draw(cgImage!, in: rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+}
 
 
 extension UIDeviceOrientation {
     public var avCaptureOrientation: AVCaptureVideoOrientation {
         switch self {
         case .landscapeLeft:
-            return .landscapeRight
-        case .landscapeRight:
             return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
         case .portrait:
             return .portrait
         case .portraitUpsideDown:
@@ -157,5 +216,17 @@ extension UIDeviceOrientation {
         case .unknown, .faceUp, .faceDown:
             return .portrait
         }
+    }
+}
+
+extension UIDevice {
+    public func makePortrait() {
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+    }
+    
+    public func makeLandscape() {
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
 }
