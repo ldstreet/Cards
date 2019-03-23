@@ -26,19 +26,19 @@ public struct World {
         return CardsViewController(cards: [])
     }
     
-    public let createCardBuilder: (String) throws -> CardBuilder = { text in
-        let transformations: [(String) -> CardBuilder] = [
+    public let createCardBuilder: (String) throws -> Card = { text in
+        let transformations: [(String) -> Card] = [
             detectAddressAndPhoneNumberAndEmail,
             detectName
         ]
-        return transformations.reduce(CardBuilder(), { (builder, transformation) -> CardBuilder in
-            return builder.appending(transformation(text))
+        return transformations.reduce(Card(), { (card, transformation) -> Card in
+            return card.appending(card: transformation(text))
         })
     }
 }
 
-func detectAddressAndPhoneNumberAndEmail(from text: String) -> CardBuilder {
-    var cardBuilder = CardBuilder()
+func detectAddressAndPhoneNumberAndEmail(from text: String) -> Card {
+    var card = Card()
     let detector = try? NSDataDetector(
         types: NSTextCheckingResult.CheckingType.address.rawValue |
             NSTextCheckingResult.CheckingType.phoneNumber.rawValue |
@@ -48,57 +48,65 @@ func detectAddressAndPhoneNumberAndEmail(from text: String) -> CardBuilder {
     detector?.enumerateMatches(in: text, range: NSMakeRange(0, text.count), using: { (match, flag, bool) in
         guard let match = match else { return }
         switch match.resultType {
-        case NSTextCheckingResult.CheckingType.address:
-            cardBuilder.address = """
+        case .address:
+            let address = """
             \(match.addressComponents![.street] ?? "")
             \(match.addressComponents![.city] ?? ""), \(match.addressComponents![.state] ?? "") \(match.addressComponents![.zip] ?? "")
             """
-        case NSTextCheckingResult.CheckingType.phoneNumber:
+            card.addresses.append(TypePair(type: .work, value: address))
+        case .phoneNumber:
+            guard let phoneNumber = match.phoneNumber else { return }
             let prevRange = text.range(from: match.adjustingRanges(offset: -5).range)!
             let prevStr = text[prevRange].lowercased()
             let cellPrefixes = ["cell", "mob", "mobile"]
             let isCell = cellPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if isCell {
-                print("cell: \(match.phoneNumber ?? "")")
+                card.phoneNumbers.append(.init(type: .cell, value: phoneNumber))
             }
             
             let workPrefixes = ["work", "tel", "office"]
             let ifWork = workPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if ifWork {
-                print("work: \(match.phoneNumber ?? "")")
+                card.phoneNumbers.append(.init(type: .work, value: phoneNumber))
+            }
+            
+            let homePrefixes = ["home"]
+            let ifHome = homePrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
+            if ifHome {
+                card.phoneNumbers.append(.init(type: .home, value: phoneNumber))
             }
             
             let faxPrefixes = ["fax", "fx"]
             let isFax = faxPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if isFax {
-                print("fax: \(match.phoneNumber ?? "")")
+                card.phoneNumbers.append(.init(type: .fax, value: phoneNumber))
             }
             
-            cardBuilder.phoneNumber = match.phoneNumber
+            card.phoneNumbers.append(.init(type: .other, value: phoneNumber))
             
-        case NSTextCheckingResult.CheckingType.link:
+        case .link:
+            guard let url = match.url else { return }
             if
-                let url = match.url,
                 match.url?.scheme == "mailto"
             {
-                let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-                let email = components?.path
-                cardBuilder.emailAddress = email?.lowercased()
+                guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
+                let email = components.path
+                card.emailAddresses.append(.init(type: .work, value: email))
             }
         default:
             print("None")
         }
     })
-    return cardBuilder
+    return card
 }
 
 import NaturalLanguage
-func detectName(from text: String) -> CardBuilder {
+func detectName(from text: String) -> Card {
     let tagger = NLTagger(tagSchemes: [.nameType])
     tagger.string = text
     let options: NLTagger.Options = [.joinNames]
     
-    var cardBulder = CardBuilder()
+    var cardBulder = Card()
     tagger
         .tags(in: text.startIndex..<text.endIndex, unit: .word, scheme: .nameType, options: options)
         .forEach { pair in
@@ -108,10 +116,10 @@ func detectName(from text: String) -> CardBuilder {
                 print("organization: \(text[range])")
             }
             guard tag == NLTag.personalName else { return }
-            let nameArray = String(text[range]).split(separator: " ").compactMap(String.init)
+            let name = String(text[range])
+            let nameArray = String(name).split(separator: " ").compactMap(String.init)
             guard nameArray.count == 2 else { return }
-            cardBulder.firstName = nameArray.first
-            cardBulder.lastName = nameArray.last
+            cardBulder.names.append(name)
     }
     
     return cardBulder

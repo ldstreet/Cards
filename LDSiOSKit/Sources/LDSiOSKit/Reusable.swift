@@ -27,7 +27,7 @@ extension UITableView {
         }
     }
     
-    public func dequeueReusableCell<T: UITableViewCell>(indexPath: IndexPath) -> T where T: Reusable {
+    public func dequeueReusableCell<T: UITableViewCell>(at indexPath: IndexPath, as type: T.Type) -> T where T: Reusable {
         return self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath as IndexPath) as! T
     }
     
@@ -53,7 +53,7 @@ extension UICollectionView {
         }
     }
     
-    public func dequeueReusableCell<T: UICollectionViewCell>(indexPath: IndexPath) -> T where T: Reusable {
+    public func dequeueReusableCell<T: UICollectionViewCell>(at indexPath: IndexPath, as type: T.Type) -> T where T: Reusable {
         return self.dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath as IndexPath) as! T
     }
     

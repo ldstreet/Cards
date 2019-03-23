@@ -5,6 +5,7 @@
 //  Created by Luke Street on 3/8/19.
 //
 
+#if os(iOS)
 import UIKit
 import AVFoundation
 
@@ -108,6 +109,7 @@ internal class CreateCardCameraViewController: UIViewController, LockLandscape {
         
         self.overlayLayer.path = path.cgPath
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -144,7 +146,7 @@ extension CreateCardCameraViewController: AVCapturePhotoCaptureDelegate {
         Alien.convert(image) { result in
             do {
                 let builder = try Current.createCardBuilder(try result.get())
-                let createCardVC = CreateCardViewController(cardBuilder: builder, completion: self.completion)
+                let createCardVC = CreateCardViewController(card: builder, completion: self.completion)
                 self.navigationController?.pushViewController(createCardVC, animated: true)
             } catch {
                 print(error)
@@ -157,9 +159,6 @@ extension CreateCardCameraViewController: AVCapturePhotoCaptureDelegate {
 extension UIImage {
     
     public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
-        //        let radiansToDegrees: (CGFloat) -> CGFloat = {
-        //            return $0 * (180.0 / CGFloat.pi)
-        //        }
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 / 180.0 * CGFloat.pi
         }
@@ -177,7 +176,7 @@ extension UIImage {
         // Move the origin to the middle of the image so we will rotate and scale around the center.
         bitmap?.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
         
-        //   // Rotate the image context
+        // Rotate the image context
         bitmap?.rotate(by: degreesToRadians(degrees))
         
         // Now, draw the rotated/scaled image into the context
@@ -200,33 +199,4 @@ extension UIImage {
         return newImage!
     }
 }
-
-
-extension UIDeviceOrientation {
-    public var avCaptureOrientation: AVCaptureVideoOrientation {
-        switch self {
-        case .landscapeLeft:
-            return .landscapeLeft
-        case .landscapeRight:
-            return .landscapeRight
-        case .portrait:
-            return .portrait
-        case .portraitUpsideDown:
-            return .portraitUpsideDown
-        case .unknown, .faceUp, .faceDown:
-            return .portrait
-        }
-    }
-}
-
-extension UIDevice {
-    public func makePortrait() {
-        let value = UIInterfaceOrientation.portrait.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
-    }
-    
-    public func makeLandscape() {
-        let value = UIInterfaceOrientation.landscapeRight.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
-    }
-}
+#endif

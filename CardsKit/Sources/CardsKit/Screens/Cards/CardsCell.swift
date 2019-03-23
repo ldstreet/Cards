@@ -19,14 +19,15 @@ class CardCell: UICollectionViewCell {
         return sv
     }()
     
-    lazy var nameLabel = makeFieldLabel()
-    lazy var titleLabel = makeFieldLabel()
-    lazy var emailLabel = makeFieldLabel()
-    lazy var phoneLabel = makeFieldLabel()
-    lazy var addressLabel = makeFieldLabel()
+    lazy var nameLabels: [UILabel] = []
+    lazy var titleLabels: [UILabel] = []
+    lazy var emailLabels: [UILabel] = []
+    lazy var phoneLabels: [UILabel] = []
+    lazy var addressLabels: [UILabel] = []
     
-    func makeFieldLabel() -> UILabel {
+    func makeFieldLabel(withText text: String) -> UILabel {
         let label = UILabel()
+        label.text = text
         label.textAlignment = .center
         label.textColor = .gray
         label.backgroundColor = .white
@@ -49,23 +50,38 @@ class CardCell: UICollectionViewCell {
             contentView.layer.borderWidth = 2
             
             stackView.addArrangedSubviews([
-                nameLabel,
-                titleLabel,
-                emailLabel,
-                phoneLabel,
-                addressLabel
-                ])
+                nameLabels,
+                titleLabels,
+                emailLabels,
+                phoneLabels,
+                addressLabels
+                ].flatMap{ $0 })
             contentView.addSubview(stackView)
             stackView.pin(.all, to: contentView)
         }
     }
     
     func configure(with card: Card) {
-        nameLabel.text = "\(card.firstName) \(card.lastName)"
-        titleLabel.text = card.title
-        emailLabel.text = card.emailAddress
-        phoneLabel.text = card.phoneNumber
-        addressLabel.text = card.address
+        nameLabels = card
+            .names
+            .map(makeFieldLabel)
+        titleLabels = card
+            .titles
+            .map(makeFieldLabel)
+        emailLabels = card
+            .emailAddresses
+            .map { "\($0.type): \($0.value)" }
+            .map(makeFieldLabel)
+        phoneLabels = card
+            .phoneNumbers
+            .lazy
+            .map { "\($0.type): \($0.value)" }
+            .map(makeFieldLabel)
+        addressLabels = card
+            .addresses
+            .lazy
+            .map { "\($0.type): \($0.value)" }
+            .map(makeFieldLabel)
     }
 }
 #endif

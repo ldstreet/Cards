@@ -72,6 +72,7 @@ extension UIView {
     
     @discardableResult
     public func size(width: CGFloat? = nil, height: CGFloat? = nil) -> [NSLayoutConstraint] {
+        self.translatesAutoresizingMaskIntoConstraints = false
         return [
             {
                 guard let width = width else { return nil }
