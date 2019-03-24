@@ -3,3 +3,4 @@
 Pods
 *.app.*
 *.ipa
+Fastlane/report.xml
