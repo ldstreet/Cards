@@ -1,5 +1,6 @@
 .build
 *.xcworkspace/
 Pods
-*.app*
+*.app.*
 *.ipa
+Fastlane/report.xml
