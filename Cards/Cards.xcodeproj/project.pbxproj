@@ -162,7 +162,6 @@
 				1793E887A03329FB79D477D0 /* Pods-CardsUITests.debug.xcconfig */,
 				08EEB993AF276BEADB45E419 /* Pods-CardsUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -602,6 +601,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				INFOPLIST_FILE = Cards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -613,6 +613,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.ldstreet.Cards";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -623,6 +624,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				INFOPLIST_FILE = Cards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -634,6 +636,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ldstreet.Cards";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

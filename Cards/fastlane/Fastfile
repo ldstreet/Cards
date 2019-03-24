@@ -4,15 +4,18 @@ platform :ios do
 	desc "Description of what the lane does"
 	lane :beta do |params|
 		environment = params[:environment] || "develop"
-
+		build_number = params[:build_number] || "0"
+		
 		cocoapods(use_bundle_exec: false)
 		match(type: 'appstore')
 		update_plist( # Advanced processing: find URL scheme for particular key and replace value
  			plist_path: "Cards/Info.plist",
   			block: proc do |plist|
-    			plist["environment"] = "production"
+    			plist["environment"] = environment
   			end
 		)
+
+		increment_build_number(build_number: build_number)
 		gym(export_method: 'app-store')
 		pilot
 	end
