@@ -9,31 +9,9 @@
 import UIKit
 import LDSiOSKit
 
-extension UITextField {
-    func configure(as fieldType: FieldType) {
-        
-        self.borderStyle = .roundedRect
-        
-        switch fieldType {
-        case .name:
-            self.textContentType = .name
-            self.placeholder = "Name"
-        case .title:
-            self.textContentType = .jobTitle
-            self.placeholder = "Job Title"
-        case .email:
-            self.textContentType = .emailAddress
-            self.keyboardType = .emailAddress
-            self.placeholder = "Email Address"
-        case .phone:
-            self.textContentType = .telephoneNumber
-            self.keyboardType = .phonePad
-            self.placeholder = "Phone Number"
-        case .address:
-            self.textContentType = .fullStreetAddress
-            self.keyboardType = .default
-            self.placeholder = "Address"
-        }
+extension UIImage {
+    convenience init?(fromCurrentBundleNamed name: String) {
+        self.init(named: name, in: Bundle(for: CardsViewController.self), compatibleWith: nil)
     }
 }
 
@@ -80,8 +58,6 @@ internal class CreateCardViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.estimatedRowHeight = 22
-        tableView.rowHeight = UITableView.automaticDimension
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
@@ -93,6 +69,15 @@ internal class CreateCardViewController: UITableViewController {
 }
 
 extension CreateCardViewController {
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 22
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         func makeAddCell(sectionType: String) -> UITableViewCell {
@@ -109,7 +94,7 @@ extension CreateCardViewController {
             }
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: SimpleFieldCell.self)
-            cell.configure(as: .name, with: card.names[indexPath.row]) {
+            cell.configure(with: card.names[indexPath.row], as: .name) {
                 guard self.card.names.indices.contains(indexPath.row) else { return }
                 self.card.names.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
@@ -122,7 +107,7 @@ extension CreateCardViewController {
             }
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: SimpleFieldCell.self)
-            cell.configure(as: .title, with: card.titles[indexPath.row]) {
+            cell.configure(with: card.titles[indexPath.row], as: .title) {
                 guard self.card.titles.indices.contains(indexPath.row) else { return }
                 self.card.titles.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
@@ -136,11 +121,14 @@ extension CreateCardViewController {
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<EmailType>.self)
             let emailAddress = card.emailAddresses[indexPath.row]
-            cell.configure(as: .email, with: emailAddress.type, value: emailAddress.value) {
+            cell.configure(as: .email, with: emailAddress.type, value: emailAddress.value, removeAction: {
                 guard self.card.emailAddresses.indices.contains(indexPath.row) else { return }
                 self.card.emailAddresses.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }
+            }, onUpdate: { typePair in
+                self.card.emailAddresses[indexPath.row] = typePair
+                self.tableView.reloadData()
+            })
             return cell
         case 3:
             
@@ -150,11 +138,14 @@ extension CreateCardViewController {
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<PhoneType>.self)
             let phoneNumber = card.phoneNumbers[indexPath.row]
-            cell.configure(as: .phone, with: phoneNumber.type, value: phoneNumber.value) {
+            cell.configure(as: .phone, with: phoneNumber.type, value: phoneNumber.value, removeAction: {
                 guard self.card.phoneNumbers.indices.contains(indexPath.row) else { return }
                 self.card.phoneNumbers.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }
+            }, onUpdate: { typePair in
+                self.card.phoneNumbers[indexPath.row] = typePair
+                self.tableView.reloadData()
+            })
             return cell
         case 4:
             
@@ -164,11 +155,15 @@ extension CreateCardViewController {
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<AddressType>.self)
             let address = card.addresses[indexPath.row]
-            cell.configure(as: .address, with: address.type, value: address.value) {
+            cell.configure(as: .address, with: address.type, value: address.value, removeAction: {
                 guard self.card.addresses.indices.contains(indexPath.row) else { return }
                 self.card.addresses.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }
+            }, onUpdate: { typePair in
+                self.card.addresses[indexPath.row] = typePair
+                self.tableView.reloadData()
+            })
+                
             return cell
         default: return .init()
         }
@@ -194,15 +189,15 @@ extension CreateCardViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         guard indexPath.row == getCount(ofItemsIn: indexPath.section) else { return }
-
         
         switch indexPath.section {
         case 0: card.names.append("")
         case 1: card.titles.append("")
-        case 2: card.emailAddresses.append(.init(type: .other, value: ""))
-        case 3: card.phoneNumbers.append(.init(type: .other, value: ""))
-        case 4: card.addresses.append(.init(type: .other, value: ""))
+        case 2: card.emailAddresses.append(.init(.work, ""))
+        case 3: card.phoneNumbers.append(.init(.cell, ""))
+        case 4: card.addresses.append(.init(.work, ""))
         default: return
         }
         
@@ -227,197 +222,34 @@ public enum FieldType {
     case name, title, email, phone, address
 }
 
-private class SimpleFieldCell: UITableViewCell, Reusable {
-    
-    private var textField = UITextField()
-    private var removeButton: UIButton = {
-        let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "remove"), for: .normal)
-        return button
-    }()
-    private var stackView: UIStackView = {
-        let sv = UIStackView(frame: .zero)
-        sv.axis = .horizontal
-        sv.alignment = .center
-        return sv
-    }()
-    
-    private var initialLayout = true
-    private var types = [String]()
-    
-    @objc
-    private func removeButtonTapped() { removeAction() }
-    private var removeAction: () -> () = {}
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+extension UITextField {
+    func configure(as fieldType: FieldType) {
         
-        if initialLayout {
-            
-            removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
-            
-            stackView.addArrangedSubviews(
-                [
-                    removeButton,
-                    textField
-                ]
-            )
-            
-            removeButton.size(width: 22, height: 22)
-            
-            contentView.addSubview(stackView)
-            stackView.pin(.all, to: contentView)
-            
-            initialLayout = false
+        self.borderStyle = .roundedRect
+        
+        switch fieldType {
+        case .name:
+            self.textContentType = .name
+            self.placeholder = "Name"
+        case .title:
+            self.textContentType = .jobTitle
+            self.placeholder = "Job Title"
+        case .email:
+            self.textContentType = .emailAddress
+            self.keyboardType = .emailAddress
+            self.placeholder = "Email Address"
+        case .phone:
+            self.textContentType = .telephoneNumber
+            self.keyboardType = .phonePad
+            self.placeholder = "Phone Number"
+        case .address:
+            self.textContentType = .fullStreetAddress
+            self.keyboardType = .default
+            self.placeholder = "Address"
         }
-    }
-    
-    func configure(as type: FieldType, with value: String, removeAction: @escaping () -> ()) {
-        textField.text = value
-        textField.configure(as: type)
-        self.removeAction = removeAction
     }
 }
 
-private class AddFieldCell: UITableViewCell, Reusable {
-    
-    private let addIcon = UIImageView(image: #imageLiteral(resourceName: "add"))
-    private let label = UILabel()
-    
-    private var stackView: UIStackView = {
-        let sv = UIStackView(frame: .zero)
-        sv.axis = .horizontal
-        sv.alignment = .center
-        return sv
-    }()
-    
-    private var initialLayout = true
-    
-    override func layoutSubviews() {
-        if initialLayout {
-            stackView.addArrangedSubviews(
-                [
-                    addIcon,
-                    label
-                ]
-            )
-            
-            addIcon.size(width: 22, height: 22)
-            
-            contentView.addSubview(stackView)
-            stackView.pin(.all, to: contentView)
-            
-            initialLayout = false
-        }
-    }
-    
-    func configure(sectionType: String) {
-        label.text = sectionType
-    }
-}
 
-private class FieldCell<Type: DataType>: UITableViewCell, Reusable, UIPickerViewDataSource, UIPickerViewDelegate where Type.RawValue == String {
-    private var textField = UITextField()
-    private var removeButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(#imageLiteral(resourceName: "remove"), for: .normal)
-        return button
-    }()
-    private var typeButton: UIButton = {
-        let button = UIButton()
-//        button.setImage(#imageLiteral(resourceName: "right-caret"), for: .normal)
-        button.setTitleColor(.blue, for: .normal)
-        button.titleLabel?.font = button.titleLabel?.font.withSize(12)
-        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        button.addTarget(self, action: #selector(typeButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    private var stackView: UIStackView = {
-        let sv = UIStackView(frame: .zero)
-        sv.axis = .horizontal
-        sv.alignment = .center
-        sv.spacing = 10
-        return sv
-    }()
-    
-    private lazy var typePicker: UIPickerView = {
-        let picker = UIPickerView(frame: .zero)
-        
-        picker.dataSource = self
-        picker.delegate = self
-        
-        return picker
-    }()
-    
-    @objc
-    private func removeButtonTapped() { removeAction() }
-    private var removeAction: () -> () = {}
-    
-    @objc
-    private func typeButtonTapped() {
-        
-    }
-    
-    private var initialLayout = true
-    private var types = [String]()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if initialLayout {
-            
-            removeButton.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
-            
-            
-            stackView.addArrangedSubviews(
-                [
-                    removeButton,
-                    typeButton,
-                    textField
-                ]
-            )
-            
-            removeButton.size(width: 22, height: 22)
-            
-            contentView.addSubview(stackView)
-            stackView.pin(.all, to: contentView)
-            
-            initialLayout = false
-            
-        }
-        
-    }
-    
-    func configure(as fieldType: FieldType, with valueType: Type, value: String, removeAction: @escaping () -> ()) {
-        self.textField.text = value
-        self.types = Type.types
-        self.typeButton.setTitle(valueType.rawValue, for: .normal)
-        self.textField.configure(as: fieldType)
-        self.removeAction = removeAction
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return types.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return types[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        typeButton.setTitle(types[row], for: .normal)
-    }
-}
-
-extension Array {
-    subscript(safe index: Int) -> Element? {
-        guard indices.contains(index) else { return nil }
-        return self[index]
-    }
-}
 #endif
+

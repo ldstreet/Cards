@@ -7,17 +7,17 @@ public enum EmailType: String, DataType {
 }
 
 public enum PhoneType: String, DataType {
-    case work
     case cell
+    case work
     case home
     case fax
     case other
 }
 
-internal protocol DataType: CaseIterable, RawRepresentable, Codable {}
+public protocol DataType: CaseIterable, RawRepresentable, Codable {}
 
 extension DataType {
-    static var types: [RawValue] {
+    public static var types: [RawValue] {
         return allCases.map { $0.rawValue }
     }
 }
@@ -28,10 +28,64 @@ public enum AddressType: String, DataType {
     case other
 }
 
-public struct TypePair<Type: Codable, Value: Codable>: Codable {
+//public enum CardError: Error {
+//    case invalidCard
+//    case missingRequiredFields
+//}
+//public struct Card: Codable {
+//    var fieldGroups: [FieldGroup]
+//    
+//    var fields: [Field] {
+//        return fieldGroups.flatMap { $0.fields }
+//    }
+//
+//    func validated() throws -> Card {
+//        let valid = fieldGroups.allSatisfy { group in
+//            if group.required {
+//                return group.fields.allSatisfy { $0.value != nil }
+//            }
+//            return true
+//        }
+//        guard valid else { throw CardError.invalidCard }
+//        return self
+//    }
+//
+//    var cleaned: Card {
+//        let cleanedGroups = fieldGroups.compactMap { group in
+//            guard !group.required else { return group }
+//            group.fields.compactMap { }
+//        }
+//    }
+//
+//    func resolve(from template: Card) {
+//
+//    }
+//
+//    subscript(key: String) -> Field? {
+//        get {
+//            return fields.first(where: { $0.key == key })
+//        }
+//        set {
+//            guard let newField = newValue else { return }
+//            guard let index = fields.firstIndex(where: { $0.key == key }) else {
+//                fields.append(newField)
+//                return
+//            }
+//            fields[index] = newField
+//        }
+//    }
+//}
+
+public struct TypePair<Type: DataType, Value: Codable>: Codable {
     public let type: Type
     public let value: Value
+    
+    public init(_ type: Type, _ value: Value) {
+        self.type = type
+        self.value = value
+    }
 }
+
 
 public struct Card: Codable {
     public var names: [String]
@@ -55,7 +109,7 @@ public struct Card: Codable {
         self.titles = titles
         self.addresses = addresses
     }
-    
+
     public func appending(card: Card) -> Card {
         return Card(
             names: names + card.names,
@@ -105,7 +159,7 @@ public struct Card: Codable {
 //    }
 //
 //    func build() throws -> Card {
-//        return .init(
+//        return Card(
 //            firstName: try firstName.unwrap(elseThrow: IncompleteCardBuilder(missing: "firstName")),
 //            lastName: try lastName.unwrap(elseThrow: IncompleteCardBuilder(missing: "lastName")),
 //            emailAddress: try emailAddress.unwrap(elseThrow: IncompleteCardBuilder(missing: "emailAddress")),
@@ -116,10 +170,10 @@ public struct Card: Codable {
 //    }
 //}
 
-//struct IncompleteCardBuilder: LocalizedError {
-//    let missing: String
-//    
-//    var localizedDescription: String {
-//        return "Card Builder does not yet have all values necesary to build. Missing \(missing)"
-//    }
-//}
+struct IncompleteCardBuilder: LocalizedError {
+    let missing: String
+    
+    var localizedDescription: String {
+        return "Card Builder does not yet have all values necesary to build. Missing \(missing)"
+    }
+}

@@ -67,7 +67,7 @@ public final class Request<Env: EnvironmentProvider, Model: Codable>  {
         self.session = session
     }
     
-    public func send(_ result: @escaping ResultClosure<Model>) -> Void {
+    public func send(_ result: @escaping ResultClosure<Model, Error>) -> Void {
         let url = self.environment.url.appendingPathComponent(self.path)
         var request = URLRequest(url: url)
         request.httpMethod = self.method.value

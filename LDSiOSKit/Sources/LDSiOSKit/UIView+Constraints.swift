@@ -89,21 +89,21 @@ extension UIView {
 }
 
 public extension Array where Element == UIView.Direction {
-    public static var horizontallyAndVertically: [UIView.Direction] {
+    static var horizontallyAndVertically: [UIView.Direction] {
         return [.horizontally, .vertically]
     }
 }
 
 public extension Array where Element == UIView.Side {
-    public static var horizontal: [UIView.Side] {
+    static var horizontal: [UIView.Side] {
         return [.leading, .trailing]
     }
     
-    public static var vertical: [UIView.Side] {
+    static var vertical: [UIView.Side] {
         return [.top, .bottom]
     }
     
-    public static var all: [UIView.Side] {
+    static var all: [UIView.Side] {
         return horizontal + vertical
     }
 }

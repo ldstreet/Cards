@@ -70,9 +70,9 @@ public class CreateAccountViewController<Environment: EnvironmentProvider>: UIVi
     }()
     
     private let environment: Environment
-    private let completion: ResultClosure<UserToken>
+    private let completion: ResultClosure<UserToken, Error>
     
-    public init(_ environment: Environment, completion: @escaping ResultClosure<UserToken>) {
+    public init(_ environment: Environment, completion: @escaping ResultClosure<UserToken, Error>) {
         self.environment = environment
         self.completion = completion
         

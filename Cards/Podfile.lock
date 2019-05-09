@@ -131,7 +131,7 @@ EXTERNAL SOURCES:
     :path: "../LoginModule"
 
 SPEC CHECKSUMS:
-  CardsKit: d4c2dd3b89db32e25c1cf8c8c579dcc854ec0b02
+  CardsKit: c0e0b9896909961e1b769613a8a8db9290b9679c
   Firebase: 02f3281965c075426141a0ce1277e9de6649cab9
   FirebaseAnalytics: 23851fe602c872130a2c5c55040b302120346cc2
   FirebaseCore: 52f851b30e11360f1e67cf04b1edfebf0a47a2d3
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
-  LDSiOSKit: 48037586725f41f56912f0844e35ceb43809884b
+  LDSiOSKit: 46009de97130a39b8630b4f426397bdcdcce3902
   LoginModule: 6b9542b0af8df239c0618fa006ebcd3ce2f722ec
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a

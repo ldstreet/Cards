@@ -9,5 +9,6 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => 'https://github.com/ldstreet/Cards', :tag => '#{spec.version}' }
   spec.source_files = 'Sources/LDSiOSKit/**/*.{swift}'
   spec.framework    = 'UIKit'
+  spec.swift_version = '5.0'
 
 end

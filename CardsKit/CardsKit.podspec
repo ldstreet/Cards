@@ -8,6 +8,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target  = '12.1'
   spec.source       = { :git => 'https://github.com/ldstreet/Cards', :tag => '#{spec.version}' }
   spec.source_files = 'Sources/CardsKit/**/*.{swift}'
+  spec.resources    = 'Resources/**/*.{xcassets,playground}'
   spec.framework    = 'UIKit'
 
   spec.dependency 'LDSiOSKit'

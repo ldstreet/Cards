@@ -1,0 +1,17 @@
+name: CardsKit
+options:
+  bundleIdPrefix: com.ldstreet
+targets:
+  CardsKit:
+    type: framework
+    platform: iOS
+    sources: 
+      - Sources/CardsKit
+      - path: Resources
+        type: Folder
+    testTargets:
+      -CardsKitTests
+  CardsKitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests/CardsKitTests]

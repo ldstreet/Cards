@@ -53,7 +53,7 @@ func detectAddressAndPhoneNumberAndEmail(from text: String) -> Card {
             \(match.addressComponents![.street] ?? "")
             \(match.addressComponents![.city] ?? ""), \(match.addressComponents![.state] ?? "") \(match.addressComponents![.zip] ?? "")
             """
-            card.addresses.append(TypePair(type: .work, value: address))
+            card.addresses.append(TypePair(.work, address))
         case .phoneNumber:
             guard let phoneNumber = match.phoneNumber else { return }
             let prevRange = text.range(from: match.adjustingRanges(offset: -5).range)!
@@ -61,28 +61,28 @@ func detectAddressAndPhoneNumberAndEmail(from text: String) -> Card {
             let cellPrefixes = ["cell", "mob", "mobile"]
             let isCell = cellPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if isCell {
-                card.phoneNumbers.append(.init(type: .cell, value: phoneNumber))
+                card.phoneNumbers.append(.init(.cell, phoneNumber))
             }
             
             let workPrefixes = ["work", "tel", "office"]
             let ifWork = workPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if ifWork {
-                card.phoneNumbers.append(.init(type: .work, value: phoneNumber))
+                card.phoneNumbers.append(.init(.work, phoneNumber))
             }
             
             let homePrefixes = ["home"]
             let ifHome = homePrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if ifHome {
-                card.phoneNumbers.append(.init(type: .home, value: phoneNumber))
+                card.phoneNumbers.append(.init(.home, phoneNumber))
             }
             
             let faxPrefixes = ["fax", "fx"]
             let isFax = faxPrefixes.reduce(false, { res, prefix in return res || prevStr.contains(prefix) })
             if isFax {
-                card.phoneNumbers.append(.init(type: .fax, value: phoneNumber))
+                card.phoneNumbers.append(.init(.fax, phoneNumber))
             }
             
-            card.phoneNumbers.append(.init(type: .other, value: phoneNumber))
+            card.phoneNumbers.append(.init(.other, phoneNumber))
             
         case .link:
             guard let url = match.url else { return }
@@ -91,7 +91,7 @@ func detectAddressAndPhoneNumberAndEmail(from text: String) -> Card {
             {
                 guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
                 let email = components.path
-                card.emailAddresses.append(.init(type: .work, value: email))
+                card.emailAddresses.append(.init(.work, email))
             }
         default:
             print("None")
@@ -130,9 +130,9 @@ public let Current = World()
 
 public struct AlienWorld {
     
-    public let convert: (UIImage, @escaping ResultClosure<String>) -> Void
+    public let convert: (UIImage, @escaping ResultClosure<String, Error>) -> Void
     
-    public init(convert: @escaping (UIImage, @escaping ResultClosure<String>) -> Void) {
+    public init(convert: @escaping (UIImage, @escaping ResultClosure<String, Error>) -> Void) {
         self.convert = convert
     }
 }

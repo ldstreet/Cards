@@ -12,7 +12,7 @@ import Firebase
 
 public struct EmptyResult: Error {}
 
-public func firebaseConvert(_ image: UIImage, completion: @escaping ResultClosure<String>) {
+public func firebaseConvert(_ image: UIImage, completion: @escaping ResultClosure<String, Error>) {
     
     let vision = Vision.vision()
     let textRecognizer = vision.onDeviceTextRecognizer()

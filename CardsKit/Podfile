@@ -1,0 +1,11 @@
+platform :ios, '12.1'
+
+target 'CardsKit' do
+	use_frameworks!
+
+    pod 'LDSiOSKit', :path => '../LDSiOSKit'
+
+	target 'CardsKitTests' do
+		inherit! :search_paths
+	end
+end
