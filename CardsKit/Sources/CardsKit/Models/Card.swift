@@ -4,6 +4,8 @@ public enum EmailType: String, DataType {
     case work
     case personal
     case other
+    
+    public static var fieldType: Card.FieldType { return .email }
 }
 
 public enum PhoneType: String, DataType {
@@ -12,9 +14,13 @@ public enum PhoneType: String, DataType {
     case home
     case fax
     case other
+    
+    public static var fieldType: Card.FieldType { return .phone }
 }
 
-public protocol DataType: CaseIterable, RawRepresentable, Codable {}
+public protocol DataType: CaseIterable, RawRepresentable, Codable {
+    static var fieldType: Card.FieldType { get }
+}
 
 extension DataType {
     public static var types: [RawValue] {
@@ -26,6 +32,8 @@ public enum AddressType: String, DataType {
     case work
     case home
     case other
+    
+    public static var fieldType: Card.FieldType { return .address }
 }
 
 //public enum CardError: Error {
@@ -89,35 +97,60 @@ public struct TypePair<Type: DataType, Value: Codable>: Codable {
 
 public struct Card: Codable {
     public var names: [String]
+    public var titles: [String]
+    public var certificates: [String]
     public var emailAddresses: [TypePair<EmailType, String>]
     public var phoneNumbers: [TypePair<PhoneType, String>]
-    public var titles: [String]
     public var addresses: [TypePair<AddressType, String>]
     public var uuid = UUID()
+    
+    public func getKeyPath(forFieldType fieldType: FieldType) -> AnyKeyPath {
+        switch fieldType {
+        case .name: return \Card.names
+        case .title: return \Card.titles
+        case .certificate: return \Card.certificates
+        case .email: return \Card.emailAddresses
+        case .phone: return \Card.phoneNumbers
+        case .address: return \Card.addresses
+        }
+    }
+    
+    public func getFieldType(forKeyPath keyPath: AnyKeyPath) -> FieldType {
+        return FieldType.allCases.first(where: { type in
+            return keyPath == getKeyPath(forFieldType: type)
+        })!
+    }
 
     public init(
         names: [String] = [],
+        titles: [String] = [],
+        certificates: [String] = [],
         emailAddresses: [TypePair<EmailType, String>] = [],
         phoneNumbers: [TypePair<PhoneType, String>] = [],
-        titles: [String] = [],
         addresses: [TypePair<AddressType, String>] = []
     )
     {
         self.names = names
+        self.titles = titles
+        self.certificates = certificates
         self.emailAddresses = emailAddresses
         self.phoneNumbers = phoneNumbers
-        self.titles = titles
         self.addresses = addresses
     }
 
     public func appending(card: Card) -> Card {
         return Card(
             names: names + card.names,
+            titles: titles + card.titles,
+            certificates: certificates + card.certificates,
             emailAddresses: emailAddresses + card.emailAddresses,
             phoneNumbers: phoneNumbers + card.phoneNumbers,
-            titles: titles + card.titles,
             addresses: addresses + card.addresses
         )
+    }
+    
+    public enum FieldType: Int, CaseIterable {
+        case name, title, certificate, email, phone, address
     }
 }
 

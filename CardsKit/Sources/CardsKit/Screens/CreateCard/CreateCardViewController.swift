@@ -86,101 +86,91 @@ extension CreateCardViewController {
             return cell
         }
         
-        switch indexPath.section {
-        case 0:
-            
-            guard indexPath.row != card.names.count else {
-                return makeAddCell(sectionType: "Add Name")
-            }
+        func makeSimpleCell(for keypath: WritableKeyPath<Card, [String]>) -> UITableViewCell {
             
             let cell = tableView.dequeueReusableCell(at: indexPath, as: SimpleFieldCell.self)
-            cell.configure(with: card.names[indexPath.row], as: .name) {
-                guard self.card.names.indices.contains(indexPath.row) else { return }
-                self.card.names.remove(at: indexPath.row)
+            cell.configure(with: card[keyPath: keypath][indexPath.row], as: .name) {
+                guard self.card[keyPath: keypath].indices.contains(indexPath.row) else { return }
+                self.card[keyPath: keypath].remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .bottom)
             }
             return cell
-        case 1:
+        }
+        
+        func makeTypedCell<Type: DataType>(for keypath: WritableKeyPath<Card, [TypePair<Type, String>]>) -> UITableViewCell where Type.RawValue == String {
+            
+            let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<Type>.self)
+            let field = card[keyPath: keypath][indexPath.row]
+            cell.configure(as: Type.fieldType, with: field.type, value: field.value, removeAction: {
+                guard self.card[keyPath: keypath].indices.contains(indexPath.row) else { return }
+                self.card[keyPath: keypath].remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .bottom)
+            }, onUpdate: { typePair in
+                self.card[keyPath: keypath][indexPath.row] = typePair
+                self.tableView.reloadData()
+            })
+            return cell
+        }
+        
+        guard let fieldType = Card.FieldType(rawValue: indexPath.section) else {
+            fatalError("\(indexPath.section) is not a valid section.")
+        }
+        
+        switch fieldType {
+        case .name:
+            guard indexPath.row != card.names.count else {
+                return makeAddCell(sectionType: "Add Name")
+            }
+            return makeSimpleCell(for: \.names)
+        case .title:
             
             guard indexPath.row != card.titles.count else {
                 return makeAddCell(sectionType: "Add Job Title")
             }
-            
-            let cell = tableView.dequeueReusableCell(at: indexPath, as: SimpleFieldCell.self)
-            cell.configure(with: card.titles[indexPath.row], as: .title) {
-                guard self.card.titles.indices.contains(indexPath.row) else { return }
-                self.card.titles.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .bottom)
+            return makeSimpleCell(for: \.titles)
+        case .certificate:
+            guard indexPath.row != card.certificates.count else {
+                return makeAddCell(sectionType: "Add Certificate")
             }
-            return cell
-        case 2:
+            return makeSimpleCell(for: \.certificates)
+        case .email:
             
             guard indexPath.row != card.emailAddresses.count else {
                 return makeAddCell(sectionType: "Add Email Address")
             }
             
-            let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<EmailType>.self)
-            let emailAddress = card.emailAddresses[indexPath.row]
-            cell.configure(as: .email, with: emailAddress.type, value: emailAddress.value, removeAction: {
-                guard self.card.emailAddresses.indices.contains(indexPath.row) else { return }
-                self.card.emailAddresses.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }, onUpdate: { typePair in
-                self.card.emailAddresses[indexPath.row] = typePair
-                self.tableView.reloadData()
-            })
-            return cell
-        case 3:
+            return makeTypedCell(for: \.emailAddresses)
+            
+        case .phone:
             
             guard indexPath.row != card.phoneNumbers.count else {
                 return makeAddCell(sectionType: "Add Phone Number")
             }
             
-            let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<PhoneType>.self)
-            let phoneNumber = card.phoneNumbers[indexPath.row]
-            cell.configure(as: .phone, with: phoneNumber.type, value: phoneNumber.value, removeAction: {
-                guard self.card.phoneNumbers.indices.contains(indexPath.row) else { return }
-                self.card.phoneNumbers.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }, onUpdate: { typePair in
-                self.card.phoneNumbers[indexPath.row] = typePair
-                self.tableView.reloadData()
-            })
-            return cell
-        case 4:
+            return makeTypedCell(for: \.phoneNumbers)
+        case .address:
             
             guard indexPath.row != card.addresses.count else {
                 return makeAddCell(sectionType: "Add Address")
             }
             
-            let cell = tableView.dequeueReusableCell(at: indexPath, as: FieldCell<AddressType>.self)
-            let address = card.addresses[indexPath.row]
-            cell.configure(as: .address, with: address.type, value: address.value, removeAction: {
-                guard self.card.addresses.indices.contains(indexPath.row) else { return }
-                self.card.addresses.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .bottom)
-            }, onUpdate: { typePair in
-                self.card.addresses[indexPath.row] = typePair
-                self.tableView.reloadData()
-            })
-                
-            return cell
-        default: return .init()
+            return makeTypedCell(for: \.addresses)
         }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return Card.FieldType.allCases.count
     }
     
     private func getCount(ofItemsIn section: Int) -> Int {
-        switch section {
-        case 0: return card.names.count
-        case 1: return card.titles.count
-        case 2: return card.emailAddresses.count
-        case 3: return card.phoneNumbers.count
-        case 4: return card.addresses.count
-        default: return 0
+        guard let fieldType = Card.FieldType(rawValue: section) else { return 0 }
+        switch fieldType {
+        case .name: return card.names.count
+        case .title: return card.titles.count
+        case .certificate: return card.certificates.count
+        case .email: return card.emailAddresses.count
+        case .phone: return card.phoneNumbers.count
+        case .address: return card.addresses.count
         }
     }
     
@@ -190,15 +180,16 @@ extension CreateCardViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        guard let fieldType = Card.FieldType(rawValue: indexPath.section) else { return }
         guard indexPath.row == getCount(ofItemsIn: indexPath.section) else { return }
         
-        switch indexPath.section {
-        case 0: card.names.append("")
-        case 1: card.titles.append("")
-        case 2: card.emailAddresses.append(.init(.work, ""))
-        case 3: card.phoneNumbers.append(.init(.cell, ""))
-        case 4: card.addresses.append(.init(.work, ""))
-        default: return
+        switch fieldType {
+        case .name: card.names.append("")
+        case .title: card.titles.append("")
+        case .certificate: card.certificates.append("")
+        case .email: card.emailAddresses.append(.init(.work, ""))
+        case .phone: card.phoneNumbers.append(.init(.cell, ""))
+        case .address: card.addresses.append(.init(.work, ""))
         }
         
         tableView.insertRows(at: [indexPath], with: .bottom)
@@ -207,23 +198,22 @@ extension CreateCardViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0: return "Names"
-        case 1: return "Titles"
-        case 2: return "Email Addresses"
-        case 3: return "Phone Numbers"
-        case 4: return "Addresses"
-        default: return ""
+        guard let fieldType = Card.FieldType(rawValue: section) else { return nil }
+        switch fieldType {
+        case .name: return "Names"
+        case .title: return "Titles"
+        case .certificate: return "Certificates"
+        case .email: return "Email Addresses"
+        case .phone: return "Phone Numbers"
+        case .address: return "Addresses"
         }
     }
 }
 
-public enum FieldType {
-    case name, title, email, phone, address
-}
+
 
 extension UITextField {
-    func configure(as fieldType: FieldType) {
+    func configure(as fieldType: Card.FieldType) {
         
         self.borderStyle = .roundedRect
         
@@ -231,6 +221,8 @@ extension UITextField {
         case .name:
             self.textContentType = .name
             self.placeholder = "Name"
+        case .certificate:
+            self.placeholder = "Certificate"
         case .title:
             self.textContentType = .jobTitle
             self.placeholder = "Job Title"

@@ -1,5 +1,7 @@
 platform :ios, '12.1'
 
+install! 'cocoapods', :disable_input_output_paths => true
+
 target 'Cards' do
 	use_frameworks!
 

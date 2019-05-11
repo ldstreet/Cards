@@ -54,7 +54,7 @@ internal class SimpleFieldCell: UITableViewCell, Reusable {
         }
     }
     
-    func configure(with value: String, as type: FieldType, removeAction: @escaping () -> ()) {
+    func configure(with value: String, as type: Card.FieldType, removeAction: @escaping () -> ()) {
         textField.text = value
         textField.configure(as: type)
         self.removeAction = removeAction

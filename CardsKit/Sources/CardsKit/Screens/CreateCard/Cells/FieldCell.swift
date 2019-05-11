@@ -121,7 +121,7 @@ internal class FieldCell<Type: DataType>: UITableViewCell, Reusable where Type.R
     }
     
     func configure(
-        as fieldType: FieldType,
+        as fieldType: Card.FieldType,
         with valueType: Type,
         value: String,
         removeAction: @escaping VoidClosure,
