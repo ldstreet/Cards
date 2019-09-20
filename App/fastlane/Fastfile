@@ -6,7 +6,7 @@ platform :ios do
 		environment = params[:environment] || "develop"
 		build_number = params[:build_number] || "0"
 		
-		match(type: 'appstore')
+		##match(type: 'appstore')
 		update_plist( # Advanced processing: find URL scheme for particular key and replace value
  			plist_path: "BusinessCard/Info.plist",
   			block: proc do |plist|
