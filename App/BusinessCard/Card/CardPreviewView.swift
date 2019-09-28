@@ -8,17 +8,17 @@
 
 import SwiftUI
 
-struct CardView: View {
+struct CardPreviewView: View {
     let card: Card
     
     var body: some View {
-        VStack {
-            (Text(card.firstName) + Text(" ") + Text(card.lastName)).font(.largeTitle)
-            Text(card.title).font(.title)
-            ForEach(card.fields.groups.flatMap { $0.fields }) { field in
-                Text(field.value)
-                    .font(.headline)
-            }
+        VStack(alignment: .leading) {
+            (
+                Text(card.firstName) +
+                Text(" ") +
+                Text(card.lastName)
+            ).font(.headline)
+            Text(card.title).font(.subheadline)
         }
     }
 }
@@ -26,7 +26,7 @@ struct CardView: View {
 #if DEBUG
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        CardView(card: .luke)
+        CardPreviewView(card: .luke)
             .previewLayout(.sizeThatFits)
     }
 }

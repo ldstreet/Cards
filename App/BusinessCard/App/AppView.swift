@@ -14,64 +14,86 @@ enum App {}
 struct AppView: View {
     
     @ObservedObject var store: Store<App.State, App.Action>
-    @State var showCreateCard = false
     
     var body: some View {
-        NavigationView {
-            EmptyView()
-            IfLet(store.value.cardsState) { cardsState in
-                Cards.CardsView(
-                    store: pullforward(
-                        self.store,
-                        value: \App.State.cardsState,
-                        globalActionFromLocal: { return .cards($0) }
+        TabView{
+            NavigationView {
+                 IfLet(store.value.cardsState) { cardsState in
+                     Cards.CardsView(
+                         store: pullforward(
+                             self.store,
+                             value: \App.State.cardsState,
+                             globalActionFromLocal: { return .cards($0) }
+                         )
+                     )
+                 }
+                 .navigationBarTitle("My Cards")
+                 .navigationBarItems(
+                    leading: EditButton(),
+                    trailing: Button(
+                        action: { self.store.send(.showCreateCard(true)) },
+                        label: { Image(systemName: "plus").font(.title) }
                     )
                 )
             }
-            .navigationBarTitle("Card Share")
-            .navigationBarItems(
-                trailing: Button(
-                    action: { self.store.send(.showCreateCard(true)) },
-                    label: { Image(systemName: "plus").font(.title) }
-                    )
-            )
-        }.sheet(
-            isPresented: store.send(
-                App.Action.showCreateCard,
-                binding: \App.State.showCreateCard
-            ),
-            onDismiss: {
-                self.store.send(.confirmCreateCardCancel(true))
-            },
-            content: {
-                return CreateCardView(
-                    store: pullforward(
-                        self.store,
-                        value: \.createCardState,
-                        globalActionFromLocal: { return .create($0) }
-                    )
-                )
+            .sheet(
+                 isPresented: store.send(
+                     App.Action.showCreateCard,
+                     binding: \App.State.showCreateCard
+                 ),
+                 onDismiss: {
+                     self.store.send(.confirmCreateCardCancel(true))
+                 },
+                 content: {
+                     return CreateCardView(
+                         store: pullforward(
+                             self.store,
+                             value: \.createCardState,
+                             globalActionFromLocal: { return .create($0) }
+                         )
+                     )
+                 }
+             )
+             .actionSheet(
+                 isPresented: store.send(
+                     App.Action.confirmCreateCardCancel,
+                     binding: \.showCreateCardCancelDialog
+                 ),
+                 content: {
+                     ActionSheet(
+                         title: Text("Are you shure you want to discard this new business card?"),
+                         buttons: [
+                             .destructive(Text("Discard Changes")) {
+                                 self.store.send(.create(.cancel))
+                             },
+                             .default(Text("Keep Editing")) {
+                                 self.store.send(.showCreateCard(true))
+                             }
+                         ]
+                     )
+                 }
+            ).tabItem {
+                Image(systemName: "person.2.fill")
+                    .font(.title)
+                    .padding()
             }
-        )
-        .actionSheet(
-            isPresented: store.send(
-                App.Action.confirmCreateCardCancel,
-                binding: \.showCreateCardCancelDialog
-            ),
-            content: {
-                ActionSheet(
-                    title: Text("Are you shure you want to discard this new business card?"),
-                    buttons: [
-                        .destructive(Text("Discard Changes")) {
-                            self.store.send(.create(.cancel))
-                        },
-                        .default(Text("Keep Editing")) {
-                            self.store.send(.showCreateCard(true))
-                        }
-                    ]
-                )
+            
+            Text("Create Profile").tabItem {
+                Image(systemName: "person.fill")
+                    .font(.title)
+                    .padding()
+                    .clipShape(Circle())
+                    .background(Color.red)
+                    
             }
-        )
+            
+            Text("App Settings").tabItem {
+                Image(systemName: "gear")
+                    .font(.title)
+                    .padding()
+            }
+        }
+     
     }
 }
 

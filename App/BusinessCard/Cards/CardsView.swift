@@ -22,7 +22,7 @@ extension Cards {
         var body: some View {
             List {
                 ForEach(store.value.cards) { card in
-                    return CardView(card: card)
+                    CardPreviewView(card: card)
                         .contextMenu {
                             Button("Share"){}
                             Button("Delete"){
@@ -44,7 +44,12 @@ extension Cards {
                                     ]
                                 )
                             }
-                        }
+                    }
+                }.onDelete { indexSet in
+                    indexSet.forEach {
+                        let id = self.store.value.cards[$0].id
+                        self.store.send(.proposeCardDelete(id))
+                    }
                 }
             }
         }
