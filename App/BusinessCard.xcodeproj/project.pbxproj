@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A1F33152341D5CE0064F813 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F33142341D5CE0064F813 /* Requests.swift */; };
+		2A1F33172341D8890064F813 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F33162341D8890064F813 /* World.swift */; };
+		2A1F3550234B6CB40064F813 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F354F234B6CB40064F813 /* ActivityView.swift */; };
 		2A24FB49231B03F500DFFBBD /* CreateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB48231B03F500DFFBBD /* CreateCardView.swift */; };
 		2A24FB4F231C9D3600DFFBBD /* CardsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB4E231C9D3600DFFBBD /* CardsState.swift */; };
 		2A24FB51231C9D3D00DFFBBD /* CardsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB50231C9D3D00DFFBBD /* CardsAction.swift */; };
 		2A24FB53231C9D4600DFFBBD /* CardsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB52231C9D4600DFFBBD /* CardsReducer.swift */; };
-		2A24FB56231CA07600DFFBBD /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB55231CA07600DFFBBD /* Card.swift */; };
 		2A24FB5A231D821B00DFFBBD /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB59231D821B00DFFBBD /* Collection+Extensions.swift */; };
 		2A24FB5F231D824A00DFFBBD /* DocumentCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB5D231D824A00DFFBBD /* DocumentCameraView.swift */; };
 		2A24FB60231D824A00DFFBBD /* IfLet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB5E231D824A00DFFBBD /* IfLet.swift */; };
@@ -35,6 +37,7 @@
 		2A94F7FC2316121100C737C6 /* BusinessCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7FB2316121100C737C6 /* BusinessCardTests.swift */; };
 		2A94F80F231613F400C737C6 /* Redux in Frameworks */ = {isa = PBXBuildFile; productRef = 2A94F80E231613F400C737C6 /* Redux */; };
 		2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9ECF96231AB33800C6FAC0 /* CardsView.swift */; };
+		2ABE5B9E233FDAC600B7B0DD /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 2ABE5B9D233FDAC600B7B0DD /* Models */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,11 +51,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A1F33142341D5CE0064F813 /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		2A1F33162341D8890064F813 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		2A1F354F234B6CB40064F813 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		2A24FB48231B03F500DFFBBD /* CreateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardView.swift; sourceTree = "<group>"; };
 		2A24FB4E231C9D3600DFFBBD /* CardsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsState.swift; sourceTree = "<group>"; };
 		2A24FB50231C9D3D00DFFBBD /* CardsAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsAction.swift; sourceTree = "<group>"; };
 		2A24FB52231C9D4600DFFBBD /* CardsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsReducer.swift; sourceTree = "<group>"; };
-		2A24FB55231CA07600DFFBBD /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		2A24FB59231D821B00DFFBBD /* Collection+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Extensions.swift"; sourceTree = "<group>"; };
 		2A24FB5D231D824A00DFFBBD /* DocumentCameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentCameraView.swift; sourceTree = "<group>"; };
 		2A24FB5E231D824A00DFFBBD /* IfLet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IfLet.swift; sourceTree = "<group>"; };
@@ -80,6 +85,7 @@
 		2A94F7FD2316121100C737C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2A94F80C231613E400C737C6 /* Redux */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Redux; path = ../Redux; sourceTree = "<group>"; };
 		2A9ECF96231AB33800C6FAC0 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
+		2ABE5B9C233FDA0C00B7B0DD /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Models; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2ABE5B9E233FDAC600B7B0DD /* Models in Frameworks */,
 				2A94F80F231613F400C737C6 /* Redux in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,14 +140,6 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		2A24FB54231C9FEB00DFFBBD /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				2A24FB55231CA07600DFFBBD /* Card.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		2A24FB58231D81E400DFFBBD /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +148,7 @@
 				2A24FB64231D836200DFFBBD /* Request.swift */,
 				2A24FB65231D836200DFFBBD /* Result.swift */,
 				2A24FB67231D836200DFFBBD /* URL+Extension.swift */,
+				2A1F33142341D5CE0064F813 /* Requests.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -157,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				2A24FB5D231D824A00DFFBBD /* DocumentCameraView.swift */,
+				2A1F354F234B6CB40064F813 /* ActivityView.swift */,
 				2A24FB5E231D824A00DFFBBD /* IfLet.swift */,
 			);
 			path = CommonUI;
@@ -184,6 +185,7 @@
 				2A94F7E32316120F00C737C6 /* BusinessCard */,
 				2A94F7FA2316121100C737C6 /* BusinessCardTests */,
 				2A94F7E22316120F00C737C6 /* Products */,
+				2ABE5B9C233FDA0C00B7B0DD /* Models */,
 				2A94F80C231613E400C737C6 /* Redux */,
 				2A94F80D231613F400C737C6 /* Frameworks */,
 			);
@@ -203,10 +205,10 @@
 			children = (
 				2A94F7E42316120F00C737C6 /* AppDelegate.swift */,
 				2A94F7E62316120F00C737C6 /* SceneDelegate.swift */,
+				2A1F33162341D8890064F813 /* World.swift */,
 				2A24FB61231D826D00DFFBBD /* Networking */,
 				2A24FB5C231D823100DFFBBD /* CommonUI */,
 				2A24FB58231D81E400DFFBBD /* Common */,
-				2A24FB54231C9FEB00DFFBBD /* Models */,
 				2A24FB6C231D8C6300DFFBBD /* Card */,
 				2A24FB4A231C9D0500DFFBBD /* Cards */,
 				2A24FB4C231C9D1900DFFBBD /* CreateCard */,
@@ -261,6 +263,7 @@
 			name = BusinessCard;
 			packageProductDependencies = (
 				2A94F80E231613F400C737C6 /* Redux */,
+				2ABE5B9D233FDAC600B7B0DD /* Models */,
 			);
 			productName = BusinessCard;
 			productReference = 2A94F7E12316120F00C737C6 /* BusinessCard.app */;
@@ -353,17 +356,19 @@
 				2A24FB49231B03F500DFFBBD /* CreateCardView.swift in Sources */,
 				2A24FB5F231D824A00DFFBBD /* DocumentCameraView.swift in Sources */,
 				2A24FB6A231D836200DFFBBD /* EnvironmentProvider.swift in Sources */,
+				2A1F33172341D8890064F813 /* World.swift in Sources */,
+				2A1F33152341D5CE0064F813 /* Requests.swift in Sources */,
 				2A5761C1233184EF00DA0A8B /* AppCardsIOReducer.swift in Sources */,
 				2A94F7E72316120F00C737C6 /* SceneDelegate.swift in Sources */,
 				2A24FB4F231C9D3600DFFBBD /* CardsState.swift in Sources */,
 				2A24FB69231D836200DFFBBD /* Result.swift in Sources */,
 				2A5761C32331850700DA0A8B /* AppNavigationReducer.swift in Sources */,
 				2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */,
-				2A24FB56231CA07600DFFBBD /* Card.swift in Sources */,
 				2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */,
 				2A24FB6E231D8C7600DFFBBD /* CardPreviewView.swift in Sources */,
 				2A24FB6B231D836200DFFBBD /* URL+Extension.swift in Sources */,
 				2A5761BD2331848800DA0A8B /* AppAction.swift in Sources */,
+				2A1F3550234B6CB40064F813 /* ActivityView.swift in Sources */,
 				2A24FB63231D828200DFFBBD /* Environment.swift in Sources */,
 				2A94F7E92316120F00C737C6 /* AppView.swift in Sources */,
 				2A24FB51231C9D3D00DFFBBD /* CardsAction.swift in Sources */,
@@ -645,6 +650,10 @@
 		2A94F80E231613F400C737C6 /* Redux */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Redux;
+		};
+		2ABE5B9D233FDAC600B7B0DD /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

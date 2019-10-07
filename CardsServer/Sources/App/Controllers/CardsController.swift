@@ -6,65 +6,50 @@
 //
 
 import Vapor
-import CardsKit
+import Models
 import ZIPFoundation
-import OpenSSL
-
-extension Array where Element == Card {
-    internal static var mock: [Card] {
-        return [
-            .init(
-                firstName: "Luke",
-                lastName: "Street",
-                emailAddress: "ldstreet@me.com",
-                phoneNumber: "574-904-1556",
-                title: "Software Developer",
-                address: "123 Somewhere Ave."
-            ),
-            .init(
-                firstName: "David",
-                lastName: "Street",
-                emailAddress: "dastreet@me.com",
-                phoneNumber: "555-555-5555",
-                title: "Project Manager",
-                address: "123 Somewhere Else St."
-            ),
-            .init(
-                firstName: "Joe",
-                lastName: "Shmo",
-                emailAddress: "jshmo@me.com",
-                phoneNumber: "555-555-5555",
-                title: "Designer",
-                address: "123 Somewhere Else Further Ln."
-            ),
-        ]
-    }
-}
 
 extension Card: Content {}
-
-//extension UUID: Parameter {
-//
-//}
+extension ShareLink: Content {}
 
 import Crypto
 
 internal final class CardsController {
-     func index(_ req: Request) throws -> Future<[Card]> {
-        return req.future(.mock)
+    
+    enum CardsError: Error {
+        case unavailable
     }
     
-    func share(_ req: Request) throws -> Future<Response> {
+    func index(_ req: Request) throws -> Future<[Card]> {
+        return req.future(.all)
+    }
+    
+    func share(_ req: Request) throws -> Future<ShareLink> {
         return
             try req.content
                 .decode(Card.self)
-                .map { return ($0, req, FileManager.default) }
-                .thenThrowing(createPass)
-                .map(req.response)
+                .flatMap { card in
+                    let cacheID = UUID()
+                    return try req
+                        .keyedCache(for: .sqlite)
+                        .set(cacheID.uuidString, to: card)
+                        .transform(to: ShareLink(path: "/sharedCard/\(cacheID.uuidString)"))
+                }
     }
     
-    func stagePassDirectory(with container: Container, using fileManager: FileManager = .default) throws -> (parent: URL, pass: URL, certs: URL) {
-        let workingDirectoryURL = URL(fileURLWithPath: try container.make(DirectoryConfig.self).workDir)
+    func sharedCard(_ req: Request) throws -> Future<Response> {
+        let uuidString = try req.parameters.next(String.self)
+        return try req
+            .keyedCache(for: .sqlite)
+            .get(uuidString, as: Card.self)
+            .unwrap(or: CardsError.unavailable)
+            .map { return ($0, req, FileManager.default) }
+            .thenThrowing(createPass)
+            .map(req.response)
+    }
+    
+    private func stagePassDirectory(with container: Container, using fileManager: FileManager = .default) throws -> (parent: URL, pass: URL, certs: URL) {
+        let workingDirectoryURL = URL(fileURLWithPath: try container.make(DirectoryConfig.self).workDir).appendingPathComponent("Resources")
         let stagingDirectoryURL = workingDirectoryURL.appendingPathComponent("PassStaging").appendingPathComponent(UUID().uuidString)
         try fileManager.createDirectory(at: stagingDirectoryURL, withIntermediateDirectories: true, attributes: nil)
         let passTemplateURL = workingDirectoryURL.appendingPathComponent("PassTemplate")
@@ -80,10 +65,9 @@ internal final class CardsController {
     }
     
     func createPass(from card: Card, with container: Container, using fileManager: FileManager = .default) throws -> File {
-
-        
         
         let (workingDirectoryURL, passDirectoryURL, certsDirectoryURL) = try stagePassDirectory(with: container, using: fileManager)
+        
         let encoder = JSONEncoder()
         let passJSONURL = passDirectoryURL.appendingPathComponent("pass").appendingPathExtension("json")
         let passJsonData = try encoder.encode(Pass.init(from: card))
@@ -104,7 +88,6 @@ internal final class CardsController {
         
         
         try manifestData.write(to: manifestURL)
-        
         
         let destinationURL = workingDirectoryURL.appendingPathComponent("Card").appendingPathExtension("zip")
         let signatureURL = passDirectoryURL.appendingPathComponent("signature")

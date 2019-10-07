@@ -8,6 +8,8 @@
 
 import SwiftUI
 import Redux
+import Models
+import Combine
 
 extension Card {
     static func createDefaultCard() -> Card {
@@ -88,6 +90,10 @@ let createCardReducer: Reducer<CreateCardState, CreateCardAction> = { state, act
     }
 }
 
+let createCardAsyncReducer: AsyncReducer<CreateCardState, CreateCardAction> = { getter, action in
+    return Just(getter()).eraseToAnyPublisher()
+}
+
 struct CreateCardView: View {
     
     @ObservedObject var store: Store<CreateCardState, CreateCardAction>
@@ -157,11 +163,20 @@ struct CreateCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             CreateCardView(
-                store: Store(initialValue: .init(card: .createDefaultCard()), reducer: createCardReducer)
+                store: Store(
+                    initialValue: .init(card: .createDefaultCard()),
+                    reducer: createCardReducer,
+                    asyncReducer: createCardAsyncReducer
+                )
             )
-            Text("Some View").sheet(isPresented: Binding<Bool>(get: { return true }, set: {_ in})) {
+            Text("Some View")
+                .sheet(isPresented: Binding<Bool>(get: { return true }, set: {_ in})) {
                 CreateCardView(
-                    store: Store(initialValue: .init(card: .createDefaultCard()), reducer: createCardReducer)
+                    store: Store<CreateCardState, CreateCardAction>(
+                        initialValue: CreateCardState(card: .createDefaultCard()),
+                        reducer: createCardReducer,
+                        asyncReducer: createCardAsyncReducer
+                    )
                 )
             }
         }

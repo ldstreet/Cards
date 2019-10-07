@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 public enum RequestError: Error {
     case invalidURL(path: String)
@@ -14,7 +15,7 @@ public enum RequestError: Error {
 
 public enum HTTPMethod {
     case get
-    case post(body: [String: String])
+    case post(body: Data?)
     
     public var value: String {
         switch self {
@@ -38,7 +39,7 @@ extension Encodable {
 
 extension Encodable {
     public var post: HTTPMethod {
-        return .post(body: try! encode().decoded(as: [String: String].self))
+        return .post(body: try? encode())
     }
 }
 
@@ -67,6 +68,37 @@ public final class Request<Env: EnvironmentProvider, Model: Codable>  {
         self.session = session
     }
     
+    public func send() -> AnyPublisher<Model, Error> {
+        let url = self.environment.url.appendingPathComponent(self.path)
+        var request = URLRequest(url: url)
+        request.httpMethod = self.method.value
+        request.cachePolicy = URLRequest.CachePolicy.reloadIgnoringCacheData
+        request.allHTTPHeaderFields = self.headers
+        switch self.method {
+        case .get: break
+        case .post(let body):
+            request.httpBody = body
+            request.setValue("\(body?.count ?? 0)", forHTTPHeaderField: "Content-Length")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        return session
+            .dataTaskPublisher(for: request)
+            .tryMap { arg in
+                let (data, _) = arg
+                do {
+                    let decoder = JSONDecoder()
+                    return try decoder.decode(Model.self, from: data)
+                } catch {
+                    do {
+                        throw try JSONDecoder().decode(ServerError.self, from: data)
+                    } catch {
+                        throw error
+                    }
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
     public func send(_ result: @escaping ResultClosure<Model, Error>) -> Void {
         let url = self.environment.url.appendingPathComponent(self.path)
         var request = URLRequest(url: url)
@@ -81,6 +113,7 @@ public final class Request<Env: EnvironmentProvider, Model: Codable>  {
             request.setValue("\(bodyData?.count ?? 0)", forHTTPHeaderField: "Content-Length")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
+        
         let task = self.session.dataTask(with: request) { data, response, error in
             if let error = error {
                 result(.failure(error))

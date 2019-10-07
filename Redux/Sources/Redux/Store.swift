@@ -5,9 +5,11 @@
 //  Created by Luke Street on 8/18/19.
 //
 
-import Foundation
+import SwiftUI
+import Combine
 
 public typealias Reducer<Value, Action> = (inout Value, Action) -> Void
+public typealias AsyncReducer<Value, Action> = ( @escaping () -> Value, Action) -> AnyPublisher<Value, Never>
 
 public func combine<Value, Action>(
     _ reducers: (inout Value, Action) -> Void...
@@ -19,50 +21,37 @@ public func combine<Value, Action>(
     }
 }
 
-public typealias GlobalFromLocaling<Global, Local> = (Local) -> Global?
-
-public func pullforward<LocalValue, GlobalValue, LocalAction, GlobalAction>(
-    _ store: Store<GlobalValue, GlobalAction>,
-    value: WritableKeyPath<GlobalValue, LocalValue>,
-    globalActionFromLocal: @escaping GlobalFromLocaling<GlobalAction, LocalAction>
-) -> Store<LocalValue, LocalAction> {
-    return Store<LocalValue, LocalAction>(
-        initialValue: store.value[keyPath: value],
-        reducer: pullforward(
-            globalStore: store,
-            valueKeyPath: value,
-            globalActionFromLocal: globalActionFromLocal
-        )
-    )
-}
-
-public func pullforward<LocalValue, GlobalValue, LocalAction, GlobalAction>(
-    _ store: Store<GlobalValue, GlobalAction>,
-    localValue: LocalValue,
-    value: WritableKeyPath<GlobalValue, LocalValue?>,
-    globalActionFromLocal: @escaping GlobalFromLocaling<GlobalAction, LocalAction>
-) -> Store<LocalValue, LocalAction> {
-    return Store<LocalValue, LocalAction>(
-        initialValue: localValue,
-        reducer: pullforward(
-            globalStore: store,
-            valueKeyPath: value,
-            globalActionFromLocal: globalActionFromLocal
-        )
-    )
-}
-import SwiftUI
 public final class Store<Value, Action>: ObservableObject {
     public let reducer: Reducer<Value, Action>
+    public let asyncReducer: AsyncReducer<Value, Action>
     @Published public private(set) var value: Value
+    private var cancellable: Cancellable?
+    private var asyncCancellable: AnyCancellable?
 
-    public init(initialValue: Value, reducer: @escaping (inout Value, Action) -> Void) {
+    public init(
+        initialValue: Value,
+        reducer: @escaping Reducer<Value, Action>,
+        asyncReducer: @escaping AsyncReducer<Value, Action>
+    ) {
         self.reducer = reducer
+        self.asyncReducer = asyncReducer
         self.value = initialValue
     }
 
     public func send(_ action: Action) {
         self.reducer(&self.value, action)
+    }
+    
+    public func dumbSend<LocalValue>(
+        binding: WritableKeyPath<Value, LocalValue>
+    ) -> Binding<LocalValue> {
+        return Binding<LocalValue>(
+            get: { return self.value[keyPath: binding] },
+            set: { [self] newVal in
+                self.value[keyPath: binding] = newVal
+            }
+        )
+        
     }
     
     public func send<LocalValue>(
@@ -86,6 +75,65 @@ public final class Store<Value, Action>: ObservableObject {
             set: { self.send(action($0, suppl)) }
         )
     }
+    
+    public func asyncSend(_ action: Action) {
+        asyncCancellable = self.asyncReducer(
+            { return self.value },
+            action
+        )
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+            .assign(to: \Store<Value, Action>.value, on: self)
+    }
+    
+    public func view<LocalValue, LocalAction>(
+        value toLocalValue: KeyPath<Value, LocalValue>,
+        action toGlobalAction: @escaping (LocalAction) -> Action
+    ) -> Store<LocalValue, LocalAction> {
+        let localStore = Store<LocalValue, LocalAction>(
+            initialValue: self.value[keyPath: toLocalValue],
+            reducer: { localValue, localAction in
+                self.send(toGlobalAction(localAction))
+                localValue = self.value[keyPath: toLocalValue]
+            },
+            asyncReducer: { getter, action in
+                return self
+                    .asyncReducer({ return self.value }, toGlobalAction(action))
+                    .map { val in
+                        let localVal = val[keyPath: toLocalValue]
+                        return localVal
+                    }
+                    .eraseToAnyPublisher()
+            }
+        )
+        localStore.cancellable = self.$value.sink { [weak localStore] newValue in
+            localStore?.value = newValue[keyPath: toLocalValue]
+        }
+        return localStore
+    }
+}
+
+public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
+    _ reducer: @escaping AsyncReducer<LocalValue, LocalAction>,
+    value: WritableKeyPath<GlobalValue, LocalValue>,
+    action: WritableKeyPath<GlobalAction, LocalAction?>
+) -> AsyncReducer<GlobalValue, GlobalAction> {
+    return { getter, globalAction in
+        guard let unwrappedAction = globalAction[keyPath: action] else {
+            return Just(getter()).eraseToAnyPublisher()
+        }
+        
+        return reducer(
+            {
+                return getter()[keyPath: value]
+            },
+            unwrappedAction
+        ).map { localValue in
+            var globalValue = getter()
+            globalValue[keyPath: value] = localValue
+            return globalValue
+        }.eraseToAnyPublisher()
+    }
 }
 
 public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
@@ -96,32 +144,6 @@ public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     return { globalValue, globalAction in
         guard let unwrappedAction = globalAction[keyPath: action] else { return }
         reducer(&globalValue[keyPath: value], unwrappedAction)
-    }
-}
-
-public func pullforward<LocalValue, GlobalValue, LocalAction, GlobalAction>(
-    globalStore: Store<GlobalValue, GlobalAction>,
-    valueKeyPath: WritableKeyPath<GlobalValue, LocalValue>,
-    globalActionFromLocal: @escaping GlobalFromLocaling<GlobalAction, LocalAction>
-) ->  Reducer<LocalValue, LocalAction> {
-    return { [globalStore, globalActionFromLocal] localValue, localAction in
-        guard let globalAction = globalActionFromLocal(localAction) else { return }
-        globalStore.send(globalAction)
-        localValue = globalStore.value[keyPath: valueKeyPath]
-    }
-}
-
-public func pullforward<LocalValue, GlobalValue, LocalAction, GlobalAction>(
-    globalStore: Store<GlobalValue, GlobalAction>,
-    valueKeyPath: WritableKeyPath<GlobalValue, LocalValue?>,
-    globalActionFromLocal: @escaping GlobalFromLocaling<GlobalAction, LocalAction>
-) ->  Reducer<LocalValue, LocalAction> {
-    return { [globalStore, globalActionFromLocal] localValue, localAction in
-        guard let globalAction = globalActionFromLocal(localAction) else { return }
-        globalStore.send(globalAction)
-        if let newValue = globalStore.value[keyPath: valueKeyPath] {
-            localValue = newValue
-        }
     }
 }
 

@@ -12,6 +12,7 @@ extension Cards {
     enum Action {
         case delete(UUID)
         case proposeCardDelete(UUID?)
+        case share(UUID)
     }
 }
 

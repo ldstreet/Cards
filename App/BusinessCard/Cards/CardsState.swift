@@ -7,11 +7,14 @@
 //
 
 import Foundation
+import Models
 
 extension Cards {
     struct State: Codable {
         var cards: [Card] = []
         var showConfirmDelete = false
         var proposedCardDeleteID: UUID?
+        var loading = false
+        var shareLink: URL?
     }
 }

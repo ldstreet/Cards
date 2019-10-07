@@ -51,7 +51,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             persisting(
                                 logging(navigation(cardsIO(App.reducer))),
                                 at: stateURL
-                            )
+                            ),
+                            asyncReducer: App.asyncReducer
                         )
                     )
                 )

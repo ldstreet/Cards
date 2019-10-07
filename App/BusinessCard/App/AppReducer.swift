@@ -41,4 +41,6 @@ extension App {
             action: \App.Action.create
         )
     )
+    
+    static let asyncReducer: AsyncReducer<App.State, App.Action> = pullback(Cards.asyncReducer, value: \.cardsState, action: \.cards)
 }

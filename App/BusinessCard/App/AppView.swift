@@ -20,10 +20,9 @@ struct AppView: View {
             NavigationView {
                  IfLet(store.value.cardsState) { cardsState in
                      Cards.CardsView(
-                         store: pullforward(
-                             self.store,
-                             value: \App.State.cardsState,
-                             globalActionFromLocal: { return .cards($0) }
+                        store: self.store.view(
+                            value: \.cardsState,
+                            action: { return .cards($0) }
                          )
                      )
                  }
@@ -46,11 +45,10 @@ struct AppView: View {
                  },
                  content: {
                      return CreateCardView(
-                         store: pullforward(
-                             self.store,
-                             value: \.createCardState,
-                             globalActionFromLocal: { return .create($0) }
-                         )
+                        store: self.store.view(
+                            value: \.createCardState,
+                            action: { return .create($0) }
+                        )
                      )
                  }
              )
@@ -103,7 +101,8 @@ struct AppView_Previews: PreviewProvider {
         AppView(
             store: .init(
                 initialValue: .init(cardsState: .init(cards: .all)),
-                reducer: logging(navigation(cardsIO(App.reducer)))
+                reducer: logging(navigation(cardsIO(App.reducer))),
+                asyncReducer: App.asyncReducer
             )
         )
     }
