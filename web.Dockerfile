@@ -8,9 +8,11 @@ ARG env
 RUN apt-get -qq update && apt-get -q -y install \
   tzdata \
   && rm -r /var/lib/apt/lists/*
+RUN apt-get install -yq libssl-dev
 WORKDIR /app
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
+run swift package update
 RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
 
 # Production image
