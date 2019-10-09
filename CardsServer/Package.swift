@@ -3,7 +3,6 @@ import PackageDescription
 
 let package = Package(
     name: "CardsServer",
-    platforms: [.macOS(.v10_11)],
     dependencies: [
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "3.3.1"),
