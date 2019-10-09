@@ -8,7 +8,7 @@ ARG env
 RUN apt-get -qq update && apt-get -q -y install \
   tzdata \
   && rm -r /var/lib/apt/lists/*
-RUN apt-get install -y libssl-dev libicu-dev
+RUN apt-get install libssl-dev zlib1g-dev
 WORKDIR /app
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
