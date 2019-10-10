@@ -5,17 +5,16 @@ FROM swift:5.1 as builder
 # In your application, you can use `Environment.custom(name: "docker")` to check if you're in this env
 ARG env
 
-RUN apt-get -qq update && apt-get -q -y install \
-  tzdata \
+RUN apt-get -qq update && apt-get install -y \
+  libssl-dev zlib1g-dev \
   && rm -r /var/lib/apt/lists/*
-RUN apt-get install libssl-dev zlib1g-dev
 WORKDIR /app
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
 RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
 
 # Production image
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 ARG env
 RUN apt-get -qq update && apt-get install -y \
   libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
@@ -31,3 +30,4 @@ COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
 ENV ENVIRONMENT=$env
 
 ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
+
