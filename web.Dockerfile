@@ -16,9 +16,8 @@ RUN swift build --package-path CardsServer -c release && mv `swift build --packa
 # Production image
 FROM ubuntu:18.04
 ARG env
-RUN apt-get -qq update && apt-get install -y \
-  libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
-  tzdata \
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y \ 
+  libatomic1 libicu60 libxml2 libcurl4 libz-dev libbsd0 tzdata \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /build/bin/Run .
