@@ -20,10 +20,6 @@ internal final class CardsController {
         case unavailable
     }
     
-    func index(_ req: Request) throws -> Future<[Card]> {
-        return req.future(.all)
-    }
-    
     func share(_ req: Request) throws -> Future<ShareLink> {
         return
             try req.content

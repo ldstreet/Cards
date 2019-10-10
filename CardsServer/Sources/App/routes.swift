@@ -12,7 +12,6 @@ public func routes(_ router: Router) throws {
     let cardsController = CardsController()
     router.post("share", use: cardsController.share)
     router.get("sharedCard", String.parameter, use: cardsController.sharedCard)
-    router.get("cards", use: cardsController.index)
     
     
     // basic / password auth protected routes
