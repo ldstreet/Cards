@@ -6,7 +6,7 @@
 //
 
 import Models
-import FluentSQLite
+import FluentPostgreSQL
 
 extension Card: Model {
     
@@ -15,7 +15,7 @@ extension Card: Model {
         set { self.id = newValue ?? self.id }
     }
     
-    public typealias Database = SQLiteDatabase
+    public typealias Database = PostgreSQLDatabase
     
     public static var idKey: WritableKeyPath<Card, UUID?> {
         return \.fluentID

@@ -27,7 +27,7 @@ internal final class CardsController {
                 .flatMap { card in
                     let cacheID = UUID()
                     return try req
-                        .keyedCache(for: .sqlite)
+                        .keyedCache(for: .psql)
                         .set(cacheID.uuidString, to: card)
                         .transform(to: ShareLink(path: "/sharedCard/\(cacheID.uuidString)"))
                 }
@@ -36,7 +36,7 @@ internal final class CardsController {
     func sharedCard(_ req: Request) throws -> Future<Response> {
         let uuidString = try req.parameters.next(String.self)
         return try req
-            .keyedCache(for: .sqlite)
+            .keyedCache(for: .psql)
             .get(uuidString, as: Card.self)
             .unwrap(or: CardsError.unavailable)
             .map { return ($0, req, FileManager.default) }
