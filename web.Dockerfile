@@ -10,23 +10,26 @@ RUN apt-get -qq update && apt-get install -y \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
-RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
+RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so* /build/lib
 RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
 
 # Production image
 FROM ubuntu:18.04
 ARG env
+# DEBIAN_FRONTEND=noninteractive for automatic UTC configuration in tzdata
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y \ 
   libatomic1 libicu60 libxml2 libcurl4 libz-dev libbsd0 tzdata \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
-# COPY --from=builder /build/bin/Run .
-# COPY --from=builder /build/lib/* /usr/lib/
+COPY --from=builder /build/bin/Run .
+COPY --from=builder /build/lib/* /usr/lib/
 
-COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
-COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
-
+# COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
+# COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
+# Uncomment the next line if you need to load resources from the `Public` directory
+#COPY --from=builder /app/Public ./Public
+# Uncomment the next line if you are using Leaf
+#COPY --from=builder /app/Resources ./Resources
 ENV ENVIRONMENT=$env
 
 ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
-
