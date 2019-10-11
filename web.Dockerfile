@@ -20,8 +20,8 @@ RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   libatomic1 libicu60 libxml2 libcurl4 libz-dev libbsd0 tzdata \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
-COPY --from=builder /build/bin/Run .
-COPY --from=builder /build/lib/* /usr/lib/
+# COPY --from=builder /build/bin/Run .
+# COPY --from=builder /build/lib/* /usr/lib/
 
 COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
 COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
