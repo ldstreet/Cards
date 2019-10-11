@@ -24,8 +24,8 @@ WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
 
-COPY --from=builder /app/CardsServer/PassCerts ./PassCerts
-COPY --from=builder /app/CardsServer/PassTemplate ./PassTemplate
+COPY --from=builder /app/CardsServer/Resources/PassCerts ./PassCerts
+COPY --from=builder /app/CardsServer/Resources/PassTemplate ./PassTemplate
 # Uncomment the next line if you need to load resources from the `Public` directory
 #COPY --from=builder /app/Public ./Public
 # Uncomment the next line if you are using Leaf
