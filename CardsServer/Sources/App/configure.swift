@@ -1,5 +1,5 @@
 //import Authentication
-import FluentPostgreSQL
+import FluentPostgresDriver
 import Vapor
 //import LoginModule
 

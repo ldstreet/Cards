@@ -33,11 +33,12 @@ extension Cards {
             guard let card = getState().cards.first(where: { $0.id == id }) else {
                 return Just(getState()).eraseToAnyPublisher()
             }
-            return Request<Environment, Card>
+            return Request<Environment, ShareLink, Card>
                 .share(card: card)
                 .send()
                 .eraseToAnyPublisher()
                 .catch { (error) -> Just<ShareLink> in
+                    print(error)
                     return Just(ShareLink(path: ""))
                 }.map { sharePath in
                     var futureState = getState()

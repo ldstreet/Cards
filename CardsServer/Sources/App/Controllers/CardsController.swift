@@ -12,7 +12,7 @@ import ZIPFoundation
 extension Card: Content {}
 extension ShareLink: Content {}
 
-import Crypto
+//import Crypto
 
 internal final class CardsController {
     
@@ -46,6 +46,22 @@ internal final class CardsController {
     
     private func stagePassDirectory(with container: Container, using fileManager: FileManager = .default) throws -> (parent: URL, pass: URL, certs: URL) {
         let workingDirectoryURL = URL(fileURLWithPath: try container.make(DirectoryConfig.self).workDir).appendingPathComponent("Resources")
+        #if DEBUG
+        let resources = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Resources")
+        try fileManager.copyItem(
+            at: resources.appendingPathComponent("PassTemplate"),
+            to: workingDirectoryURL.appendingPathComponent("PassTemplate")
+        )
+        try fileManager.copyItem(
+            at: resources.appendingPathComponent("PassCerts"),
+            to: workingDirectoryURL.appendingPathComponent("PassCerts")
+        )
+        #endif
         let stagingDirectoryURL = workingDirectoryURL.appendingPathComponent("PassStaging").appendingPathComponent(UUID().uuidString)
         try fileManager.createDirectory(at: stagingDirectoryURL, withIntermediateDirectories: true, attributes: nil)
         let passTemplateURL = workingDirectoryURL.appendingPathComponent("PassTemplate")

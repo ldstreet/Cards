@@ -13,9 +13,9 @@ public enum RequestError: Error {
     case non200(URLResponse)
 }
 
-public enum HTTPMethod {
+public enum HTTPMethod<Body: Encodable> {
     case get
-    case post(body: Data?)
+    case post(body: Body)
     
     public var value: String {
         switch self {
@@ -37,12 +37,6 @@ extension Encodable {
     }
 }
 
-extension Encodable {
-    public var post: HTTPMethod {
-        return .post(body: try? encode())
-    }
-}
-
 public struct ServerError: Codable, LocalizedError {
     let error: Bool
     let reason: String
@@ -52,15 +46,21 @@ public struct ServerError: Codable, LocalizedError {
     
 }
 
-public final class Request<Env: EnvironmentProvider, Model: Codable>  {
+public enum None: Encodable {
+    public func encode(to encoder: Encoder) throws {
+        fatalError()
+    }
+}
+
+public final class Request<Env: EnvironmentProvider, Model: Codable, Body: Encodable>  {
     
     private let environment: Env
     private let path: String
     private let session: URLSession
-    private let method: HTTPMethod
+    private let method: HTTPMethod<Body>
     private let headers: [String: String]
     
-    public init(using environment: Env, path: String, method: HTTPMethod = .get, headers: [String: String] = [:], session: URLSession = .shared) {
+    public init(using environment: Env, path: String, method: HTTPMethod<Body> = .get, headers: [String: String] = [:], session: URLSession = .shared) {
         self.environment = environment
         self.path = path
         self.method = method
@@ -77,8 +77,9 @@ public final class Request<Env: EnvironmentProvider, Model: Codable>  {
         switch self.method {
         case .get: break
         case .post(let body):
-            request.httpBody = body
-            request.setValue("\(body?.count ?? 0)", forHTTPHeaderField: "Content-Length")
+            let httpBody = try? body.encode()
+            request.httpBody = httpBody
+            request.setValue("\(httpBody?.count ?? 0)", forHTTPHeaderField: "Content-Length")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         return session

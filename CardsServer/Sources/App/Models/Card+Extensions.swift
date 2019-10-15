@@ -6,20 +6,45 @@
 //
 
 import Models
-import FluentPostgreSQL
+import FluentPostgresDriver
+import Vapor
 
-extension Card: Model {
-    
-    public var fluentID: UUID? {
-        get { return id }
-        set { self.id = newValue ?? self.id }
+final class CardModel: Model, Content {
+    var id: UUID? {
+        get {
+            return card.id
+        }
+        set {
+            card.id = newValue ?? card.id
+        }
     }
     
-    public typealias Database = PostgreSQLDatabase
+    init() { card = .init() }
     
-    public static var idKey: WritableKeyPath<Card, UUID?> {
-        return \.fluentID
+    typealias IDValue = UUID
+    
+    static var schema = "cards"
+    
+    
+    var card: Card
+    
+    init(card: Card) {
+        self.card = card
     }
-    
-    
 }
+
+//extension Card: Model {
+//    
+//    public var fluentID: UUID? {
+//        get { return id }
+//        set { self.id = newValue ?? self.id }
+//    }
+//    
+//    public typealias Database = PostgreSQLDatabase
+//    
+//    public static var idKey: WritableKeyPath<Card, UUID?> {
+//        return \.fluentID
+//    }
+//    
+//    
+//}

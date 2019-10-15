@@ -11,11 +11,11 @@ import Models
 
 extension Request {
     
-    static func share(card: Card) -> Request<Environment, ShareLink> {
+    static func share(card: Card) -> Request<Environment, ShareLink, Card> {
         return .init(
             using: Current.environment,
             path: "share",
-            method: HTTPMethod.post(body: try? card.encode()),
+            method: HTTPMethod.post(body: card),
             headers: [:],
             session: .shared
         )
