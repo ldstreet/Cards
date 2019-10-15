@@ -1,5 +1,5 @@
 import Fluent
-import FluentSQLiteDriver
+import FluentPostgresDriver
 import Vapor
 
 /// Called before your application initializes.
@@ -28,28 +28,38 @@ func configure(_ s: inout Services) {
     
 
 
-    s.register(SQLiteConfiguration.self) { c in
-//        return .init(hostname: "localhost", port: 5432, username: "ldstreet", password: "", database: "postgres",s tlsConfiguration: .none)
-//        return .init(hostname: "localhost", username: "ldstreet", password: "")
-        return .init(storage: .connection(.file(path: "./server.sqlite")))
+    s.register(PostgresConfiguration.self) { c in
+        #if DEBUG
+        return .init(hostname: "localhost", username: "ldstreet", password: "")
+        #else
+        return .init(
+            hostname: "database.v2.vapor.cloud",
+            port: 30001,
+            username: "u87171f1305bdd96d7b190265880cfaf",
+            password: "p6df6b8e092ba52d3c07aa8bef15a197",
+            database: "d61289b66d664c44",
+            tlsConfiguration: .clientDefault
+        )
+        #endif
+//        return .init(storage: .connection(.file(path: "./server.sqlite")))
     }
 
     s.register(Database.self) { c in
-        return try c.make(Databases.self).database(.sqlite)!
+        return try c.make(Databases.self).database(.psql)!
     }
     
     s.extend(Databases.self) { dbs, c in
-//        try dbs.postgres(config: c.make())
-        try dbs.sqlite(
-            configuration: c.make(),
-            threadPool: c.application.threadPool
-        )
+        try dbs.postgres(config: c.make())
+//        try dbs.sqlite(
+//            configuration: c.make(),
+//            threadPool: c.application.threadPool
+//        )
     }
     
     s.register(Migrations.self) { c in
         var migrations = Migrations()
-        migrations.add(CreateCard(), to: .sqlite)
-        migrations.add(CreateTodo(), to: .sqlite)
+        migrations.add(CreateCard(), to: .psql)
+        migrations.add(CreateTodo(), to: .psql)
         return migrations
     }
 }

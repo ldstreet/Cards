@@ -35,15 +35,6 @@ internal final class CardsController {
         return card
             .create(on: self.db)
             .map { ShareLink(path: "/sharedCard/\(card.id?.uuidString ?? "")") }
-            
-            
-//                .flatMap { card in
-//                    let cacheID = UUID()
-//                    return try req
-//                        .keyedCache(for: .psql)
-//                        .set(cacheID.uuidString, to: card)
-//                        .transform(to: ShareLink(path: "/sharedCard/\(cacheID.uuidString)"))
-//                }
     }
     
     func sharedCard(_ req: Request) throws -> EventLoopFuture<Response> {
@@ -58,35 +49,10 @@ internal final class CardsController {
             .unwrap(or: CardsError.unavailable)
             .flatMapThrowing(createPass)
             .map(response)
-//            .optionalFlatMapThrowing(createPass)
-            
-//        return try req
-//            .keyedCache(for: .psql)
-//            .get(uuidString, as: Card.self)
-//            .unwrap(or: CardsError.unavailable)
-//            .map { return ($0, req, FileManager.default) }
-//            .thenThrowing(createPass)
-//            .map(req.response)
     }
     
     private func stagePassDirectory(with workDir: String, using fileManager: FileManager = .default) throws -> (parent: URL, pass: URL, certs: URL) {
         let workingDirectoryURL = URL(fileURLWithPath: workDir).appendingPathComponent("Resources")
-//        #if DEBUG
-//        let resources = URL(fileURLWithPath: #file)
-//            .deletingLastPathComponent()
-//            .deletingLastPathComponent()
-//            .deletingLastPathComponent()
-//            .deletingLastPathComponent()
-//            .appendingPathComponent("Resources")
-//        try fileManager.copyItem(
-//            at: resources.appendingPathComponent("PassTemplate"),
-//            to: workingDirectoryURL.appendingPathComponent("PassTemplate")
-//        )
-//        try fileManager.copyItem(
-//            at: resources.appendingPathComponent("PassCerts"),
-//            to: workingDirectoryURL.appendingPathComponent("PassCerts")
-//        )
-//        #endif
         let stagingDirectoryURL = workingDirectoryURL.appendingPathComponent("PassStaging").appendingPathComponent(UUID().uuidString)
         try fileManager.createDirectory(at: stagingDirectoryURL, withIntermediateDirectories: true, attributes: nil)
         let passTemplateURL = workingDirectoryURL.appendingPathComponent("PassTemplate")
@@ -170,7 +136,5 @@ func response(fileData: Data, fileName: String) -> Response {
         let headers: HTTPHeaders = [
             "content-disposition": "attachment; filename=\"\(fileName)\""
         ]
-//        let res = HTTPResponse(headers: headers, body: file.data)
         return Response(status: .accepted, headers: headers, body: .init(data: fileData))
-//        return response(http: res)
 }
