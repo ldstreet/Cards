@@ -11,7 +11,7 @@ RUN apt-get -qq update && apt-get -q -y install \
 WORKDIR /app
 COPY . .
 RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
-RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
+RUN swift build --package-path Server -c release && mv `swift build --package-path Server -c release --show-bin-path` /build/bin
 
 # Production image
 FROM ubuntu:18.04
@@ -22,9 +22,9 @@ RUN apt-get -qq update && apt-get install -y \
 WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
-COPY --from=builder /app/CardsServer/Public ./Public
-COPY --from=builder /app/CardsServer/Resources/PassCerts ./PassCerts
-COPY --from=builder /app/CardsServer/Resources/PassTemplate ./PassTemplate
+COPY --from=builder /app/Server/Public ./Public
+COPY --from=builder /app/Server/Resources/PassCerts ./PassCerts
+COPY --from=builder /app/Server/Resources/PassTemplate ./PassTemplate
 # Uncommand the next line if you are using Leaf
 #COPY --from=builder /app/Resources ./Resources
 
