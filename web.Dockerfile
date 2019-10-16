@@ -10,7 +10,7 @@ RUN apt-get -qq update && apt-get install -y \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
-RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
+RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so* /build/lib
 RUN swift build --package-path Server -c release && mv `swift build --package-path Server -c release --show-bin-path` /build/bin
 
 # Production image
