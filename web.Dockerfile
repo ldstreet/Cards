@@ -6,7 +6,7 @@ ARG env=""
 ENV ENVIRONMENT=$env
 
 RUN apt-get -qq update && apt-get install -y \
-  libssl-dev zlib1g-dev \
+  libssl.so.1.1.0 zlib1g-dev \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
@@ -18,7 +18,7 @@ FROM ubuntu:16.04
 RUN apt-get -qq update && apt-get install -y \
   libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
   tzdata \
-  && rm -r /var/lib/apt/lists/*
+  && rm -r /var/lib/apt/lists/*d
 WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
