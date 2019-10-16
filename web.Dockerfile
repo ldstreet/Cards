@@ -1,12 +1,12 @@
 # You can set the Swift version to what you need for your app. Versions can be found here: https://hub.docker.com/_/swift
-FROM swift:5.1 as builder
+FROM swift:5.1.1 as builder
 
 # For local build, add `--build-arg environment=local`
 ARG env=""
 ENV ENVIRONMENT=$env
 
 RUN apt-get -qq update && apt-get install -y \
-  libssl-dev.1.1.0 zlib1g-dev \
+  libssl-dev zlib1g-dev \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
@@ -14,11 +14,10 @@ RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so* /build/lib
 RUN swift build --package-path Server -c release && mv `swift build --package-path Server -c release --show-bin-path` /build/bin
 
 # Production image
-FROM ubuntu:16.04
-RUN apt-get -qq update && apt-get install -y \
-  libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
-  tzdata \
-  && rm -r /var/lib/apt/lists/*d
+FROM ubuntu:18.04
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y \ 
+  libatomic1 libicu60 libxml2 libcurl4 libz-dev libbsd0 tzdata \
+  && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
