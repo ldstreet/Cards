@@ -1,31 +1,35 @@
 # You can set the Swift version to what you need for your app. Versions can be found here: https://hub.docker.com/_/swift
 FROM swift:5.1 as builder
 
-# For local build, add `--build-arg environment=local`
-ARG env=""
-ENV ENVIRONMENT=$env
+# For local build, add `--build-arg env=docker`
+# In your application, you can use `Environment.custom(name: "docker")` to check if you're in this env
+ARG env
 
 RUN apt-get -qq update && apt-get install -y \
   libssl-dev zlib1g-dev \
   && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
-RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so /build/lib
-RUN swift build --package-path Server -c release && mv `swift build --package-path Server -c release --show-bin-path` /build/bin
+RUN mkdir -p /build/lib && cp -R /usr/lib/swift/linux/*.so* /build/lib
+RUN swift build --package-path CardsServer -c release && mv `swift build --package-path CardsServer -c release --show-bin-path` /build/bin
 
 # Production image
-# FROM ubuntu:18.04
-# RUN apt-get -qq update && apt-get install -y \
-#   libicu55 libxml2 libbsd0 libcurl3 libatomic1 \
-#   tzdata \
-#   && rm -r /var/lib/apt/lists/*
+FROM ubuntu:18.04
+ARG env
+# DEBIAN_FRONTEND=noninteractive for automatic UTC configuration in tzdata
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y \ 
+  libatomic1 libicu60 libxml2 libcurl4 libz-dev libbsd0 tzdata \
+  && rm -r /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
-COPY --from=builder /app/Server/Public ./Public
-COPY --from=builder /app/Server/Resources/PassCerts ./PassCerts
-COPY --from=builder /app/Server/Resources/PassTemplate ./PassTemplate
-# Uncommand the next line if you are using Leaf
+
+COPY --from=builder /app/CardsServer/Resources/PassCerts ./PassCerts
+COPY --from=builder /app/CardsServer/Resources/PassTemplate ./PassTemplate
+# Uncomment the next line if you need to load resources from the `Public` directory
+#COPY --from=builder /app/Public ./Public
+# Uncomment the next line if you are using Leaf
 #COPY --from=builder /app/Resources ./Resources
+ENV ENVIRONMENT=$env
 
 ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
