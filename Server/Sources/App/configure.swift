@@ -38,7 +38,7 @@ func configure(_ s: inout Services) {
             username: "u87171f1305bdd96d7b190265880cfaf",
             password: "p6df6b8e092ba52d3c07aa8bef15a197",
             database: "d61289b66d664c44",
-            tlsConfiguration: .clientDefault
+            tlsConfiguration: .forClient()
         )
         #endif
 //        return .init(storage: .connection(.file(path: "./server.sqlite")))
