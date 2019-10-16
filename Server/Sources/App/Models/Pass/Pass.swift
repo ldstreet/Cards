@@ -33,10 +33,10 @@ extension Pass {
         self.teamIdentifier = "9C9LVX9RE8"
         self.generic = .init(
             headerFields: [
-              .init(key: "h1", value: "\(card.firstName) \(card.lastName)", label: "name")
+//              .init(key: "h1", value: "\(card.firstName) \(card.lastName)", label: "name")
             ],
             secondaryFields: [
-                .init(key: "s1", value: card.title, label: "Phone Number", textAlignment: "PKTextAlignmentLeft")
+//                .init(key: "s1", value: card.title, label: "Phone Number", textAlignment: "PKTextAlignmentLeft")
             ],
             backFields: card
                 .fields
