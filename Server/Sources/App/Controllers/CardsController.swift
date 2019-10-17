@@ -16,6 +16,7 @@ extension ShareLink: Content {}
 internal final class CardsController {
     
     let db: Database
+    let logger: Logger
     let workDir: String
 
     init(db: Database, workDir: String) {
@@ -83,6 +84,8 @@ internal final class CardsController {
             return newManifest
         })
         
+        logger.info("Created manifest dictionary.")
+        
         let manifestData = try encoder.encode(manifest)
         
         let manifestURL = passDirectoryURL.appendingPathComponent("manifest").appendingPathExtension("json")
@@ -113,7 +116,12 @@ internal final class CardsController {
 
         
         if #available(OSX 10.13, *) {
-            _ = try Process.run(URL(fileURLWithPath: program), arguments: arguments)
+            do {
+                _ = try Process.run(URL(fileURLWithPath: program), arguments: arguments)
+            } catch {
+                logger.critical("OpenSSL cannot be found at `\(program)`")
+            }
+            
         } else {
             // Fallback on earlier versions
         }

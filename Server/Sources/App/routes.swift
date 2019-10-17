@@ -10,12 +10,6 @@ func routes(_ r: Routes, _ c: Container) throws {
         return "Hello, world!"
     }
     
-
-    let todoController = try TodoController(db: c.make())
-    r.get("todos", use: todoController.index)
-    r.post("todos", use: todoController.create)
-    r.on(.DELETE, "todos", ":todoID", use: todoController.delete)
-    
     let workDir = try c.make(DirectoryConfiguration.self).workingDirectory
     let cardsController = try CardsController(db: c.make(), workDir: workDir)
     r.post("share", use: cardsController.share)

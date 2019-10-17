@@ -9,22 +9,6 @@ import Models
 import Fluent
 import Vapor
 
-//extension Card: Model {
-//    
-//    public var fluentID: UUID? {
-//        get { return id }
-//        set { self.id = newValue ?? self.id }
-//    }
-//    
-//    public typealias Database = SQLDatabase
-//    
-//    public static var idKey: WritableKeyPath<Card, UUID?> {
-//        return \.fluentID
-//    }
-//    
-//    
-//}
-
 final class CardModel: Model, Content {
     
     @ID(key: "id")

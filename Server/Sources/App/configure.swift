@@ -40,7 +40,6 @@ func configure(_ s: inout Services) {
             database: "d61289b66d664c44"
         )
         #endif
-//        return .init(storage: .connection(.file(path: "./server.sqlite")))
     }
 
     s.register(Database.self) { c in
@@ -49,16 +48,11 @@ func configure(_ s: inout Services) {
     
     s.extend(Databases.self) { dbs, c in
         try dbs.postgres(config: c.make())
-//        try dbs.sqlite(
-//            configuration: c.make(),
-//            threadPool: c.application.threadPool
-//        )
     }
     
     s.register(Migrations.self) { c in
         var migrations = Migrations()
         migrations.add(CreateCard(), to: .psql)
-        migrations.add(CreateTodo(), to: .psql)
         return migrations
     }
 }
