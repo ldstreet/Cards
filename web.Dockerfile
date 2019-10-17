@@ -27,4 +27,4 @@ COPY --from=builder /app/Server/Resources/PassTemplate ./PassTemplate
 # Uncommand the next line if you are using Leaf
 #COPY --from=builder /app/Resources ./Resources
 
-ENTRYPOINT ./Run serve --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
+ENTRYPOINT ./Run serve --auto-migrate --env $ENVIRONMENT --hostname 0.0.0.0 --port 80
