@@ -11,7 +11,7 @@ func routes(_ r: Routes, _ c: Container) throws {
     }
     
     let workDir = try c.make(DirectoryConfiguration.self).workingDirectory
-    let cardsController = try CardsController(db: c.make(), workDir: workDir)
+    let cardsController = try CardsController(db: c.make(), logger: c.make(), workDir: workDir)
     r.post("share", use: cardsController.share)
     r.get("sharedCard", ":id", use: cardsController.sharedCard)
 }

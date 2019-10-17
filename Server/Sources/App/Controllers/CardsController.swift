@@ -19,9 +19,10 @@ internal final class CardsController {
     let logger: Logger
     let workDir: String
 
-    init(db: Database, workDir: String) {
+    init(db: Database, logger: Logger, workDir: String) {
         self.db = db
         self.workDir = workDir
+        self.logger = logger
     }
     
     enum CardsError: Error {
