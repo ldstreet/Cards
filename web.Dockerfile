@@ -22,8 +22,7 @@ WORKDIR /app
 COPY --from=builder /build/bin/Run .
 COPY --from=builder /build/lib/* /usr/lib/
 COPY --from=builder /app/Server/Public ./Public
-COPY --from=builder /app/Server/Resources/PassCerts ./PassCerts
-COPY --from=builder /app/Server/Resources/PassTemplate ./PassTemplate
+COPY --from=builder /app/Server/Resources ./Resources
 # Uncommand the next line if you are using Leaf
 #COPY --from=builder /app/Resources ./Resources
 
