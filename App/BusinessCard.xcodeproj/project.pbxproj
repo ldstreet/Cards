@@ -72,6 +72,7 @@
 		2A5761BE233184A000DA0A8B /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
 		2A5761C0233184EF00DA0A8B /* AppCardsIOReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCardsIOReducer.swift; sourceTree = "<group>"; };
 		2A5761C22331850700DA0A8B /* AppNavigationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationReducer.swift; sourceTree = "<group>"; };
+		2A5C7F7F235A5CE400178821 /* BusinessCard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BusinessCard.entitlements; sourceTree = "<group>"; };
 		2A94F7E12316120F00C737C6 /* BusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A94F7E42316120F00C737C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A94F7E62316120F00C737C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -203,6 +204,7 @@
 		2A94F7E32316120F00C737C6 /* BusinessCard */ = {
 			isa = PBXGroup;
 			children = (
+				2A5C7F7F235A5CE400178821 /* BusinessCard.entitlements */,
 				2A94F7E42316120F00C737C6 /* AppDelegate.swift */,
 				2A94F7E62316120F00C737C6 /* SceneDelegate.swift */,
 				2A1F33162341D8890064F813 /* World.swift */,
@@ -526,6 +528,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
@@ -551,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;

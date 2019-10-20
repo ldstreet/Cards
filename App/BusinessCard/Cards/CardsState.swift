@@ -16,5 +16,16 @@ extension Cards {
         var proposedCardDeleteID: UUID?
         var loading = false
         var shareLink: URL?
+        var error: CardsError?
+    }
+}
+
+enum CardsError: String, LocalizedError, Codable {
+    case invalidLink
+    
+    var localizedDescription: String {
+        switch self {
+        case .invalidLink: return "There was an error fetching your share link."
+        }
     }
 }
