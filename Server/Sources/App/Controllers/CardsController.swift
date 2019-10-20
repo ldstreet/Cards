@@ -50,6 +50,18 @@ internal final class CardsController {
             .map(response)
     }
     
+    func sharedCardInApp(_ req: Request) throws -> EventLoopFuture<Card> {
+        guard
+            let uuidString = req.parameters.get("id"),
+            let uuid = UUID(uuidString: uuidString)
+        else { return req.eventLoop.makeFailedFuture(CardsError.unavailable) }
+        
+        return CardModel
+            .find(uuid, on: db)
+            .unwrap(or: CardsError.unavailable)
+            .map { $0.card }
+    }
+    
     private func stagePassDirectory(with workDir: String, using fileManager: FileManager = .default) throws -> (parent: URL, pass: URL, certs: URL) {
         let workingDirectoryURL = URL(fileURLWithPath: workDir).appendingPathComponent("Resources")
         let stagingDirectoryURL = workingDirectoryURL.appendingPathComponent("PassStaging").appendingPathComponent(UUID().uuidString)
