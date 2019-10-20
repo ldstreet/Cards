@@ -18,7 +18,7 @@ func configure(_ s: inout Services) {
         var middlewares = MiddlewareConfiguration()
         
         // Serves files from `Public/` directory
-        /// middlewares.use(FileMiddleware.self)
+        middlewares.use(try c.make(FileMiddleware.self))
         
         // Catches errors and converts to HTTP response
         try middlewares.use(c.make(ErrorMiddleware.self))

@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "9C9LVX9RE8.com.ldstreet.Cards",
+        "paths": [
+          "*"
+        ]
+      },
+      {
+        "appID": "com.ldstreet.Cards",
+        "paths": [
+          "*"
+        ]
+      }
+    ]
+  }
+}
