@@ -22,13 +22,7 @@ extension FileManager {
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        
+    private let store: Store<App.State, App.Action> = {
         let stateURL = FileManager
             .default
             .documentsDirectory
@@ -38,6 +32,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let state = stateData.flatMap {
             try? $0.decoded(as: App.State.self)
         }
+        return .init(
+            initialValue: state ?? .init(cardsState: Cards.State()),
+            reducer:
+            persisting(
+                logging(navigation(cardsIO(App.reducer))),
+                at: stateURL
+            )
+        )
+    }()
+
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Use a UIHostingController as window root view controller
         if let windowScene = scene as? UIWindowScene {
@@ -45,15 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController =
                 UIHostingController(
                     rootView: AppView(
-                        store: .init(
-                            initialValue: state ?? .init(cardsState: Cards.State()),
-                            reducer:
-                            persisting(
-                                logging(navigation(cardsIO(App.reducer))),
-                                at: stateURL
-                            ),
-                            asyncReducer: App.asyncReducer
-                        )
+                        store: store
                     )
                 )
             self.window = window
@@ -89,9 +90,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
     
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        URLContexts.forEach { context in
-            print(context.url)
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL,
+            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true),
+            let path = components.path
+        else { return }
+        
+        let pathComponenets = path.split(separator: "/")
+        if pathComponenets.first == "sharedCardInApp" {
+            if let id: String = pathComponenets.last.map(String.init) {
+                print(id)
+//                store.send(.cards(<#T##Cards.Action#>))
+            }
+            
         }
     }
 

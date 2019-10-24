@@ -26,6 +26,7 @@ extension App {
         case .showCreateCard(let show):
             state.showCreateCard = show
         }
+        return { _ in .empty() }
     }
     
     static let reducer: Reducer<App.State, App.Action> = combine(
@@ -41,6 +42,4 @@ extension App {
             action: \App.Action.create
         )
     )
-    
-    static let asyncReducer: AsyncReducer<App.State, App.Action> = pullback(Cards.asyncReducer, value: \.cardsState, action: \.cards)
 }

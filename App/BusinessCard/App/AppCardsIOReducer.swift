@@ -12,7 +12,7 @@ func cardsIO(
     _ reducer: @escaping Reducer<App.State, App.Action>
 ) -> Reducer<App.State, App.Action> {
     return { state, action in
-        reducer(&state, action)
+        let effectPublisher = reducer(&state, action)
         switch action {
         case .cards(_): break
         case .create(.done):
@@ -22,6 +22,10 @@ func cardsIO(
         case .updateCreateCardState(_): break
         case .showCreateCard(_): break
         case .confirmCreateCardCancel(_): break
+        }
+        return { newValue in
+            
+            return effectPublisher(newValue)
         }
     }
 }

@@ -88,10 +88,7 @@ let createCardReducer: Reducer<CreateCardState, CreateCardAction> = { state, act
     case .cancel: break
     case .done: break
     }
-}
-
-let createCardAsyncReducer: AsyncReducer<CreateCardState, CreateCardAction> = { getter, action in
-    return Just(getter()).eraseToAnyPublisher()
+    return { _ in .empty() }
 }
 
 struct CreateCardView: View {
@@ -165,19 +162,15 @@ struct CreateCardView_Previews: PreviewProvider {
             CreateCardView(
                 store: Store(
                     initialValue: .init(card: .createDefaultCard()),
-                    reducer: createCardReducer,
-                    asyncReducer: createCardAsyncReducer
+                    reducer: createCardReducer
                 )
             )
             Text("Some View")
                 .sheet(isPresented: Binding<Bool>(get: { return true }, set: {_ in})) {
-                CreateCardView(
-                    store: Store<CreateCardState, CreateCardAction>(
+                    CreateCardView(store: .init(
                         initialValue: CreateCardState(card: .createDefaultCard()),
-                        reducer: createCardReducer,
-                        asyncReducer: createCardAsyncReducer
-                    )
-                )
+                        reducer: createCardReducer
+                    ))
             }
         }
         

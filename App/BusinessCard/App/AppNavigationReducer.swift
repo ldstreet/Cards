@@ -12,7 +12,7 @@ func navigation(
     _ reducer: @escaping Reducer<App.State, App.Action>
 ) -> Reducer<App.State, App.Action> {
     return { state, action in
-        reducer(&state, action)
+        let effectPublisher = reducer(&state, action)
         switch action {
         case .create(.cancel):
             state.showCreateCard = false
@@ -24,6 +24,10 @@ func navigation(
         case .updateCreateCardState: break
         case .confirmCreateCardCancel: break
         case .showCreateCard: break
+        }
+        return { newValue in
+            
+            return effectPublisher(newValue)
         }
     }
 }

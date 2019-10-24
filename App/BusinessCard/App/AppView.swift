@@ -101,8 +101,7 @@ struct AppView_Previews: PreviewProvider {
         AppView(
             store: .init(
                 initialValue: .init(cardsState: .init(cards: .all)),
-                reducer: logging(navigation(cardsIO(App.reducer))),
-                asyncReducer: App.asyncReducer
+                reducer: logging(navigation(cardsIO(App.reducer)))
             )
         )
     }

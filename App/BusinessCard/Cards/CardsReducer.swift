@@ -19,48 +19,28 @@ extension Cards {
             state.proposedCardDeleteID = id
             state.showConfirmDelete = id != nil
         case .share(let id):
-            guard let card = state.cards.first(where: { $0.id == id }) else { return }
             state.loading = true
-
+            return
+                { newState in
+                    guard let card = newState.cards.first(where: { $0.id == id }) else { return .empty() }
+                    
+                    return Request<Environment, ShareLink, Card>
+                        .share(card: card)
+                        .send()
+                        .eraseToAnyPublisher()
+                        .catch { (error) -> Just<ShareLink> in
+                            print(error)
+                            return Just(ShareLink(path: ""))
+                        }.map { sharePath in
+                            let link = Current.environment.url.appendingPathComponent(sharePath.path)
+                            return Cards.Action.presentShareLink(link)
+                        }.eraseToAnyPublisher()
+                }
+            
+        case .presentShareLink(let link):
+            state.loading = false
+            state.shareLink = link
         }
-    }
-    
-    static let asyncReducer: AsyncReducer<Cards.State, Cards.Action> = { getState, action in
-        switch action {
-        case .delete(_): break
-        case .proposeCardDelete(_): break
-        case .share(let id):
-            guard let card = getState().cards.first(where: { $0.id == id }) else {
-                return Just(getState()).eraseToAnyPublisher()
-            }
-            return Request<Environment, ShareLink, Card>
-                .share(card: card)
-                .send()
-                .eraseToAnyPublisher()
-                .catch { (error) -> Just<ShareLink> in
-                    print(error)
-                    return Just(ShareLink(path: ""))
-                }.map { sharePath in
-                    var futureState = getState()
-                    futureState.shareLink = Current.environment.url.appendingPathComponent(sharePath.path)
-                    futureState.loading = false
-                    return futureState
-                }.eraseToAnyPublisher()
-//                .sink(receiveCompletion: { completion in
-//                    var futureState = getState()
-//                    switch completion {
-//                    case .finished:
-//                        futureState.loading = false
-//                    case .failure(let error):
-//                        futureState.loading = false
-//                    }
-//                    subject.send(futureState)
-//                }) { sharePath in
-//                    var futureState = getState()
-//                    futureState.shareLink = Current.environment.url.appendingPathComponent(sharePath)
-//                    subject.send(futureState)
-//                }
-        }
-        return Just(getState()).eraseToAnyPublisher()
+        return { _ in .empty() }
     }
 }

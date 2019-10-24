@@ -8,38 +8,48 @@
 import SwiftUI
 import Combine
 
-public typealias Reducer<Value, Action> = (inout Value, Action) -> Void
-public typealias AsyncReducer<Value, Action> = ( @escaping () -> Value, Action) -> AnyPublisher<Value, Never>
+public typealias Effect<Value, Action> = (Value) -> AnyPublisher<Action, Never>
+public typealias Reducer<Value, Action> = (inout Value, Action) -> Effect<Value, Action>
 
 public func combine<Value, Action>(
-    _ reducers: (inout Value, Action) -> Void...
-) -> (inout Value, Action) -> Void {
+    _ reducers: Reducer<Value, Action>...
+) -> Reducer<Value, Action> {
     return { value, action in
-        for reducer in reducers {
-            reducer(&value, action)
+        let newReducer = reducers.reduce(AnyPublisher<Action, Never>.empty()) { currentPublisher, reducer in
+            reducer(&value, action)(value).merge(with: currentPublisher).eraseToAnyPublisher()
         }
+        return { newValue in
+            newReducer
+        }
+    }
+}
+
+extension AnyPublisher {
+    public static func empty() -> Self {
+        return Empty(completeImmediately: true).eraseToAnyPublisher()
     }
 }
 
 public final class Store<Value, Action>: ObservableObject {
     public let reducer: Reducer<Value, Action>
-    public let asyncReducer: AsyncReducer<Value, Action>
     @Published public private(set) var value: Value
     private var cancellable: Cancellable?
-    private var asyncCancellable: AnyCancellable?
+    private var asyncCancellables = Set<AnyCancellable>()
 
     public init(
         initialValue: Value,
-        reducer: @escaping Reducer<Value, Action>,
-        asyncReducer: @escaping AsyncReducer<Value, Action>
+        reducer: @escaping Reducer<Value, Action>
     ) {
         self.reducer = reducer
-        self.asyncReducer = asyncReducer
         self.value = initialValue
     }
 
     public func send(_ action: Action) {
-        self.reducer(&self.value, action)
+        let effectPublisher = self.reducer(&self.value, action)
+        let newCancellable = effectPublisher(value)
+            .receive(on: RunLoop.main)
+            .sink { self.send($0) }
+        asyncCancellables.insert(newCancellable)
     }
     
     public func dumbSend<LocalValue>(
@@ -51,7 +61,6 @@ public final class Store<Value, Action>: ObservableObject {
                 self.value[keyPath: binding] = newVal
             }
         )
-        
     }
     
     public func send<LocalValue>(
@@ -76,16 +85,6 @@ public final class Store<Value, Action>: ObservableObject {
         )
     }
     
-    public func asyncSend(_ action: Action) {
-        asyncCancellable = self.asyncReducer(
-            { return self.value },
-            action
-        )
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-            .assign(to: \Store<Value, Action>.value, on: self)
-    }
-    
     public func view<LocalValue, LocalAction>(
         value toLocalValue: KeyPath<Value, LocalValue>,
         action toGlobalAction: @escaping (LocalAction) -> Action
@@ -95,15 +94,7 @@ public final class Store<Value, Action>: ObservableObject {
             reducer: { localValue, localAction in
                 self.send(toGlobalAction(localAction))
                 localValue = self.value[keyPath: toLocalValue]
-            },
-            asyncReducer: { getter, action in
-                return self
-                    .asyncReducer({ return self.value }, toGlobalAction(action))
-                    .map { val in
-                        let localVal = val[keyPath: toLocalValue]
-                        return localVal
-                    }
-                    .eraseToAnyPublisher()
+                return { _ in .empty() }
             }
         )
         localStore.cancellable = self.$value.sink { [weak localStore] newValue in
@@ -114,36 +105,21 @@ public final class Store<Value, Action>: ObservableObject {
 }
 
 public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
-    _ reducer: @escaping AsyncReducer<LocalValue, LocalAction>,
-    value: WritableKeyPath<GlobalValue, LocalValue>,
-    action: WritableKeyPath<GlobalAction, LocalAction?>
-) -> AsyncReducer<GlobalValue, GlobalAction> {
-    return { getter, globalAction in
-        guard let unwrappedAction = globalAction[keyPath: action] else {
-            return Just(getter()).eraseToAnyPublisher()
-        }
-        
-        return reducer(
-            {
-                return getter()[keyPath: value]
-            },
-            unwrappedAction
-        ).map { localValue in
-            var globalValue = getter()
-            globalValue[keyPath: value] = localValue
-            return globalValue
-        }.eraseToAnyPublisher()
-    }
-}
-
-public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     _ reducer: @escaping Reducer<LocalValue, LocalAction>,
     value: WritableKeyPath<GlobalValue, LocalValue>,
     action: WritableKeyPath<GlobalAction, LocalAction?>
 ) ->  Reducer<GlobalValue, GlobalAction> {
     return { globalValue, globalAction in
-        guard let unwrappedAction = globalAction[keyPath: action] else { return }
-        reducer(&globalValue[keyPath: value], unwrappedAction)
+        guard let unwrappedAction = globalAction[keyPath: action] else { return { _ in .empty() } }
+        let localValue = globalValue[keyPath: value]
+        let localEffectPublisher = reducer(&globalValue[keyPath: value], unwrappedAction)
+        return { _ in
+            return localEffectPublisher(localValue).map { localAction in
+                var globalAction = globalAction
+                globalAction[keyPath: action] = localAction
+                return globalAction
+            }.eraseToAnyPublisher()
+        }
     }
 }
 
@@ -153,10 +129,16 @@ public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     action: WritableKeyPath<GlobalAction, LocalAction?>
 ) -> Reducer<GlobalValue, GlobalAction> {
     return { globalValue, globalAction in
-        guard let unwrappedAction = globalAction[keyPath: action] else { return }
-        guard var unwrappedValue = globalValue[keyPath: value] else { return }
-        reducer(&unwrappedValue, unwrappedAction)
-        globalValue[keyPath: value] = unwrappedValue
+        guard let unwrappedAction = globalAction[keyPath: action] else { return { _ in .empty() } }
+        guard var unwrappedValue = globalValue[keyPath: value] else { return { _ in .empty() } }
+        let localEffectPublisher = reducer(&unwrappedValue, unwrappedAction)
+        return { _ in
+            return localEffectPublisher(unwrappedValue).map { localAction in
+                var globalAction = globalAction
+                globalAction[keyPath: action] = localAction
+                return globalAction
+            }.eraseToAnyPublisher()
+        }
     }
 }
 
@@ -179,9 +161,12 @@ public func logging<Value, Action>(
     _ reducer: @escaping Reducer<Value, Action>
 ) ->  Reducer<Value, Action> {
     return { value, action in
-        reducer(&value, action)
-        print("action: \(action)")
-        print(dump(value))
+        let effectPublisher = reducer(&value, action)
+        return { newValue in
+            print("action: \(action)")
+            print(dump(newValue))
+            return effectPublisher(newValue)
+        }
     }
 }
 
@@ -190,9 +175,12 @@ public func persisting<Value: Codable, Action>(
     at url: URL
 ) ->  Reducer<Value, Action> {
     return { value, action in
-        reducer(&value, action)
-        try! JSONEncoder()
-            .encode(value)
-            .write(to: url)
+        let effectPublisher = reducer(&value, action)
+        return { newValue in
+            try! JSONEncoder()
+                .encode(newValue)
+                .write(to: url)
+            return effectPublisher(newValue)
+        }
     }
 }

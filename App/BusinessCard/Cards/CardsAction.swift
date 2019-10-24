@@ -13,6 +13,7 @@ extension Cards {
         case delete(UUID)
         case proposeCardDelete(UUID?)
         case share(UUID)
+        case presentShareLink(URL)
     }
 }
 

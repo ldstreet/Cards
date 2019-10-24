@@ -31,7 +31,7 @@ extension Cards {
                     CardPreviewView(card: card)
                         .contextMenu {
                             Button("Share") {
-                                self.store.asyncSend(.share(card.id))
+                                self.store.send(.share(card.id))
                             }
                             Button("Delete") {
                                 self.store.send(.proposeCardDelete(card.id))
@@ -75,7 +75,10 @@ extension URL: Identifiable {
 #if DEBUG
 struct CardsView_Previews: PreviewProvider {
     static var previews: some View {
-        Cards.CardsView(store: .init(initialValue: .init(cards: .all), reducer: Cards.reducer, asyncReducer: Cards.asyncReducer))
+        Cards.CardsView(store: .init(
+            initialValue: .init(cards: .all),
+            reducer: Cards.reducer
+        ))
     }
 }
 #endif
