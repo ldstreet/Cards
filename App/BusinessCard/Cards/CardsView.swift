@@ -9,6 +9,7 @@
 import SwiftUI
 import Redux
 import Combine
+import Models
 
 enum Cards {}
 
@@ -25,43 +26,83 @@ extension Cards {
             self.store = store
         }
         
+//        func showDetail(for card: Card) -> Bool {
+//            self.store.value.showDetail == card.id
+//        }
+        
         var body: some View {
             List {
                 ForEach(store.value.cards) { card in
-                    CardPreviewView(card: card)
-                        .contextMenu {
-                            Button("Share") {
-                                self.store.send(.share(card.id))
+                    if self.store.value.detailCardID == card.id {
+                        self.store.view(
+                            value: { $0.detailCard },
+                            action: { .detail($0) }
+                        )
+                            .map(CardDetailView.init)?
+                            .tag(card.id)
+//                            .id(card.id)
+                            .onTapGesture {
+                                withAnimation {
+                                    self.store.send(.showDetail(nil))
+                                }
                             }
-                            Button("Delete") {
-                                self.store.send(.proposeCardDelete(card.id))
-                            }
-                            .actionSheet(
-                                item: self.store.send(
-                                    Cards.Action.proposeCardDelete,
-                                    binding: \.proposedCardDeleteID
-                                )
-                            ) { id in
-                                ActionSheet(
-                                    title: Text("Delete this card?"),
-                                    buttons: [
-                                        .destructive(Text("Delete")) {
-                                            self.store.send(.delete(id))
-                                        },
-                                        .cancel()
-                                    ]
-                                )
-                            }
+                        .transition(.move(edge: .top))
+                            
+                    } else {
+                        self.cardPreview(card)
+                            .tag(card.id)
+//                            .id(card.id)
+                            .transition(.move(edge: .top))
+                            
                     }
-                }.onDelete { indexSet in
+                    
+                    
+                }
+                .onDelete { indexSet in
                     indexSet.forEach {
                         let id = self.store.value.cards[$0].id
                         self.store.send(.proposeCardDelete(id))
                     }
                 }
             }
-            .sheet(item: store.dumbSend(binding: \.shareLink)) {  url in
+            .sheet(item: store.send(
+                Cards.Action.presentShareLink,
+                binding: \Cards.State.shareLink
+            )) {  url in
                 ActivityView(activityItems: [url.absoluteString], applicationActivities: nil)
+            }.listStyle(GroupedListStyle())
+        }
+        
+        func cardPreview(_ card: Card) -> some View {
+            CardPreviewView(card: card)
+                .onTapGesture {
+                    withAnimation {
+                        self.store.send(.showDetail(card.id))
+                    }
+                }
+                .contextMenu {
+                    Button("Share") {
+                        self.store.send(.share(card.id))
+                    }
+                    Button("Delete") {
+                        self.store.send(.proposeCardDelete(card.id))
+                    }
+                    .actionSheet(
+                        item: self.store.send(
+                            Cards.Action.proposeCardDelete,
+                            binding: \.proposedCardDeleteID
+                        )
+                    ) { id in
+                        ActionSheet(
+                            title: Text("Delete this card?"),
+                            buttons: [
+                                .destructive(Text("Delete")) {
+                                    self.store.send(.delete(id))
+                                },
+                                .cancel()
+                            ]
+                        )
+                    }
             }
         }
     }
@@ -78,7 +119,7 @@ struct CardsView_Previews: PreviewProvider {
         Cards.CardsView(store: .init(
             initialValue: .init(cards: .all),
             reducer: Cards.reducer
-        ))
+        )).animation(.default)
     }
 }
 #endif

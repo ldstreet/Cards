@@ -12,6 +12,21 @@ import Models
 extension Cards {
     struct State: Codable {
         var cards: [Card] = []
+        var detailCardID: UUID?
+        var detailCard: Card? {
+            get {
+                cards
+                    .first(where: { $0.id == detailCardID })
+            }
+            set {
+                if let index = cards.firstIndex(where: { $0.id == detailCardID }),
+                    let newCard = newValue {
+                    cards[index] = newCard
+                } else  {
+                    detailCardID = nil
+                }
+            }
+        }
         var showConfirmDelete = false
         var proposedCardDeleteID: UUID?
         var loading = false

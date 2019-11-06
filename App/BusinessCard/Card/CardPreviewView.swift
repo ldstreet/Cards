@@ -13,14 +13,19 @@ struct CardPreviewView: View {
     let card: Card
     
     var body: some View {
-        VStack(alignment: .leading) {
-            (
-                Text(card.firstName) +
-                Text(" ") +
-                Text(card.lastName)
-            ).font(.headline)
-            Text(card.title).font(.subheadline)
+        HStack {
+            VStack(alignment: .leading) {
+                (
+                    Text(card.firstName) +
+                    Text(" ") +
+                    Text(card.lastName)
+                ).tag(card.firstName + card.lastName)
+                    .font(.headline)
+                Text(card.title).font(.subheadline)
+            }
+            Spacer()
         }
+        
     }
 }
 

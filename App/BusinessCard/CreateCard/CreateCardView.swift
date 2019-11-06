@@ -57,6 +57,28 @@ extension Card.Fields.Group.Field {
     }
 }
 
+extension Card.Fields.Group.Field.DataType {
+    public var contentType: UITextContentType? {
+        switch self {
+        case .certificate: return nil
+        case .phoneNumber: return .telephoneNumber
+        case .emailAddress: return .emailAddress
+        case .address: return .fullStreetAddress
+        case .other: return nil
+        }
+    }
+    
+    public var keyboardType: UIKeyboardType {
+        switch self {
+        case .certificate: return .default
+        case .phoneNumber: return .phonePad
+        case .emailAddress: return .emailAddress
+        case .address: return .default
+        case .other: return .default
+        }
+    }
+}
+
 
 struct CreateCardState: Codable, Identifiable {
     let id = UUID()
@@ -88,7 +110,7 @@ let createCardReducer: Reducer<CreateCardState, CreateCardAction> = { state, act
     case .cancel: break
     case .done: break
     }
-    return { _ in .empty() }
+    return { .empty() }
 }
 
 struct CreateCardView: View {
@@ -101,7 +123,11 @@ struct CreateCardView: View {
                 Form {
                     Section(
                         header:
-                        ProfileImageHeader()
+                        HStack {
+                            Spacer()
+                            ProfileImageHeader()
+                            Spacer()
+                        }
                     ) {
                         TextField(
                             "Jane",
@@ -109,21 +135,21 @@ struct CreateCardView: View {
                                 CreateCardAction.firstNameChanged,
                                 binding: \.card.firstName
                             )
-                        )
+                        ).textContentType(.givenName)
                         TextField(
                             "Doe",
                             text: store.send(
                                 CreateCardAction.lastNameChanged,
                                 binding: \.card.lastName
                             )
-                        )
+                        ).textContentType(.familyName)
                         TextField(
                             "Project Manager",
                             text: store.send(
                                 CreateCardAction.titleChanged,
                                 binding: \.card.title
                             )
-                        )
+                        ).textContentType(.jobTitle)
                     }
                     ForEach(self.store.value.card.fields.groups.enumeratedArray(), id: \.offset) { fieldGroup in
                         Section {
@@ -244,6 +270,8 @@ struct FieldCell: View {
                     )
                 )
             )
+                .keyboardType(field.element.type.keyboardType)
+                .textContentType(field.element.type.contentType)
         }
     }
 }
@@ -251,12 +279,10 @@ struct FieldCell: View {
 struct ProfileImageHeader: View {
     var body: some View {
         HStack {
-            Spacer()
             Image(systemName: "person.fill")
                 .resizable()
                 .clipShape(Circle())
                 .frame(width: 100.0, height: 100.0)
-            Spacer()
         }
     }
 }

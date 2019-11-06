@@ -26,7 +26,7 @@ extension App {
         case .showCreateCard(let show):
             state.showCreateCard = show
         }
-        return { _ in .empty() }
+        return { .empty() }
     }
     
     static let reducer: Reducer<App.State, App.Action> = combine(
@@ -40,6 +40,35 @@ extension App {
             createCardReducer,
             value: \App.State.createCardState,
             action: \App.Action.create
+        ),
+        pullback(
+            CardDetail.reducer,
+            value: \App.State.cardsState.detailCard,
+            action: \App.Action.cards[optional: \.detail]
         )
     )
+}
+
+extension Optional {
+    subscript<T>(optional path: WritableKeyPath<Wrapped, T>) -> T? {
+        get {
+            return self?[keyPath: path]
+        }
+        set {
+            if let newValue = newValue {
+                self?[keyPath: path] = newValue
+            }
+        }
+    }
+    
+    subscript<T>(optional path: WritableKeyPath<Wrapped, T?>) -> T? {
+        get {
+            return self?[keyPath: path]
+        }
+        set {
+            if let newValue = newValue {
+                self?[keyPath: path] = newValue
+            }
+        }
+    }
 }

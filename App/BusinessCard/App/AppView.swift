@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Redux
+import Models
 
 enum App {}
 
@@ -21,7 +22,7 @@ struct AppView: View {
                  IfLet(store.value.cardsState) { cardsState in
                      Cards.CardsView(
                         store: self.store.view(
-                            value: \.cardsState,
+                            value: { $0.cardsState },
                             action: { return .cards($0) }
                          )
                      )
@@ -46,7 +47,7 @@ struct AppView: View {
                  content: {
                      return CreateCardView(
                         store: self.store.view(
-                            value: \.createCardState,
+                            value: { $0.createCardState },
                             action: { return .create($0) }
                         )
                      )

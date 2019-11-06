@@ -11,7 +11,7 @@ import Models
 import Combine
 
 extension Cards {
-    static let reducer: Reducer<Cards.State, Cards.Action> = { state, action in
+    static let reducer: Reducer<State, Action> = { state, action in
         switch action {
         case .delete(let id):
             state.cards.removeAll { $0.id == id }
@@ -20,8 +20,9 @@ extension Cards {
             state.showConfirmDelete = id != nil
         case .share(let id):
             state.loading = true
+            let newState = state
             return
-                { newState in
+                {
                     guard let card = newState.cards.first(where: { $0.id == id }) else { return .empty() }
                     
                     return Request<Environment, ShareLink, Card>
@@ -40,7 +41,11 @@ extension Cards {
         case .presentShareLink(let link):
             state.loading = false
             state.shareLink = link
+        case .showDetail(let id):
+            state.detailCardID = id
+        case .detail(_):
+            break
         }
-        return { _ in .empty() }
+        return { .empty() }
     }
 }

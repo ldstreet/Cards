@@ -14,6 +14,8 @@ extension App {
         var createCardState: CreateCardState = .init(card: .createDefaultCard())
         var showCreateCard = false
         var showCreateCardCancelDialog = false
+        
+        
     }
 }
 

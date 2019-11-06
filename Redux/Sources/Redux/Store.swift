@@ -8,19 +8,17 @@
 import SwiftUI
 import Combine
 
-public typealias Effect<Value, Action> = (Value) -> AnyPublisher<Action, Never>
+public typealias Effect<Value, Action> = () -> AnyPublisher<Action, Never>
 public typealias Reducer<Value, Action> = (inout Value, Action) -> Effect<Value, Action>
 
 public func combine<Value, Action>(
     _ reducers: Reducer<Value, Action>...
 ) -> Reducer<Value, Action> {
     return { value, action in
-        let newReducer = reducers.reduce(AnyPublisher<Action, Never>.empty()) { currentPublisher, reducer in
-            reducer(&value, action)(value).merge(with: currentPublisher).eraseToAnyPublisher()
+        let effectPublisher = reducers.reduce(AnyPublisher<Action, Never>.empty()) { currentPublisher, reducer in
+            reducer(&value, action)().merge(with: currentPublisher).eraseToAnyPublisher()
         }
-        return { newValue in
-            newReducer
-        }
+        return { effectPublisher }
     }
 }
 
@@ -46,21 +44,10 @@ public final class Store<Value, Action>: ObservableObject {
 
     public func send(_ action: Action) {
         let effectPublisher = self.reducer(&self.value, action)
-        let newCancellable = effectPublisher(value)
+        let newCancellable = effectPublisher()
             .receive(on: RunLoop.main)
             .sink { self.send($0) }
         asyncCancellables.insert(newCancellable)
-    }
-    
-    public func dumbSend<LocalValue>(
-        binding: WritableKeyPath<Value, LocalValue>
-    ) -> Binding<LocalValue> {
-        return Binding<LocalValue>(
-            get: { return self.value[keyPath: binding] },
-            set: { [self] newVal in
-                self.value[keyPath: binding] = newVal
-            }
-        )
     }
     
     public func send<LocalValue>(
@@ -86,19 +73,42 @@ public final class Store<Value, Action>: ObservableObject {
     }
     
     public func view<LocalValue, LocalAction>(
-        value toLocalValue: KeyPath<Value, LocalValue>,
+        value toLocalValue: @escaping (Value) -> LocalValue,
         action toGlobalAction: @escaping (LocalAction) -> Action
     ) -> Store<LocalValue, LocalAction> {
         let localStore = Store<LocalValue, LocalAction>(
-            initialValue: self.value[keyPath: toLocalValue],
+            initialValue: toLocalValue(value),
             reducer: { localValue, localAction in
                 self.send(toGlobalAction(localAction))
-                localValue = self.value[keyPath: toLocalValue]
-                return { _ in .empty() }
+                localValue = toLocalValue(self.value)
+                return { .empty() }
             }
         )
         localStore.cancellable = self.$value.sink { [weak localStore] newValue in
-            localStore?.value = newValue[keyPath: toLocalValue]
+            localStore?.value = toLocalValue(newValue)
+        }
+        return localStore
+    }
+    
+    public func view<LocalValue, LocalAction>(
+        value toLocalValue: @escaping (Value) -> LocalValue?,
+        action toGlobalAction: @escaping (LocalAction) -> Action
+    ) -> Store<LocalValue, LocalAction>? {
+        guard let localValue = toLocalValue(value) else { return nil }
+        let localStore = Store<LocalValue, LocalAction>(
+            initialValue: localValue,
+            reducer: { localValue, localAction in
+                self.send(toGlobalAction(localAction))
+                if let newLocalValue = toLocalValue(self.value) {
+                    localValue = newLocalValue
+                }
+                return { .empty() }
+            }
+        )
+        localStore.cancellable = self.$value.sink { [weak localStore] newValue in
+            if let newLocalValue = toLocalValue(newValue) {
+                localStore?.value =  newLocalValue
+            }
         }
         return localStore
     }
@@ -110,11 +120,10 @@ public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     action: WritableKeyPath<GlobalAction, LocalAction?>
 ) ->  Reducer<GlobalValue, GlobalAction> {
     return { globalValue, globalAction in
-        guard let unwrappedAction = globalAction[keyPath: action] else { return { _ in .empty() } }
-        let localValue = globalValue[keyPath: value]
+        guard let unwrappedAction = globalAction[keyPath: action] else { return { .empty() } }
         let localEffectPublisher = reducer(&globalValue[keyPath: value], unwrappedAction)
-        return { _ in
-            return localEffectPublisher(localValue).map { localAction in
+        return {
+            return localEffectPublisher().map { localAction in
                 var globalAction = globalAction
                 globalAction[keyPath: action] = localAction
                 return globalAction
@@ -129,11 +138,11 @@ public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     action: WritableKeyPath<GlobalAction, LocalAction?>
 ) -> Reducer<GlobalValue, GlobalAction> {
     return { globalValue, globalAction in
-        guard let unwrappedAction = globalAction[keyPath: action] else { return { _ in .empty() } }
-        guard var unwrappedValue = globalValue[keyPath: value] else { return { _ in .empty() } }
+        guard let unwrappedAction = globalAction[keyPath: action] else { return { .empty() } }
+        guard var unwrappedValue = globalValue[keyPath: value] else { return { .empty() } }
         let localEffectPublisher = reducer(&unwrappedValue, unwrappedAction)
-        return { _ in
-            return localEffectPublisher(unwrappedValue).map { localAction in
+        return {
+            return localEffectPublisher().map { localAction in
                 var globalAction = globalAction
                 globalAction[keyPath: action] = localAction
                 return globalAction
@@ -147,7 +156,6 @@ public func compose<A, B, C>(
   _ g: @escaping (A) -> B
   )
   -> (A) -> C {
-
     return { (a: A) -> C in
       f(g(a))
     }
@@ -162,10 +170,11 @@ public func logging<Value, Action>(
 ) ->  Reducer<Value, Action> {
     return { value, action in
         let effectPublisher = reducer(&value, action)
-        return { newValue in
+        let newValue = value
+        return {
             print("action: \(action)")
             print(dump(newValue))
-            return effectPublisher(newValue)
+            return effectPublisher()
         }
     }
 }
@@ -176,11 +185,12 @@ public func persisting<Value: Codable, Action>(
 ) ->  Reducer<Value, Action> {
     return { value, action in
         let effectPublisher = reducer(&value, action)
-        return { newValue in
+        let newValue = value
+        return {
             try! JSONEncoder()
                 .encode(newValue)
                 .write(to: url)
-            return effectPublisher(newValue)
+            return effectPublisher()
         }
     }
 }
