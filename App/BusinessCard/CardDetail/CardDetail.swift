@@ -71,7 +71,7 @@ struct CardDetailView: View {
 }
 
 
-
+#if DEBUG
 struct CardDetail_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -88,3 +88,4 @@ struct CardDetail_Previews: PreviewProvider {
         
     }
 }
+#endif
