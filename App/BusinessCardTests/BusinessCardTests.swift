@@ -8,6 +8,8 @@
 
 import XCTest
 @testable import BusinessCard
+import Models
+#if DEBUG
 
 class BusinessCardTests: XCTestCase {
 
@@ -20,15 +22,20 @@ class BusinessCardTests: XCTestCase {
     }
 
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        let state = CreateCardState(card: Card.luke)
+        assert(
+            initialValue: App.State(cardsState: .init(), createCardState: .init(), showCreateCardCancelDialog: nil),
+            reducer: navigation(cardsIO(App.reducer)),
+            steps:
+            .send(.updateCreateCardState(state)) { $0.createCardState = state },
+            .send(.create(.done)) {
+                $0.createCardState = nil
+                $0.cardsState.cards.append(.luke)
+            }
+            
+        )
     }
 
 }
+
+#endif

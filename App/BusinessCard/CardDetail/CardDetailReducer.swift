@@ -7,6 +7,8 @@
 //
 
 import Redux
+import Models
+import Combine
 
 extension CardDetail {
     
@@ -15,7 +17,8 @@ extension CardDetail {
         case .edit: break
         case .share: break
         }
-        return { .empty() }
+        
+        return []
     }
     
 }

@@ -23,6 +23,7 @@
 		2A24FB6A231D836200DFFBBD /* EnvironmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB66231D836200DFFBBD /* EnvironmentProvider.swift */; };
 		2A24FB6B231D836200DFFBBD /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB67231D836200DFFBBD /* URL+Extension.swift */; };
 		2A24FB6E231D8C7600DFFBBD /* CardPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A24FB6D231D8C7600DFFBBD /* CardPreviewView.swift */; };
+		2A561AA123A8821300B34011 /* ReduxTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AA023A8821300B34011 /* ReduxTesting.swift */; };
 		2A5761BB2331844900DA0A8B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BA2331844900DA0A8B /* AppState.swift */; };
 		2A5761BD2331848800DA0A8B /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BC2331848800DA0A8B /* AppAction.swift */; };
 		2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BE233184A000DA0A8B /* AppReducer.swift */; };
@@ -72,6 +73,7 @@
 		2A24FB66231D836200DFFBBD /* EnvironmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentProvider.swift; sourceTree = "<group>"; };
 		2A24FB67231D836200DFFBBD /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		2A24FB6D231D8C7600DFFBBD /* CardPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPreviewView.swift; sourceTree = "<group>"; };
+		2A561AA023A8821300B34011 /* ReduxTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduxTesting.swift; sourceTree = "<group>"; };
 		2A5761BA2331844900DA0A8B /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		2A5761BC2331848800DA0A8B /* AppAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAction.swift; sourceTree = "<group>"; };
 		2A5761BE233184A000DA0A8B /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				2A94F7FB2316121100C737C6 /* BusinessCardTests.swift */,
+				2A561AA023A8821300B34011 /* ReduxTesting.swift */,
 				2A94F7FD2316121100C737C6 /* Info.plist */,
 			);
 			path = BusinessCardTests;
@@ -421,6 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A94F7FC2316121100C737C6 /* BusinessCardTests.swift in Sources */,
+				2A561AA123A8821300B34011 /* ReduxTesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

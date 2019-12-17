@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import Models
 
 extension App {
-    enum Action {
+    enum Action: Equatable {
         
         case cards(Cards.Action)
         case create(CreateCardAction)
         case updateCreateCardState(CreateCardState)
-        case showCreateCard(Bool)
-        case confirmCreateCardCancel(Bool)
+        case showCreateCard(CreateCardState?)
+        case confirmCreateCardCancel(Card?)
 
         var cards: Cards.Action? {
             get {
@@ -50,7 +51,7 @@ extension App {
             }
         }
 
-        var showCreateCard: Bool? {
+        var showCreateCard: CreateCardState? {
             get {
                 guard case let .showCreateCard(value) = self else { return nil }
                 return value
@@ -61,7 +62,7 @@ extension App {
             }
         }
 
-        var confirmCreateCardCancel: Bool? {
+        var confirmCreateCardCancel: Card? {
             get {
                 guard case let .confirmCreateCardCancel(value) = self else { return nil }
                 return value

@@ -18,34 +18,28 @@ extension Cards {
         case .proposeCardDelete(let id):
             state.proposedCardDeleteID = id
             state.showConfirmDelete = id != nil
-        case .share(let id):
-            state.loading = true
-            let newState = state
-            return
-                {
-                    guard let card = newState.cards.first(where: { $0.id == id }) else { return .empty() }
-                    
-                    return Request<Environment, ShareLink, Card>
-                        .share(card: card)
-                        .send()
-                        .eraseToAnyPublisher()
-                        .catch { (error) -> Just<ShareLink> in
-                            print(error)
-                            return Just(ShareLink(path: ""))
-                        }.map { sharePath in
-                            let link = Current.environment.url.appendingPathComponent(sharePath.path)
-                            return Cards.Action.presentShareLink(link)
-                        }.eraseToAnyPublisher()
-                }
-            
         case .presentShareLink(let link):
             state.loading = false
             state.shareLink = link
+        case .share(let id):
+            state.loading = true
+            let newState = state
+            guard let card = state.cards.first(where: { $0.id == id }) else { break }
+            return [Request<Environment, ShareLink, Card>
+                .share(card: card)
+                .send()
+                .eraseToAnyPublisher()
+                .catch { (error) -> Just<ShareLink> in
+                    print(error)
+                    return Just(ShareLink(path: ""))
+                }.map { sharePath in
+                    let link = Current.environment.url.appendingPathComponent(sharePath.path)
+                    return Cards.Action.presentShareLink(link)
+                }.eraseToEffect()]
         case .showDetail(let id):
             state.detailCardID = id
-        case .detail(_):
-            break
+        case .detail(_): break
         }
-        return { .empty() }
+        return []
     }
 }

@@ -10,18 +10,21 @@ import Foundation
 import Models
 
 extension Cards {
-    struct State: Codable {
+    struct State: Codable, Equatable {
         var cards: [Card] = []
-        var detailCardID: UUID?
-        var detailCard: Card? {
+        var detailCardID: UUID? {
+            didSet {
+                print("setting detailCardID from \(oldValue) to \(detailCardID)")
+            }
+        }
+        var detailCard: CardDetail.State? {
             get {
-                cards
-                    .first(where: { $0.id == detailCardID })
+                cards.first(where: { $0.id == detailCardID }).map(CardDetail.State.init)
             }
             set {
                 if let index = cards.firstIndex(where: { $0.id == detailCardID }),
                     let newCard = newValue {
-                    cards[index] = newCard
+                    cards[index] = newCard.card
                 } else  {
                     detailCardID = nil
                 }
@@ -29,9 +32,10 @@ extension Cards {
         }
         var showConfirmDelete = false
         var proposedCardDeleteID: UUID?
-        var loading = false
-        var shareLink: URL?
         var error: CardsError?
+        var createCardState: CreateCardState?
+        var loading = false
+        var shareLink: URL? = nil
     }
 }
 

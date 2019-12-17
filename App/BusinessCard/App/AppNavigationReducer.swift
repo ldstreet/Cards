@@ -13,24 +13,27 @@ func navigation(
     _ reducer: @escaping Reducer<App.State, App.Action>
 ) -> Reducer<App.State, App.Action> {
     return { state, action in
-        let effectPublisher = reducer(&state, action)()
+        let effects = reducer(&state, action)
         switch action {
         case .create(.cancel):
-            state.showCreateCard = false
-            state.createCardState = .init(card: .createDefaultCard())
+//            state.createCardState = nil
+            return [Just(.showCreateCard(nil)).eraseToEffect()] + effects
         case .create(.done):
-            state.showCreateCard = false
+//            return [Just(.showCreateCard(nil)).eraseToEffect()] + effects
+            state.createCardState = nil
         case .cards(.detail(.edit(let card))):
-            state.showCreateCard = true
-            state.createCardState = .init(card: card)
-        case .cards(.detail(.share(let id))):
-            return { Just(.cards(.share(id))).eraseToAnyPublisher() }
+//            state.cardsState.detailCardID = nil
+//            state.createCardState = .init(card: card)
+            return [Just(.showCreateCard(CreateCardState(card: card))).eraseToEffect()] + effects
+        case .cards(.detail(.share(let card))):
+            return [Just(.cards(.share(card.id))).eraseToEffect()] + effects
         case .cards: break
         case .create: break
         case .updateCreateCardState: break
         case .confirmCreateCardCancel: break
-        case .showCreateCard: break
+        case .showCreateCard(let createCardState):
+            state.createCardState = createCardState
         }
-        return { effectPublisher }
+        return effects
     }
 }

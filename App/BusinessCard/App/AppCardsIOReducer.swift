@@ -12,14 +12,15 @@ func cardsIO(
     _ reducer: @escaping Reducer<App.State, App.Action>
 ) -> Reducer<App.State, App.Action> {
     return { state, action in
-        let effectPublisher = reducer(&state, action)
+        let effects = reducer(&state, action)
         switch action {
         case .cards(_): break
         case .create(.done):
-            if let existingIndex = state.cardsState.cards.firstIndex(where: { $0.id == state.createCardState.card.id }) {
-                state.cardsState.cards[existingIndex] = state.createCardState.card
+            guard let card = state.createCardState?.card else { return effects }
+            if let existingIndex = state.cardsState.cards.firstIndex(where: { $0.id == state.createCardState?.card.id }) {
+                state.cardsState.cards[existingIndex] = card
             } else {
-                state.cardsState.cards.append(state.createCardState.card)
+                state.cardsState.cards.append(card)
             }
             state.createCardState = .init(card: .createDefaultCard())
             
@@ -28,6 +29,6 @@ func cardsIO(
         case .showCreateCard(_): break
         case .confirmCreateCardCancel(_): break
         }
-        return { effectPublisher() }
+        return effects
     }
 }

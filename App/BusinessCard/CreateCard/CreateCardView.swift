@@ -80,12 +80,12 @@ extension Card.Fields.Group.Field.DataType {
 }
 
 
-struct CreateCardState: Codable, Identifiable {
+struct CreateCardState: Codable, Identifiable, Equatable {
     let id = UUID()
     var card = Card.createDefaultCard()
 }
 
-enum CreateCardAction {
+enum CreateCardAction: Equatable {
     case firstNameChanged(String)
     case lastNameChanged(String)
     case titleChanged(String)
@@ -110,7 +110,7 @@ let createCardReducer: Reducer<CreateCardState, CreateCardAction> = { state, act
     case .cancel: break
     case .done: break
     }
-    return { .empty() }
+    return []
 }
 
 struct CreateCardView: View {

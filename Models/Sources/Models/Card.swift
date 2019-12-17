@@ -10,7 +10,7 @@ import Foundation
 
 public typealias Value = Codable & Hashable
 
-public struct Card: Value, Identifiable {
+public struct Card: Value, Identifiable, Equatable {
     
     public var id: UUID
     public var firstName: String
@@ -117,27 +117,23 @@ public struct Card: Value, Identifiable {
 extension Card {
     
     
-    static var david: Card {
-        Card(
-            firstName: "David",
-            lastName: "Street",
-            title: "ProjectManager",
-            fields: [
-                Card.Fields.Group.Field(type: .phoneNumber, specifier: "home", value: "555-555-5555")
-            ]
-        )
-    }
+    public static let david: Card = Card(
+        firstName: "David",
+        lastName: "Street",
+        title: "ProjectManager",
+        fields: [
+            Card.Fields.Group.Field(type: .phoneNumber, specifier: "home", value: "555-555-5555")
+        ]
+    )
     
-    public static var luke: Card {
-        Card(
-            firstName: "Luke",
-            lastName: "Street",
-            title: "Software Developer",
-            fields: [
-                Card.Fields.Group.Field(type: .phoneNumber, specifier: "cell", value: "555-555-5555")
-            ]
-        )
-    }
+    public static let luke: Card = Card(
+        firstName: "Luke",
+        lastName: "Street",
+        title: "Software Developer",
+        fields: [
+            Card.Fields.Group.Field(type: .phoneNumber, specifier: "cell", value: "555-555-5555")
+        ]
+    )
     
     
 }

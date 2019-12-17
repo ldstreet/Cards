@@ -9,13 +9,24 @@
 import Foundation
 
 extension Cards {
-    enum Action {
+    enum Action: Equatable {
         case delete(UUID)
         case proposeCardDelete(UUID?)
-        case share(UUID)
-        case presentShareLink(URL?)
         case showDetail(UUID?)
         case detail(CardDetail.Action)
+        case share(UUID)
+        case presentShareLink(URL?)
+        
+        var presentShareLink: URL?? {
+            get {
+                guard case let .presentShareLink(value) = self else { return nil }
+                return value
+            }
+            set {
+                guard case .presentShareLink = self, let newValue = newValue else { return }
+                self = .presentShareLink(newValue)
+            }
+        }
 
         var delete: UUID? {
             get {
@@ -47,17 +58,6 @@ extension Cards {
             set {
                 guard case .share = self, let newValue = newValue else { return }
                 self = .share(newValue)
-            }
-        }
-
-        var presentShareLink: URL?? {
-            get {
-                guard case let .presentShareLink(value) = self else { return nil }
-                return value
-            }
-            set {
-                guard case .presentShareLink = self, let newValue = newValue else { return }
-                self = .presentShareLink(newValue)
             }
         }
 

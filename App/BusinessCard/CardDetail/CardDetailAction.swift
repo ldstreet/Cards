@@ -11,9 +11,8 @@ import Models
 
 extension CardDetail {
 
-    enum Action {
+    enum Action: Equatable {
         case edit(Card)
-        case share(UUID)
+        case share(Card)
     }
-    
 }

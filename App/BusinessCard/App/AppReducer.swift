@@ -15,18 +15,18 @@ extension App {
         case .create(_): break
         case .updateCreateCardState(let createCardState):
             state.createCardState = createCardState
-        case .confirmCreateCardCancel(let show):
-            state.showCreateCardCancelDialog = show
-            if show == true && state.createCardState.card.hasBeenChanged {
-                state.showCreateCardCancelDialog = true
+        case .confirmCreateCardCancel(let card):
+            state.showCreateCardCancelDialog = card
+            if card != nil && state.createCardState?.card.hasBeenChanged == true {
+                state.showCreateCardCancelDialog = card
             } else {
-                state.showCreateCardCancelDialog = false
+                state.showCreateCardCancelDialog = nil
             }
             
-        case .showCreateCard(let show):
-            state.showCreateCard = show
+        case .showCreateCard(let cardState): break
+//            state.createCardState = cardState
         }
-        return { .empty() }
+        return []
     }
     
     static let reducer: Reducer<App.State, App.Action> = combine(

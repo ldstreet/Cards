@@ -26,36 +26,15 @@ extension Cards {
             self.store = store
         }
         
-//        func showDetail(for card: Card) -> Bool {
-//            self.store.value.showDetail == card.id
-//        }
-        
         var body: some View {
             List {
                 ForEach(store.value.cards) { card in
-                    if self.store.value.detailCardID == card.id {
-                        self.store.view(
+                    NavigationLink(
+                        destination: self.store.view(
                             value: { $0.detailCard },
                             action: { .detail($0) }
-                        )
-                            .map(CardDetailView.init)?
-                            .tag(card.id)
-//                            .id(card.id)
-                            .onTapGesture {
-                                withAnimation {
-                                    self.store.send(.showDetail(nil))
-                                }
-                            }
-                        .transition(.move(edge: .top))
-                            
-                    } else {
-                        self.cardPreview(card)
-                            .tag(card.id)
-//                            .id(card.id)
-                            .transition(.move(edge: .top))
-                            
-                    }
-                    
+                        ).map(CardDetailView.init)
+                    ) { self.cardCell(card) }
                     
                 }
                 .onDelete { indexSet in
@@ -64,46 +43,45 @@ extension Cards {
                         self.store.send(.proposeCardDelete(id))
                     }
                 }
-            }
-            .sheet(item: store.send(
+            }.sheet(item: store.send(
                 Cards.Action.presentShareLink,
                 binding: \Cards.State.shareLink
             )) {  url in
                 ActivityView(activityItems: [url.absoluteString], applicationActivities: nil)
-            }.listStyle(GroupedListStyle())
+            }
         }
         
-        func cardPreview(_ card: Card) -> some View {
-            CardPreviewView(card: card)
-                .onTapGesture {
-                    withAnimation {
-                        self.store.send(.showDetail(card.id))
-                    }
-                }
-                .contextMenu {
-                    Button("Share") {
-                        self.store.send(.share(card.id))
-                    }
-                    Button("Delete") {
-                        self.store.send(.proposeCardDelete(card.id))
-                    }
-                    .actionSheet(
-                        item: self.store.send(
-                            Cards.Action.proposeCardDelete,
-                            binding: \.proposedCardDeleteID
-                        )
-                    ) { id in
-                        ActionSheet(
-                            title: Text("Delete this card?"),
-                            buttons: [
-                                .destructive(Text("Delete")) {
-                                    self.store.send(.delete(id))
-                                },
-                                .cancel()
-                            ]
-                        )
-                    }
+        func cardCell(_ card: Card) -> some View {
+            HStack {
+                CardPreviewView(card: card)
+                Spacer()
             }
+            .contentShape(Rectangle())
+            .contextMenu {
+                Button("Share") {
+                    self.store.send(.share(card.id))
+                }
+                Button("Delete") {
+                    self.store.send(.proposeCardDelete(card.id))
+                }
+                .actionSheet(
+                    item: self.store.send(
+                        Cards.Action.proposeCardDelete,
+                        binding: \.proposedCardDeleteID
+                    )
+                ) { id in
+                    ActionSheet(
+                        title: Text("Delete this card?"),
+                        buttons: [
+                            .destructive(Text("Delete")) {
+                                self.store.send(.delete(id))
+                            },
+                            .cancel()
+                        ]
+                    )
+                }
+            }
+            .transition(.scale(scale: 0, anchor: .center))
         }
     }
 }
@@ -116,10 +94,13 @@ extension URL: Identifiable {
 #if DEBUG
 struct CardsView_Previews: PreviewProvider {
     static var previews: some View {
-        Cards.CardsView(store: .init(
+        return Group {
+            Cards.CardsView(store: .init(
             initialValue: .init(cards: .all),
             reducer: Cards.reducer
-        )).animation(.default)
+            ))
+        }
+        
     }
 }
 #endif

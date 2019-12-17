@@ -7,15 +7,13 @@
 //
 
 import Foundation
+import Models
 
 extension App {
-    struct State: Codable {
+    struct State: Codable, Equatable {
         var cardsState: Cards.State = .init()
-        var createCardState: CreateCardState = .init(card: .createDefaultCard())
-        var showCreateCard = false
-        var showCreateCardCancelDialog = false
-        
-        
+        var createCardState: CreateCardState?
+        var showCreateCardCancelDialog: Card?
     }
 }
 

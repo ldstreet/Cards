@@ -6,8 +6,16 @@
 //  Copyright © 2019 Luke Street. All rights reserved.
 //
 
+import Foundation
 import Models
 
 extension CardDetail {
-    typealias State = Card
+    
+    public struct State: Equatable {
+        var card: Card
+        
+        public init(card: Card) {
+            self.card = card
+        }
+    }
 }
