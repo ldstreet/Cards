@@ -12,11 +12,7 @@ import Models
 extension Cards {
     struct State: Codable, Equatable {
         var cards: [Card] = []
-        var detailCardID: UUID? {
-            didSet {
-                print("setting detailCardID from \(oldValue) to \(detailCardID)")
-            }
-        }
+        var detailCardID: UUID?
         var detailCard: CardDetail.State? {
             get {
                 cards.first(where: { $0.id == detailCardID }).map(CardDetail.State.init)

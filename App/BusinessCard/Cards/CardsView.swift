@@ -31,7 +31,7 @@ extension Cards {
                 ForEach(store.value.cards) { card in
                     NavigationLink(
                         destination: self.store.view(
-                            value: { $0.detailCard },
+                            value: { $0.cards.first(where: { $0.id == card.id }).map(CardDetail.State.init) },
                             action: { .detail($0) }
                         ).map(CardDetailView.init)
                     ) { self.cardCell(card) }
