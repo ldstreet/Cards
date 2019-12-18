@@ -29,7 +29,7 @@ extension Cards {
         var showConfirmDelete = false
         var proposedCardDeleteID: UUID?
         var error: CardsError?
-        var createCardState: CreateCardState?
+        var createCardState: CreateCard.State?
         var loading = false
         var shareLink: URL? = nil
     }

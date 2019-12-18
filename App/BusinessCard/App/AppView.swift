@@ -60,7 +60,7 @@ struct AppView: View {
                  .navigationBarItems(
                     leading: EditButton(),
                     trailing: Button(
-                        action: { self.store.send(.showCreateCard(CreateCardState())) },
+                        action: { self.store.send(.showCreateCard(CreateCard.State())) },
                         label: { Image(systemName: "plus").font(.title) }
                     )
                 )
@@ -79,7 +79,7 @@ struct AppView: View {
                             self.store.view(
                                 value: { $0.createCardState },
                                 action: { return .create($0) }
-                            ).map(CreateCardView.init)
+                            ).map(CreateCard.View.init)
                         }
                     )
             }
@@ -100,7 +100,7 @@ struct AppView: View {
                              self.store.send(.create(.cancel))
                          },
                          .default(Text("Keep Editing")) {
-                            self.store.send(.showCreateCard(CreateCardState(card: canceledCard)))
+                            self.store.send(.showCreateCard(CreateCard.State(card: canceledCard)))
                          }
                      ]
                  )

@@ -13,9 +13,9 @@ extension App {
     enum Action: Equatable {
         
         case cards(Cards.Action)
-        case create(CreateCardAction)
-        case updateCreateCardState(CreateCardState)
-        case showCreateCard(CreateCardState?)
+        case create(CreateCard.Action)
+        case updateCreateCardState(CreateCard.State)
+        case showCreateCard(CreateCard.State?)
         case confirmCreateCardCancel(Card?)
 
         var cards: Cards.Action? {
@@ -29,7 +29,7 @@ extension App {
             }
         }
 
-        var create: CreateCardAction? {
+        var create: CreateCard.Action? {
             get {
                 guard case let .create(value) = self else { return nil }
                 return value
@@ -40,7 +40,7 @@ extension App {
             }
         }
 
-        var updateCreateCardState: CreateCardState? {
+        var updateCreateCardState: CreateCard.State? {
             get {
                 guard case let .updateCreateCardState(value) = self else { return nil }
                 return value
@@ -51,7 +51,7 @@ extension App {
             }
         }
 
-        var showCreateCard: CreateCardState? {
+        var showCreateCard: CreateCard.State? {
             get {
                 guard case let .showCreateCard(value) = self else { return nil }
                 return value

@@ -12,7 +12,7 @@ import Models
 extension App {
     struct State: Codable, Equatable {
         var cardsState: Cards.State = .init()
-        var createCardState: CreateCardState?
+        var createCardState: CreateCard.State?
         var showCreateCardCancelDialog: Card?
     }
 }

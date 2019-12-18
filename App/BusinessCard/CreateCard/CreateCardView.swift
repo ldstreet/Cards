@@ -11,118 +11,17 @@ import Redux
 import Models
 import Combine
 
-extension Card {
-    static func createDefaultCard() -> Card {
-        .init(
-            fields: [
-                .init(type: .phoneNumber, specifier: "cell", value: ""),
-                .init(type: .phoneNumber, specifier: "work", value: ""),
-                .init(type: .emailAddress, specifier: "work", value: ""),
-                .init(type: .address, specifier: "work", value: "")
-            ]
-        )
-    }
-    
-    var hasBeenChanged: Bool {
-        return
-            !firstName.isEmpty ||
-            !lastName.isEmpty ||
-            !title.isEmpty ||
-            fields.hasBeenChanged
-    }
-}
+enum CreateCard {}
 
-extension Card.Fields {
-    var hasBeenChanged: Bool {
-        return groups.reduce(false, { return $0 || $1.hasBeenChanged })
-    }
-}
-
-extension Card.Fields.Group {
-    var hasBeenChanged: Bool {
-        return fields.reduce(false, { return $0 || $1.hasBeenChanged })
-    }
-}
-
-extension Card.Fields.Group.Field {
-    var hasBeenChanged: Bool {
-        return false
-    }
-}
-
-extension Card.Fields.Group.Field {
-    var specifierIndex: Int {
-        get { type.specifiers.firstIndex(where: { $0 == self.specifier })! }
-        set { specifier = type.specifiers[newValue] }
-    }
-}
-
-extension Card.Fields.Group.Field.DataType {
-    public var contentType: UITextContentType? {
-        switch self {
-        case .certificate: return nil
-        case .phoneNumber: return .telephoneNumber
-        case .emailAddress: return .emailAddress
-        case .address: return .fullStreetAddress
-        case .other: return nil
-        }
-    }
-    
-    public var keyboardType: UIKeyboardType {
-        switch self {
-        case .certificate: return .default
-        case .phoneNumber: return .phonePad
-        case .emailAddress: return .emailAddress
-        case .address: return .default
-        case .other: return .default
-        }
-    }
-}
-
-
-struct CreateCardState: Codable, Identifiable, Equatable {
-    let id = UUID()
-    var card = Card.createDefaultCard()
-}
-
-enum CreateCardAction: Equatable {
-    case firstNameChanged(String)
-    case lastNameChanged(String)
-    case titleChanged(String)
-    case fieldChanged(value: String, indexPath: IndexPath)
-    case fieldSpecifierChanged(specifierIndex: Int, indexPath: IndexPath)
-    case cancel
-    case done
-}
-
-let createCardReducer: Reducer<CreateCardState, CreateCardAction> = { state, action in
-    switch action {
-    case .firstNameChanged(let str):
-        state.card.firstName = str
-    case .lastNameChanged(let str):
-        state.card.lastName = str
-    case .titleChanged(let str):
-        state.card.title = str
-    case .fieldChanged(let value, let indexPath):
-        state.card.fields.groups[indexPath.section].fields[indexPath.item].value = value
-    case .fieldSpecifierChanged(let specifierIndex, let indexPath):
-        state.card.fields.groups[indexPath.section].fields[indexPath.item].specifierIndex = specifierIndex
-    case .cancel: break
-    case .done: break
-    }
-    return []
-}
-
-struct CreateCardView: View {
-    
-    @ObservedObject var store: Store<CreateCardState, CreateCardAction>
-    
-    var body: some View {
-        NavigationView {
-            VStack {
+extension CreateCard {
+    struct View: SwiftUI.View {
+        
+        @ObservedObject var store: Store<State, Action>
+        
+        var body: some SwiftUI.View {
+            NavigationView {
                 Form {
-                    Section(
-                        header:
+                    Section(header:
                         HStack {
                             Spacer()
                             ProfileImageHeader()
@@ -132,25 +31,28 @@ struct CreateCardView: View {
                         TextField(
                             "Jane",
                             text: store.send(
-                                CreateCardAction.firstNameChanged,
+                                Action.firstNameChanged,
                                 binding: \.card.firstName
                             )
                         ).textContentType(.givenName)
+                        
                         TextField(
                             "Doe",
                             text: store.send(
-                                CreateCardAction.lastNameChanged,
+                                Action.lastNameChanged,
                                 binding: \.card.lastName
                             )
                         ).textContentType(.familyName)
+                        
                         TextField(
                             "Project Manager",
                             text: store.send(
-                                CreateCardAction.titleChanged,
+                                Action.titleChanged,
                                 binding: \.card.title
                             )
                         ).textContentType(.jobTitle)
                     }
+                    
                     ForEach(self.store.value.card.fields.groups.enumeratedArray(), id: \.offset) { fieldGroup in
                         Section {
                             ForEach(fieldGroup.element.fields.enumeratedArray(), id: \.offset) { field in
@@ -163,19 +65,21 @@ struct CreateCardView: View {
                         }
                     }
                 }
+                .navigationBarTitle("Create Card")
+                .navigationBarItems(
+                    leading: Button("Cancel") {
+                        self.store.send(.cancel)
+                    },
+                    trailing: Button("Done") {
+                        self.store.send(.done)
+                    }
+                )
             }
-            .navigationBarTitle("Create Card")
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    self.store.send(.cancel)
-                },
-                trailing: Button("Done") {
-                    self.store.send(.done)
-                }
-            )
         }
     }
 }
+
+
 
 extension Sequence {
     func enumeratedArray() -> [(offset: Int, element: Element)] { return Array(enumerated()) }
@@ -185,17 +89,17 @@ extension Sequence {
 struct CreateCardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            CreateCardView(
+            CreateCard.View(
                 store: Store(
                     initialValue: .init(card: .createDefaultCard()),
-                    reducer: createCardReducer
+                    reducer: CreateCard.reducer
                 )
             )
             Text("Some View")
                 .sheet(isPresented: Binding<Bool>(get: { return true }, set: {_ in})) {
-                    CreateCardView(store: .init(
-                        initialValue: CreateCardState(card: .createDefaultCard()),
-                        reducer: createCardReducer
+                    CreateCard.View(store: .init(
+                        initialValue: CreateCard.State(card: .createDefaultCard()),
+                        reducer: CreateCard.reducer
                     ))
             }
         }
@@ -205,7 +109,9 @@ struct CreateCardView_Previews: PreviewProvider {
 #endif
 
 struct SpecifierPicker: View {
-    let store: Store<CreateCardState, CreateCardAction>
+    
+    let store: Store<CreateCard.State, CreateCard.Action>
+    
     let indexPath: IndexPath
     let specifiers: [String]
     
@@ -213,7 +119,7 @@ struct SpecifierPicker: View {
         Picker(
             "",
             selection: self.store.send(
-                CreateCardAction.fieldSpecifierChanged,
+                CreateCard.Action.fieldSpecifierChanged,
                 binding: { state, indexPath in
                     return state
                         .card
@@ -237,7 +143,7 @@ struct SpecifierPicker: View {
 
 struct FieldCell: View {
     
-    let store: Store<CreateCardState, CreateCardAction>
+    let store: Store<CreateCard.State, CreateCard.Action>
     let field: (element: Card.Fields.Group.Field, offset: Int)
     let fieldGroup: (element: Card.Fields.Group, offset: Int)
     
@@ -255,7 +161,7 @@ struct FieldCell: View {
             TextField(
                 field.element.type.rawValue,
                 text: self.store.send(
-                    CreateCardAction.fieldChanged,
+                    CreateCard.Action.fieldChanged,
                     binding: { state, indexPath in
                         return state
                             .card
@@ -263,7 +169,7 @@ struct FieldCell: View {
                             .groups[indexPath.section]
                             .fields[indexPath.item]
                             .value
-                },
+                    },
                     suppl: IndexPath(
                         item: field.offset,
                         section: fieldGroup.offset

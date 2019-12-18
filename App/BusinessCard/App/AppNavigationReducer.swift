@@ -16,15 +16,11 @@ func navigation(
         let effects = reducer(&state, action)
         switch action {
         case .create(.cancel):
-//            state.createCardState = nil
             return [Just(.showCreateCard(nil)).eraseToEffect()] + effects
         case .create(.done):
-//            return [Just(.showCreateCard(nil)).eraseToEffect()] + effects
             state.createCardState = nil
         case .cards(.detail(.edit(let card))):
-//            state.cardsState.detailCardID = nil
-//            state.createCardState = .init(card: card)
-            return [Just(.showCreateCard(CreateCardState(card: card))).eraseToEffect()] + effects
+            return [Just(.showCreateCard(CreateCard.State(card: card))).eraseToEffect()] + effects
         case .cards(.detail(.share(let card))):
             return [Just(.cards(.share(card.id))).eraseToEffect()] + effects
         case .cards: break

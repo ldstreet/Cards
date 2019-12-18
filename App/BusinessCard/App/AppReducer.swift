@@ -37,7 +37,7 @@ extension App {
             action: \App.Action.cards
         ),
         pullback(
-            createCardReducer,
+            CreateCard.reducer,
             value: \App.State.createCardState,
             action: \App.Action.create
         ),

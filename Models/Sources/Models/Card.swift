@@ -115,8 +115,6 @@ public struct Card: Value, Identifiable, Equatable {
 
 #if DEBUG
 extension Card {
-    
-    
     public static let david: Card = Card(
         firstName: "David",
         lastName: "Street",
@@ -134,8 +132,6 @@ extension Card {
             Card.Fields.Group.Field(type: .phoneNumber, specifier: "cell", value: "555-555-5555")
         ]
     )
-    
-    
 }
 
 extension Array where Element == Card {
