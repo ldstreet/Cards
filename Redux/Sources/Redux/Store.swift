@@ -5,6 +5,7 @@
 //  Created by Luke Street on 8/18/19.
 //
 
+import Foundation
 import SwiftUI
 import Combine
 
@@ -97,7 +98,6 @@ public final class Store<Value, Action>: ObservableObject {
         )
     }
     
-    
     public func view<LocalValue, LocalAction>(
         value toLocalValue: @escaping (Value) -> LocalValue,
         action toGlobalAction: @escaping (LocalAction) -> Action
@@ -110,34 +110,15 @@ public final class Store<Value, Action>: ObservableObject {
                 return []
             }
         )
-        localStore.viewCancellable = self.$value.receive(on: RunLoop.main).sink { [weak localStore] newValue in
-            localStore?.value = toLocalValue(newValue)
-        }
+        localStore.viewCancellable =
+            self
+                .$value
+                .receive(on: RunLoop.main)
+                .sink { [weak localStore] newValue in
+                    localStore?.value = toLocalValue(newValue)
+                }
         return localStore
     }
-    
-//    public func view<LocalValue, LocalAction>(
-//        value toLocalValue: @escaping (Value) -> LocalValue?,
-//        fallback: LocalValue,
-//        action toGlobalAction: @escaping (LocalAction) -> Action
-//    ) -> Store<LocalValue, LocalAction> {
-//        let localStore = Store<LocalValue, LocalAction>(
-//            initialValue: toLocalValue(self.value) ?? fallback,
-//            reducer: { localValue, localAction in
-//                self.send(toGlobalAction(localAction))
-//                if let newLocalValue = toLocalValue(self.value) {
-//                    localValue = newLocalValue
-//                }
-//                return []
-//        }
-//        )
-//        localStore.viewCancellable = self.$value.sink { [weak localStore] newValue in
-//            if let newLocalValue = toLocalValue(newValue) {
-//                localStore?.value =  newLocalValue
-//            }
-//        }
-//        return localStore
-//    }
     
     public func view<LocalValue, LocalAction>(
         value toLocalValue: @escaping (Value) -> LocalValue?,
@@ -162,116 +143,7 @@ public final class Store<Value, Action>: ObservableObject {
         }
         return localStore
     }
-    
-//    public func view<LocalValue, LocalAction>(
-//        value toLocalValue: @escaping (Value) -> LocalValue?,
-//        action toGlobalAction: @escaping (LocalAction) -> Action
-//    ) -> Store<LocalValue, LocalAction>? {
-//        guard let localValue = toLocalValue(value) else { return nil }
-//        let localStore = Store<LocalValue, LocalAction>(
-//            initialValue: localValue,
-//            reducer: { localValue, localAction in
-//                self.send(toGlobalAction(localAction))
-//                if let newLocalValue = toLocalValue(self.value) {
-//                    localValue = newLocalValue
-//                }
-//                return { .empty() }
-//        }
-//        )
-//        localStore.cancellable = self.$value.sink { [weak localStore] newValue in
-//            if let newLocalValue = toLocalValue(newValue) {
-//                localStore?.value =  newLocalValue
-//            }
-//        }
-//        return localStore
-//    }
 }
-
-//public final class Store<Value, Action>: ObservableObject {
-//    public let reducer: Reducer<Value, Action>
-//    @Published public private(set) var value: Value
-//    private var cancellable: Cancellable?
-//    private var asyncCancellables = Set<AnyCancellable>()
-//
-//    public init(
-//        initialValue: Value,
-//        reducer: @escaping Reducer<Value, Action>
-//    ) {
-//        self.reducer = reducer
-//        self.value = initialValue
-//    }
-//
-//    public func send(_ action: Action) {
-//        let effectPublisher = self.reducer(&self.value, action)
-//        let newCancellable = effectPublisher()
-//            .receive(on: RunLoop.main)
-//            .sink { self.send($0) }
-//        asyncCancellables.insert(newCancellable)
-//    }
-//    
-//    public func send<LocalValue>(
-//        _ action: @escaping (LocalValue) -> Action,
-//        binding: KeyPath<Value, LocalValue>
-//    ) -> Binding<LocalValue> {
-//        return Binding<LocalValue>(
-//            get: { return self.value[keyPath: binding] },
-//            set: { self.send(action($0)) }
-//        )
-//        
-//    }
-//    
-//    public func send<LocalValue, Suppl>(
-//        _ action: @escaping (LocalValue, Suppl) -> Action,
-//        binding: @escaping (Value, Suppl) -> (LocalValue),
-//        suppl: Suppl
-//    ) -> Binding<LocalValue> {
-//        return Binding<LocalValue>(
-//            get: { return binding(self.value, suppl) },
-//            set: { self.send(action($0, suppl)) }
-//        )
-//    }
-//    
-//    public func view<LocalValue, LocalAction>(
-//        value toLocalValue: @escaping (Value) -> LocalValue,
-//        action toGlobalAction: @escaping (LocalAction) -> Action
-//    ) -> Store<LocalValue, LocalAction> {
-//        let localStore = Store<LocalValue, LocalAction>(
-//            initialValue: toLocalValue(value),
-//            reducer: { localValue, localAction in
-//                self.send(toGlobalAction(localAction))
-//                localValue = toLocalValue(self.value)
-//                return { .empty() }
-//            }
-//        )
-//        localStore.cancellable = self.$value.sink { [weak localStore] newValue in
-//            localStore?.value = toLocalValue(newValue)
-//        }
-//        return localStore
-//    }
-//    
-//    public func view<LocalValue, LocalAction>(
-//        value toLocalValue: @escaping (Value) -> LocalValue?,
-//        action toGlobalAction: @escaping (LocalAction) -> Action
-//    ) -> Store<LocalValue, LocalAction>? {
-//        guard let localValue = toLocalValue(value) else { return nil }
-//        let localStore = Store<LocalValue, LocalAction>(
-//            initialValue: localValue,
-//            reducer: { localValue, localAction in
-//                self.send(toGlobalAction(localAction))
-//                if let newLocalValue = toLocalValue(self.value) {
-//                    localValue = newLocalValue
-//                }
-//                return { .empty() }
-//            }
-//        )
-//        localStore.cancellable = self.$value.sink { [weak localStore] newValue in
-//            if let newLocalValue = toLocalValue(newValue) {
-//                localStore?.value =  newLocalValue
-//            }
-//        }
-//        return localStore
-//    }
-//}
 
 public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(
     _ reducer: @escaping Reducer<LocalValue, LocalAction>,
@@ -364,5 +236,34 @@ extension Effect {
             work()
             return Empty(completeImmediately: true)
         }.eraseToEffect()
+    }
+}
+
+public struct Indexed<Value: Equatable>: Equatable {
+    public var index: Int
+    public var value: Value
+
+    public init(index: Int, value: Value) {
+        self.index = index
+        self.value = value
+    }
+}
+
+public func indexed<State, Action, GlobalState, GlobalAction>(
+  reducer: @escaping Reducer<State, Action>,
+  _ stateKeyPath: WritableKeyPath<GlobalState, [State]>,
+  _ actionKeyPath: WritableKeyPath<GlobalAction, Indexed<Action>?>
+) -> Reducer<GlobalState, GlobalAction> {
+    return { globalValue, globalAction in
+        guard let localIndexedAction = globalAction[keyPath: actionKeyPath] else { return [] }
+        let index = localIndexedAction.index
+        let localEffects = reducer(&globalValue[keyPath: stateKeyPath][index], localIndexedAction.value)
+        return localEffects.map { localEffect in
+            localEffect.map { action in
+                var globalAction = globalAction
+                globalAction[keyPath: actionKeyPath] = Indexed(index: index, value: action)
+                return globalAction
+            }.eraseToEffect()
+        }
     }
 }

@@ -45,17 +45,11 @@ struct CardDetailView: View {
         }
         .animation(.default)
         .padding()
-//        .sheet(item: store.send(
-//            CardDetail.Action.presentShareLink,
-//            binding: \CardDetail.State.shareLink
-//        )) {  url in
-//            ActivityView(activityItems: [url.absoluteString], applicationActivities: nil)
-//        }
     }
     
     var header: some View {
         VStack(alignment: .center) {
-            ProfileImageHeader()//.transition(.opacity)
+            ProfileImageHeader()
             (
                 Text(store.value.card.firstName) +
                 Text(" ") +
@@ -67,11 +61,9 @@ struct CardDetailView: View {
     }
     
     var fields: some View {
-        ForEach(store.value.card.fields.groups.enumeratedArray(), id: \.offset) { fieldGroup in
-            Section {
-                ForEach(fieldGroup.element.fields.enumeratedArray(), id: \.offset) { field in
-                    Text(field.element.value)
-                }
+        ForEach(0..<store.value.card.groups.count) { groupIndex in
+            ForEach(0..<self.store.value.card.groups[groupIndex].fields.count) { fieldIndex in
+                Text(self.store.value.card.groups[groupIndex].fields[fieldIndex].value)
             }
         }
     }

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import BusinessCard
+//@testable import BusinessCard
 import Models
 #if DEBUG
 
@@ -22,18 +22,18 @@ class BusinessCardTests: XCTestCase {
     }
 
     func testExample() {
-        let state = CreateCard.State(card: Card.luke)
-        assert(
-            initialValue: App.State(cardsState: .init(), createCardState: .init(), showCreateCardCancelDialog: nil),
-            reducer: navigation(cardsIO(App.reducer)),
-            steps:
-            .send(.updateCreateCard.State(state)) { $0.createCardState = state },
-            .send(.create(.done)) {
-                $0.createCardState = nil
-                $0.cardsState.cards.append(.luke)
-            }
-            
-        )
+//        let state = CreateCard.State(card: Card.luke)
+//        assert(
+//            initialValue: App.State(cardsState: .init(), createCardState: .init(), showCreateCardCancelDialog: nil),
+//            reducer: navigation(cardsIO(App.reducer)),
+//            steps:
+//            .send(.updateCreateCard.State(state)) { $0.createCardState = state },
+//            .send(.create(.done)) {
+//                $0.createCardState = nil
+//                $0.cardsState.cards.append(.luke)
+//            }
+//
+//        )
     }
 
 }

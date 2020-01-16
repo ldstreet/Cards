@@ -52,17 +52,13 @@ extension CreateCard {
                             )
                         ).textContentType(.jobTitle)
                     }
-                    
-                    ForEach(self.store.value.card.fields.groups.enumeratedArray(), id: \.offset) { fieldGroup in
-                        Section {
-                            ForEach(fieldGroup.element.fields.enumeratedArray(), id: \.offset) { field in
-                                FieldCell(
-                                    store: self.store,
-                                    field: field,
-                                    fieldGroup: fieldGroup
-                                )
-                            }
-                        }
+                    ForEach(0..<self.store.value.card.groups.count) { index in
+                        FieldGroup.View(
+                            store: self.store.view(
+                                value: { $0.card.groups[index] },
+                                action: { .groups(Indexed(index: index, value: $0)) }
+                            )
+                        )
                     }
                 }
                 .navigationBarTitle("Create Card")
@@ -107,80 +103,6 @@ struct CreateCardView_Previews: PreviewProvider {
     }
 }
 #endif
-
-struct SpecifierPicker: View {
-    
-    let store: Store<CreateCard.State, CreateCard.Action>
-    
-    let indexPath: IndexPath
-    let specifiers: [String]
-    
-    var body: some View {
-        Picker(
-            "",
-            selection: self.store.send(
-                CreateCard.Action.fieldSpecifierChanged,
-                binding: { state, indexPath in
-                    return state
-                        .card
-                        .fields
-                        .groups[indexPath.section]
-                        .fields[indexPath.item]
-                        .specifierIndex
-                },
-                suppl: indexPath
-            )
-        ) {
-            ForEach(
-                Array(specifiers.enumerated()),
-                id: \.offset
-            ) { specifier in
-                Text(specifier.element).tag(specifier.offset)
-            }
-        }.frame(minWidth: 45, idealWidth: 50, maxWidth: 75, alignment: .topLeading)
-    }
-}
-
-struct FieldCell: View {
-    
-    let store: Store<CreateCard.State, CreateCard.Action>
-    let field: (element: Card.Fields.Group.Field, offset: Int)
-    let fieldGroup: (element: Card.Fields.Group, offset: Int)
-    
-    var body: some View {
-        HStack {
-            SpecifierPicker(
-                store: self.store,
-                indexPath: IndexPath(
-                    item: field.offset,
-                    section: fieldGroup.offset
-                ),
-                specifiers: field.element.type.specifiers
-            )
-            Divider()
-            TextField(
-                field.element.type.rawValue,
-                text: self.store.send(
-                    CreateCard.Action.fieldChanged,
-                    binding: { state, indexPath in
-                        return state
-                            .card
-                            .fields
-                            .groups[indexPath.section]
-                            .fields[indexPath.item]
-                            .value
-                    },
-                    suppl: IndexPath(
-                        item: field.offset,
-                        section: fieldGroup.offset
-                    )
-                )
-            )
-                .keyboardType(field.element.type.keyboardType)
-                .textContentType(field.element.type.contentType)
-        }
-    }
-}
 
 struct ProfileImageHeader: View {
     var body: some View {

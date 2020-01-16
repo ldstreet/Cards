@@ -28,6 +28,11 @@
 		2A561AA523A9BAE700B34011 /* CreateCardAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AA423A9BAE700B34011 /* CreateCardAction.swift */; };
 		2A561AA723A9BAEE00B34011 /* CreateCardReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AA623A9BAEE00B34011 /* CreateCardReducer.swift */; };
 		2A561AA923A9BB4A00B34011 /* Card+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AA823A9BB4A00B34011 /* Card+Extensions.swift */; };
+		2A561AAC23C3735300B34011 /* SpecifierPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AAB23C3735300B34011 /* SpecifierPickerView.swift */; };
+		2A561AAE23C373C700B34011 /* SpecifierPickerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AAD23C373C700B34011 /* SpecifierPickerState.swift */; };
+		2A561AB023C3756400B34011 /* SpecifierPickerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AAF23C3756400B34011 /* SpecifierPickerAction.swift */; };
+		2A561AB223C3757F00B34011 /* SpecifierPickerReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AB123C3757F00B34011 /* SpecifierPickerReducer.swift */; };
+		2A561AB523C43EDE00B34011 /* FieldCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A561AB423C43EDE00B34011 /* FieldCellView.swift */; };
 		2A5761BB2331844900DA0A8B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BA2331844900DA0A8B /* AppState.swift */; };
 		2A5761BD2331848800DA0A8B /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BC2331848800DA0A8B /* AppAction.swift */; };
 		2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BE233184A000DA0A8B /* AppReducer.swift */; };
@@ -38,6 +43,7 @@
 		2A85EF7C2369B8BA0014761C /* CardDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7B2369B8BA0014761C /* CardDetailState.swift */; };
 		2A85EF7E2369B8C80014761C /* CardDetailAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7D2369B8C80014761C /* CardDetailAction.swift */; };
 		2A85EF802369B8DC0014761C /* CardDetailReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7F2369B8DC0014761C /* CardDetailReducer.swift */; };
+		2A91A88023CCAAFD0001E39A /* FieldGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A91A87F23CCAAFD0001E39A /* FieldGroupView.swift */; };
 		2A94F7E52316120F00C737C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E42316120F00C737C6 /* AppDelegate.swift */; };
 		2A94F7E72316120F00C737C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E62316120F00C737C6 /* SceneDelegate.swift */; };
 		2A94F7E92316120F00C737C6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E82316120F00C737C6 /* AppView.swift */; };
@@ -82,6 +88,11 @@
 		2A561AA423A9BAE700B34011 /* CreateCardAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardAction.swift; sourceTree = "<group>"; };
 		2A561AA623A9BAEE00B34011 /* CreateCardReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCardReducer.swift; sourceTree = "<group>"; };
 		2A561AA823A9BB4A00B34011 /* Card+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Card+Extensions.swift"; sourceTree = "<group>"; };
+		2A561AAB23C3735300B34011 /* SpecifierPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecifierPickerView.swift; sourceTree = "<group>"; };
+		2A561AAD23C373C700B34011 /* SpecifierPickerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecifierPickerState.swift; sourceTree = "<group>"; };
+		2A561AAF23C3756400B34011 /* SpecifierPickerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecifierPickerAction.swift; sourceTree = "<group>"; };
+		2A561AB123C3757F00B34011 /* SpecifierPickerReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecifierPickerReducer.swift; sourceTree = "<group>"; };
+		2A561AB423C43EDE00B34011 /* FieldCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldCellView.swift; sourceTree = "<group>"; };
 		2A5761BA2331844900DA0A8B /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		2A5761BC2331848800DA0A8B /* AppAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAction.swift; sourceTree = "<group>"; };
 		2A5761BE233184A000DA0A8B /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
@@ -93,6 +104,7 @@
 		2A85EF7B2369B8BA0014761C /* CardDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailState.swift; sourceTree = "<group>"; };
 		2A85EF7D2369B8C80014761C /* CardDetailAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailAction.swift; sourceTree = "<group>"; };
 		2A85EF7F2369B8DC0014761C /* CardDetailReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailReducer.swift; sourceTree = "<group>"; };
+		2A91A87F23CCAAFD0001E39A /* FieldGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroupView.swift; sourceTree = "<group>"; };
 		2A94F7E12316120F00C737C6 /* BusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A94F7E42316120F00C737C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A94F7E62316120F00C737C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,6 +216,25 @@
 			path = Card;
 			sourceTree = "<group>";
 		};
+		2A561AAA23C3733300B34011 /* SpecifierPicker */ = {
+			isa = PBXGroup;
+			children = (
+				2A561AAB23C3735300B34011 /* SpecifierPickerView.swift */,
+				2A561AAD23C373C700B34011 /* SpecifierPickerState.swift */,
+				2A561AAF23C3756400B34011 /* SpecifierPickerAction.swift */,
+				2A561AB123C3757F00B34011 /* SpecifierPickerReducer.swift */,
+			);
+			path = SpecifierPicker;
+			sourceTree = "<group>";
+		};
+		2A561AB323C43ECE00B34011 /* FieldCell */ = {
+			isa = PBXGroup;
+			children = (
+				2A561AB423C43EDE00B34011 /* FieldCellView.swift */,
+			);
+			path = FieldCell;
+			sourceTree = "<group>";
+		};
 		2A85EF752364C41B0014761C /* ImportCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,6 +252,14 @@
 				2A85EF7F2369B8DC0014761C /* CardDetailReducer.swift */,
 			);
 			path = CardDetail;
+			sourceTree = "<group>";
+		};
+		2A91A87E23CCAADB0001E39A /* FieldGroup */ = {
+			isa = PBXGroup;
+			children = (
+				2A91A87F23CCAAFD0001E39A /* FieldGroupView.swift */,
+			);
+			path = FieldGroup;
 			sourceTree = "<group>";
 		};
 		2A94F7D82316120F00C737C6 = {
@@ -250,6 +289,9 @@
 				2A5C7F7F235A5CE400178821 /* BusinessCard.entitlements */,
 				2A94F7E42316120F00C737C6 /* AppDelegate.swift */,
 				2A94F7E62316120F00C737C6 /* SceneDelegate.swift */,
+				2A91A87E23CCAADB0001E39A /* FieldGroup */,
+				2A561AB323C43ECE00B34011 /* FieldCell */,
+				2A561AAA23C3733300B34011 /* SpecifierPicker */,
 				2A85EF782368677A0014761C /* CardDetail */,
 				2A85EF752364C41B0014761C /* ImportCard */,
 				2A1F33162341D8890064F813 /* World.swift */,
@@ -363,6 +405,8 @@
 				Base,
 			);
 			mainGroup = 2A94F7D82316120F00C737C6;
+			packageReferences = (
+			);
 			productRefGroup = 2A94F7E22316120F00C737C6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -401,8 +445,10 @@
 				2A561AA923A9BB4A00B34011 /* Card+Extensions.swift in Sources */,
 				2A561AA723A9BAEE00B34011 /* CreateCardReducer.swift in Sources */,
 				2A94F7E52316120F00C737C6 /* AppDelegate.swift in Sources */,
+				2A91A88023CCAAFD0001E39A /* FieldGroupView.swift in Sources */,
 				2A24FB53231C9D4600DFFBBD /* CardsReducer.swift in Sources */,
 				2A5761BB2331844900DA0A8B /* AppState.swift in Sources */,
+				2A561AB023C3756400B34011 /* SpecifierPickerAction.swift in Sources */,
 				2A24FB49231B03F500DFFBBD /* CreateCardView.swift in Sources */,
 				2A24FB5F231D824A00DFFBBD /* DocumentCameraView.swift in Sources */,
 				2A24FB6A231D836200DFFBBD /* EnvironmentProvider.swift in Sources */,
@@ -412,13 +458,16 @@
 				2A5761C1233184EF00DA0A8B /* AppCardsIOReducer.swift in Sources */,
 				2A94F7E72316120F00C737C6 /* SceneDelegate.swift in Sources */,
 				2A24FB4F231C9D3600DFFBBD /* CardsState.swift in Sources */,
+				2A561AB223C3757F00B34011 /* SpecifierPickerReducer.swift in Sources */,
 				2A24FB69231D836200DFFBBD /* Result.swift in Sources */,
 				2A5761C32331850700DA0A8B /* AppNavigationReducer.swift in Sources */,
 				2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */,
 				2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */,
 				2A24FB6E231D8C7600DFFBBD /* CardPreviewView.swift in Sources */,
 				2A24FB6B231D836200DFFBBD /* URL+Extension.swift in Sources */,
+				2A561AB523C43EDE00B34011 /* FieldCellView.swift in Sources */,
 				2A85EF7E2369B8C80014761C /* CardDetailAction.swift in Sources */,
+				2A561AAC23C3735300B34011 /* SpecifierPickerView.swift in Sources */,
 				2A85EF7A2368679B0014761C /* CardDetail.swift in Sources */,
 				2A85EF7C2369B8BA0014761C /* CardDetailState.swift in Sources */,
 				2A5761BD2331848800DA0A8B /* AppAction.swift in Sources */,
@@ -431,6 +480,7 @@
 				2A24FB60231D824A00DFFBBD /* IfLet.swift in Sources */,
 				2A561AA523A9BAE700B34011 /* CreateCardAction.swift in Sources */,
 				2A561AA323A9BAD700B34011 /* CreateCardState.swift in Sources */,
+				2A561AAE23C373C700B34011 /* SpecifierPickerState.swift in Sources */,
 				2A24FB5A231D821B00DFFBBD /* Collection+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,6 +573,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -576,6 +627,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

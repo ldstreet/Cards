@@ -13,11 +13,20 @@ import SwiftUI
 extension Card {
     static func createDefaultCard() -> Card {
         .init(
-            fields: [
-                .init(type: .phoneNumber, specifier: "cell", value: ""),
-                .init(type: .phoneNumber, specifier: "work", value: ""),
-                .init(type: .emailAddress, specifier: "work", value: ""),
-                .init(type: .address, specifier: "work", value: "")
+            groups: [
+                Group(
+                    type: .phoneNumber,
+                    fields: [
+                        .init(type: .phoneNumber, specifier: "cell", value: ""),
+                        .init(type: .phoneNumber, specifier: "work", value: "")
+                    ]
+                ),
+                Group(
+                    type: .emailAddress,
+                    fields: [
+                        .init(type: .emailAddress, specifier: "work", value: "")
+                    ]
+                )
             ]
         )
     }
@@ -27,36 +36,23 @@ extension Card {
             !firstName.isEmpty ||
             !lastName.isEmpty ||
             !title.isEmpty ||
-            fields.hasBeenChanged
+            !groups.allSatisfy { !$0.hasBeenChanged }
     }
 }
 
-extension Card.Fields {
+extension Card.Group {
     var hasBeenChanged: Bool {
-        return groups.reduce(false, { return $0 || $1.hasBeenChanged })
+        return !self.fields.allSatisfy { !$0.hasBeenChanged }
     }
 }
 
-extension Card.Fields.Group {
+extension Card.Field {
     var hasBeenChanged: Bool {
-        return fields.reduce(false, { return $0 || $1.hasBeenChanged })
+        return !value.isEmpty
     }
 }
 
-extension Card.Fields.Group.Field {
-    var hasBeenChanged: Bool {
-        return false
-    }
-}
-
-extension Card.Fields.Group.Field {
-    var specifierIndex: Int {
-        get { type.specifiers.firstIndex(where: { $0 == self.specifier })! }
-        set { specifier = type.specifiers[newValue] }
-    }
-}
-
-extension Card.Fields.Group.Field.DataType {
+extension Card.FieldType {
     public var contentType: UITextContentType? {
         switch self {
         case .certificate: return nil
