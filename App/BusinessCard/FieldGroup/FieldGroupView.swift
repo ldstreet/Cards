@@ -12,6 +12,9 @@ import Models
 import Redux
 
 enum FieldGroup {
+    
+    struct Environment {}
+    
     typealias State = Card.Group
     
     enum Action: Equatable {
@@ -31,13 +34,19 @@ enum FieldGroup {
     
     struct View: SwiftUI.View {
         
-        let store: Store<State, Action>
+        private let store: Store<State, Action>
+        @ObservedObject var viewStore: ViewStore<State, Action>
+        
+        init(store: Store<State, Action>) {
+            self.store = store
+            self.viewStore = store.view
+        }
         
         var body: some SwiftUI.View {
             Section {
-                ForEach(0..<store.value.fields.count) { index in
+                ForEach(0..<viewStore.value.fields.count) { index in
                     FieldCell.View(
-                        store: self.store.view(
+                        store: self.store.scope(
                             value: { $0.fields[index] },
                             action: { .fields(Indexed(index: index, value: $0)) }
                         )
@@ -47,19 +56,20 @@ enum FieldGroup {
         }
     }
     
-    static let _reducer: Reducer<State, Action> = { state, action in
+    static let _reducer: Reducer<State, Action, Environment> = { state, action, environment in
         switch action {
         case .fields: break
         }
         return []
     }
     
-    static let reducer: Reducer<State, Action> = combine(
+    static let reducer: Reducer<State, Action, Environment> = combine(
         _reducer,
         indexed(
             reducer: FieldCell.reducer,
             \State.fields,
-            \Action.fields
+            \Action.fields,
+            { _ in .init() }
         )
     )
 }

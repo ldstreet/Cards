@@ -9,23 +9,33 @@
 import SwiftUI
 import Redux
 
-enum SpecifierPicker {}
+enum SpecifierPicker {
+    struct Environment {
+        
+    }
+}
 
 extension SpecifierPicker {
     struct View: SwiftUI.View {
         
-        let store: Store<State, SpecifierPicker.Action>
+        private let store: Store<State, Action>
+        @ObservedObject var viewStore: ViewStore<State, Action>
+        
+        init(store: Store<State, Action>) {
+            self.store = store
+            self.viewStore = store.view
+        }
         
         var body: some SwiftUI.View {
             Picker(
                 "",
-                selection: store.send(
+                selection: viewStore.send(
                     SpecifierPicker.Action.selected,
                     binding: \.selection
                 )
             ) {
                 ForEach(
-                    store.value.specifiers.enumeratedArray(),
+                    viewStore.value.specifiers.enumeratedArray(),
                     id: \.offset
                 ) { Text($0.element) }
             }
@@ -40,7 +50,8 @@ struct SpecifierPicker_Previews: PreviewProvider {
         return SpecifierPicker.View(
             store: .init(
                 initialValue: SpecifierPicker.State(specifiers: specifiers, selection: specifiers.startIndex),
-                reducer: SpecifierPicker.reducer
+                reducer: SpecifierPicker.reducer,
+                environment: .init()
             )
         ).previewLayout(.sizeThatFits)
     }

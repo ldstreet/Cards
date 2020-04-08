@@ -11,7 +11,7 @@ import Models
 import Combine
 
 extension Cards {
-    static let reducer: Reducer<State, Action> = { state, action in
+    static let reducer: Reducer<State, Action, Environment> = { state, action, environment in
         switch action {
         case .delete(let id):
             state.cards.removeAll { $0.id == id }
@@ -25,7 +25,7 @@ extension Cards {
             state.loading = true
             let newState = state
             guard let card = state.cards.first(where: { $0.id == id }) else { break }
-            return [Request<Environment, ShareLink, Card>
+            return [Request<NetworkEnvironment, ShareLink, Card>
                 .share(card: card)
                 .send()
                 .eraseToAnyPublisher()

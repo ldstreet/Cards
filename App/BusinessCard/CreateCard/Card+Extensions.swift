@@ -33,8 +33,7 @@ extension Card {
     
     var hasBeenChanged: Bool {
         return
-            !firstName.isEmpty ||
-            !lastName.isEmpty ||
+            !name.isEmpty ||
             !title.isEmpty ||
             !groups.allSatisfy { !$0.hasBeenChanged }
     }

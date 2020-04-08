@@ -9,10 +9,10 @@
 import Redux
 
 func cardsIO(
-    _ reducer: @escaping Reducer<App.State, App.Action>
-) -> Reducer<App.State, App.Action> {
-    return { state, action in
-        let effects = reducer(&state, action)
+    _ reducer: @escaping Reducer<App.State, App.Action, App.Environment>
+) -> Reducer<App.State, App.Action, App.Environment> {
+    return { state, action, environment in
+        let effects = reducer(&state, action, environment)
         switch action {
         case .cards(_): break
         case .create(.done):

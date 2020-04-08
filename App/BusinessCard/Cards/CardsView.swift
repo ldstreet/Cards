@@ -11,7 +11,9 @@ import Redux
 import Combine
 import Models
 
-enum Cards {}
+enum Cards {
+    struct Environment {}
+}
 
 extension UUID: Identifiable {
     public var id: UUID { self }
@@ -19,18 +21,22 @@ extension UUID: Identifiable {
 
 extension Cards {
     struct CardsView: View {
-        @ObservedObject var store: Store<Cards.State, Cards.Action>
+        private let store: Store<Cards.State, Cards.Action>
+        @ObservedObject var viewStore: ViewStore<Cards.State, Cards.Action>
+        
+        
         private var shareCancellable: AnyCancellable? = nil
         
-        public init(store: Store<Cards.State, Cards.Action>) {
+        init(store: Store<State, Action>) {
             self.store = store
+            self.viewStore = store.view
         }
         
         var body: some View {
             List {
-                ForEach(store.value.cards) { card in
+                ForEach(viewStore.value.cards) { card in
                     NavigationLink(
-                        destination: self.store.view(
+                        destination: self.store.scope(
                             value: { $0.cards.first(where: { $0.id == card.id }).map(CardDetail.State.init) },
                             action: { .detail($0) }
                         ).map(CardDetailView.init)
@@ -39,11 +45,11 @@ extension Cards {
                 }
                 .onDelete { indexSet in
                     indexSet.forEach {
-                        let id = self.store.value.cards[$0].id
-                        self.store.send(.proposeCardDelete(id))
+                        let id = self.viewStore.value.cards[$0].id
+                        self.viewStore.send(.proposeCardDelete(id))
                     }
                 }
-            }.sheet(item: store.send(
+            }.sheet(item: viewStore.send(
                 Cards.Action.presentShareLink,
                 binding: \Cards.State.shareLink
             )) {  url in
@@ -59,13 +65,13 @@ extension Cards {
             .contentShape(Rectangle())
             .contextMenu {
                 Button("Share") {
-                    self.store.send(.share(card.id))
+                    self.viewStore.send(.share(card.id))
                 }
                 Button("Delete") {
-                    self.store.send(.proposeCardDelete(card.id))
+                    self.viewStore.send(.proposeCardDelete(card.id))
                 }
                 .actionSheet(
-                    item: self.store.send(
+                    item: self.viewStore.send(
                         Cards.Action.proposeCardDelete,
                         binding: \.proposedCardDeleteID
                     )
@@ -74,7 +80,7 @@ extension Cards {
                         title: Text("Delete this card?"),
                         buttons: [
                             .destructive(Text("Delete")) {
-                                self.store.send(.delete(id))
+                                self.viewStore.send(.delete(id))
                             },
                             .cancel()
                         ]
@@ -96,8 +102,9 @@ struct CardsView_Previews: PreviewProvider {
     static var previews: some View {
         return Group {
             Cards.CardsView(store: .init(
-            initialValue: .init(cards: .all),
-            reducer: Cards.reducer
+                initialValue: .init(cards: .all),
+                reducer: Cards.reducer,
+                environment: .init()
             ))
         }
         

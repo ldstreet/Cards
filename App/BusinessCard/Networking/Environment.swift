@@ -9,7 +9,7 @@
 import Foundation
 
 
-public enum Environment: String, EnvironmentProvider {
+public enum NetworkEnvironment: String, EnvironmentProvider {
     case local
     case develop
     case production

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A17371623E4613F00941D23 /* NameRecognitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17371523E4613F00941D23 /* NameRecognitionTests.swift */; };
+		2A17371823E4657D00941D23 /* TextRecognitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A17371723E4657D00941D23 /* TextRecognitionTests.swift */; };
+		2A17371A23E4663100941D23 /* card1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A17371923E4663100941D23 /* card1.png */; };
 		2A1F33152341D5CE0064F813 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F33142341D5CE0064F813 /* Requests.swift */; };
 		2A1F33172341D8890064F813 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F33162341D8890064F813 /* World.swift */; };
 		2A1F3550234B6CB40064F813 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1F354F234B6CB40064F813 /* ActivityView.swift */; };
@@ -44,6 +47,8 @@
 		2A85EF7E2369B8C80014761C /* CardDetailAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7D2369B8C80014761C /* CardDetailAction.swift */; };
 		2A85EF802369B8DC0014761C /* CardDetailReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7F2369B8DC0014761C /* CardDetailReducer.swift */; };
 		2A91A88023CCAAFD0001E39A /* FieldGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A91A87F23CCAAFD0001E39A /* FieldGroupView.swift */; };
+		2A91A88423D7379B0001E39A /* TextRecognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A91A88223D7379B0001E39A /* TextRecognition.swift */; };
+		2A91A88623DF25D40001E39A /* TextIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A91A88523DF25D40001E39A /* TextIdentifier.swift */; };
 		2A94F7E52316120F00C737C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E42316120F00C737C6 /* AppDelegate.swift */; };
 		2A94F7E72316120F00C737C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E62316120F00C737C6 /* SceneDelegate.swift */; };
 		2A94F7E92316120F00C737C6 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7E82316120F00C737C6 /* AppView.swift */; };
@@ -54,6 +59,7 @@
 		2A94F80F231613F400C737C6 /* Redux in Frameworks */ = {isa = PBXBuildFile; productRef = 2A94F80E231613F400C737C6 /* Redux */; };
 		2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9ECF96231AB33800C6FAC0 /* CardsView.swift */; };
 		2ABE5B9E233FDAC600B7B0DD /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 2ABE5B9D233FDAC600B7B0DD /* Models */; };
+		2ADCF01423F076C000F18897 /* Cards.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADCF01323F076C000F18897 /* Cards.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +73,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2A17371523E4613F00941D23 /* NameRecognitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameRecognitionTests.swift; sourceTree = "<group>"; };
+		2A17371723E4657D00941D23 /* TextRecognitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextRecognitionTests.swift; sourceTree = "<group>"; };
+		2A17371923E4663100941D23 /* card1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = card1.png; path = ../../../../Downloads/card1.png; sourceTree = "<group>"; };
 		2A1F33142341D5CE0064F813 /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		2A1F33162341D8890064F813 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		2A1F354F234B6CB40064F813 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -105,6 +114,8 @@
 		2A85EF7D2369B8C80014761C /* CardDetailAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailAction.swift; sourceTree = "<group>"; };
 		2A85EF7F2369B8DC0014761C /* CardDetailReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailReducer.swift; sourceTree = "<group>"; };
 		2A91A87F23CCAAFD0001E39A /* FieldGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGroupView.swift; sourceTree = "<group>"; };
+		2A91A88223D7379B0001E39A /* TextRecognition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextRecognition.swift; sourceTree = "<group>"; };
+		2A91A88523DF25D40001E39A /* TextIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextIdentifier.swift; sourceTree = "<group>"; };
 		2A94F7E12316120F00C737C6 /* BusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A94F7E42316120F00C737C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2A94F7E62316120F00C737C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +130,8 @@
 		2A94F80C231613E400C737C6 /* Redux */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Redux; path = ../Redux; sourceTree = "<group>"; };
 		2A9ECF96231AB33800C6FAC0 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
 		2ABE5B9C233FDA0C00B7B0DD /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Models; sourceTree = "<group>"; };
+		2ADCF01223F0766E00F18897 /* card1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = card1.png; sourceTree = "<group>"; };
+		2ADCF01323F076C000F18897 /* Cards.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Cards.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,7 +251,11 @@
 		2A85EF752364C41B0014761C /* ImportCard */ = {
 			isa = PBXGroup;
 			children = (
+				2ADCF01223F0766E00F18897 /* card1.png */,
+				2ADCF01323F076C000F18897 /* Cards.xcassets */,
 				2A85EF762364C4310014761C /* ImportCardView.swift */,
+				2A91A88223D7379B0001E39A /* TextRecognition.swift */,
+				2A91A88523DF25D40001E39A /* TextIdentifier.swift */,
 			);
 			path = ImportCard;
 			sourceTree = "<group>";
@@ -321,7 +338,10 @@
 		2A94F7FA2316121100C737C6 /* BusinessCardTests */ = {
 			isa = PBXGroup;
 			children = (
+				2A17371923E4663100941D23 /* card1.png */,
 				2A94F7FB2316121100C737C6 /* BusinessCardTests.swift */,
+				2A17371523E4613F00941D23 /* NameRecognitionTests.swift */,
+				2A17371723E4657D00941D23 /* TextRecognitionTests.swift */,
 				2A561AA023A8821300B34011 /* ReduxTesting.swift */,
 				2A94F7FD2316121100C737C6 /* Info.plist */,
 			);
@@ -425,6 +445,7 @@
 				2A94F7F12316121100C737C6 /* LaunchScreen.storyboard in Resources */,
 				2A94F7EE2316121100C737C6 /* Preview Assets.xcassets in Resources */,
 				2A94F7EB2316121100C737C6 /* Assets.xcassets in Resources */,
+				2ADCF01423F076C000F18897 /* Cards.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +453,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A17371A23E4663100941D23 /* card1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +465,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A561AA923A9BB4A00B34011 /* Card+Extensions.swift in Sources */,
+				2A91A88623DF25D40001E39A /* TextIdentifier.swift in Sources */,
 				2A561AA723A9BAEE00B34011 /* CreateCardReducer.swift in Sources */,
 				2A94F7E52316120F00C737C6 /* AppDelegate.swift in Sources */,
 				2A91A88023CCAAFD0001E39A /* FieldGroupView.swift in Sources */,
@@ -463,6 +486,7 @@
 				2A5761C32331850700DA0A8B /* AppNavigationReducer.swift in Sources */,
 				2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */,
 				2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */,
+				2A91A88423D7379B0001E39A /* TextRecognition.swift in Sources */,
 				2A24FB6E231D8C7600DFFBBD /* CardPreviewView.swift in Sources */,
 				2A24FB6B231D836200DFFBBD /* URL+Extension.swift in Sources */,
 				2A561AB523C43EDE00B34011 /* FieldCellView.swift in Sources */,
@@ -489,7 +513,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A17371623E4613F00941D23 /* NameRecognitionTests.swift in Sources */,
 				2A94F7FC2316121100C737C6 /* BusinessCardTests.swift in Sources */,
+				2A17371823E4657D00941D23 /* TextRecognitionTests.swift in Sources */,
 				2A561AA123A8821300B34011 /* ReduxTesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -637,9 +663,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_ASSET_PATHS = "BusinessCard/Preview\\ Content";
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				ENABLE_PREVIEWS = YES;
@@ -651,7 +677,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldstreet.Cards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ldstreet.Cards";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -663,9 +689,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 41;
 				DEVELOPMENT_ASSET_PATHS = "BusinessCard/Preview\\ Content";
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				ENABLE_PREVIEWS = YES;
@@ -677,7 +703,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldstreet.Cards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ldstreet.Cards";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

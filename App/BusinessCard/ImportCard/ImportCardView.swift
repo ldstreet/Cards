@@ -11,9 +11,16 @@ import SwiftUI
 struct ImportCardView: View {
     var body: some View {
         VStack {
+            HStack {
+                Spacer()
+                
+                Rectangle().foregroundColor(Color.red)
+                
+                Spacer()
+            }
             Spacer()
             HStack {
-                Button(action: {}, label: { Text("Import") })
+                Button(action: {}, label: { Text("Capture") })
                     .padding()
                     .border(Color.black, width: 2)
                 Button(action: {}, label: { Text("Dismiss") })

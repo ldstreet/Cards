@@ -11,7 +11,7 @@ import Models
 
 extension Request {
     
-    static func share(card: Card) -> Request<Environment, ShareLink, Card> {
+    static func share(card: Card) -> Request<NetworkEnvironment, ShareLink, Card> {
         return .init(
             using: Current.environment,
             path: "share",

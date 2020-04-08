@@ -8,35 +8,28 @@
 
 import Foundation
 import Redux
+import VisionKit
+import Models
 
 extension CreateCard {
     enum Action: Equatable {
-        case firstNameChanged(String)
-        case lastNameChanged(String)
+        case nameChanged(String)
         case titleChanged(String)
         case groups(Indexed<FieldGroup.Action>)
+        case scanResult([UIImage])
         case cancel
         case done
+        case append(Card)
+        case showCameraImport(Bool)
 
-        var firstNameChanged: String? {
+        var nameChanged: String? {
             get {
-                guard case let .firstNameChanged(value) = self else { return nil }
+                guard case let .nameChanged(value) = self else { return nil }
                 return value
             }
             set {
-                guard case .firstNameChanged = self, let newValue = newValue else { return }
-                self = .firstNameChanged(newValue)
-            }
-        }
-
-        var lastNameChanged: String? {
-            get {
-                guard case let .lastNameChanged(value) = self else { return nil }
-                return value
-            }
-            set {
-                guard case .lastNameChanged = self, let newValue = newValue else { return }
-                self = .lastNameChanged(newValue)
+                guard case .nameChanged = self, let newValue = newValue else { return }
+                self = .nameChanged(newValue)
             }
         }
 

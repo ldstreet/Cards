@@ -13,5 +13,6 @@ extension CreateCard {
     struct State: Codable, Identifiable, Equatable {
         let id = UUID()
         var card = Card.createDefaultCard()
+        var showCameraImport = false
     }
 }

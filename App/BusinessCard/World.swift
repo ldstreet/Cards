@@ -9,11 +9,11 @@
 import Foundation
 
 public struct World {
-    var environment: Environment = {
+    var environment: NetworkEnvironment = {
         guard
             let environmentString = Bundle.main.object(forInfoDictionaryKey: "environment") as? String,
-            let environment = Environment(rawValue: environmentString)
-        else { return Environment.develop }
+            let environment = NetworkEnvironment(rawValue: environmentString)
+        else { return NetworkEnvironment.develop }
         
         return environment
     }()

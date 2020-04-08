@@ -7,9 +7,10 @@
 //
 
 import Redux
+import CasePaths
 
 extension App {
-    static let _reducer: Reducer<App.State, App.Action> = { state, action in
+    static let _reducer: Reducer<App.State, App.Action, App.Environment> = { state, action, environment in
         switch action {
         case .cards(_): break
         case .create(_): break
@@ -29,23 +30,26 @@ extension App {
         return []
     }
     
-    static let reducer: Reducer<App.State, App.Action> = combine(
+    static let reducer: Reducer<App.State, App.Action, App.Environment> = combine(
         App._reducer,
         pullback(
             Cards.reducer,
             value: \App.State.cardsState,
-            action: \App.Action.cards
-        ),
-        pullback(
-            CreateCard.reducer,
-            value: \App.State.createCardState,
-            action: \App.Action.create
-        ),
-        pullback(
-            CardDetail.reducer,
-            value: \App.State.cardsState.detailCard,
-            action: \App.Action.cards[optional: \.detail]
+            action: /App.Action.cards,
+            environment: { _ in Cards.Environment() }
         )
+//        pullback(
+//            CreateCard.reducer,
+//            value: \App.State.createCardState,
+//            action: \App.Action.create,
+//            environment: { _ in .init() }
+//        ),
+//        pullback(
+//            CardDetail.reducer,
+//            value: \App.State.cardsState.detailCard,
+//            action: \App.Action.cards[optional: \.detail],
+//            environment: { _ in .init() }
+//        )
     )
 }
 

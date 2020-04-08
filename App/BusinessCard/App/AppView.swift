@@ -10,11 +10,35 @@ import SwiftUI
 import Redux
 import Models
 
-enum App {}
+enum App {
+    
+    struct Environment {
+        
+    }
+}
 
 struct AppView: View {
     
-    @ObservedObject var store: Store<App.State, App.Action>
+    struct State: Equatable {
+        
+    }
+    
+    struct Action {
+        
+    }
+    
+    let store: Store<App.State, App.Action>
+    @ObservedObject var viewStore: ViewStore<App.State, App.Action>
+    
+    init(store: Store<App.State, App.Action>) {
+        self.store = store
+        self.viewStore = store
+//            .scope(
+//                value: State.init,
+//                action: App.Action.init
+//            )
+            .view
+    }
     
     var body: some View {
         TabView{
@@ -48,9 +72,9 @@ struct AppView: View {
     func cardsView() -> some View {
         NavigationView {
             VStack {
-                IfLet(store.value.cardsState) { cardsState in
+                IfLet(viewStore.value.cardsState) { cardsState in
                      Cards.CardsView(
-                        store: self.store.view(
+                        store: self.store.scope(
                             value: { $0.cardsState },
                             action: { return .cards($0) }
                          )
@@ -60,7 +84,7 @@ struct AppView: View {
                  .navigationBarItems(
                     leading: EditButton(),
                     trailing: Button(
-                        action: { self.store.send(.showCreateCard(CreateCard.State())) },
+                        action: { self.viewStore.send(.showCreateCard(CreateCard.State())) },
                         label: { Image(systemName: "plus").font(.title) }
                     )
                 )
@@ -68,15 +92,15 @@ struct AppView: View {
                 Text("hi")
                     .frame(width: 0, height: 0, alignment: .center)
                     .sheet(
-                        item: store.send(
+                        item: viewStore.send(
                             App.Action.showCreateCard,
                             binding: \App.State.createCardState
                         ),
                         onDismiss: {
-                            self.store.send(.confirmCreateCardCancel(self.store.value.createCardState?.card))
+                            self.viewStore.send(.confirmCreateCardCancel(self.viewStore.value.createCardState?.card))
                         },
                         content: { _ in
-                            self.store.view(
+                            self.store.scope(
                                 value: { $0.createCardState },
                                 action: { return .create($0) }
                             ).map(CreateCard.View.init)
@@ -88,7 +112,7 @@ struct AppView: View {
         }
         
          .actionSheet(
-             item: store.send(
+             item: viewStore.send(
                  App.Action.confirmCreateCardCancel,
                  binding: \.showCreateCardCancelDialog
              ),
@@ -97,15 +121,31 @@ struct AppView: View {
                      title: Text("Are you shure you want to discard this new business card?"),
                      buttons: [
                          .destructive(Text("Discard Changes")) {
-                             self.store.send(.create(.cancel))
+                             self.viewStore.send(.create(.cancel))
                          },
                          .default(Text("Keep Editing")) {
-                            self.store.send(.showCreateCard(CreateCard.State(card: canceledCard)))
+                            self.viewStore.send(.showCreateCard(CreateCard.State(card: canceledCard)))
                          }
                      ]
                  )
              }
         )
+    }
+}
+
+extension AppView.State {
+    init(_ state: App.State) {
+        
+    }
+    
+}
+
+extension App.Action {
+    init(_ action: AppView.Action) {
+        switch action {
+        default:
+            self = .cards(.delete(.init()))
+        }
     }
 }
 
@@ -115,7 +155,8 @@ struct AppView_Previews: PreviewProvider {
         AppView(
             store: .init(
                 initialValue: .init(cardsState: .init(cards: .all)),
-                reducer: logging(navigation(cardsIO(App.reducer)))
+                reducer: logging(navigation(cardsIO(App.reducer))),
+                environment: .init()
             )
         )
     }

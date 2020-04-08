@@ -14,11 +14,8 @@ struct CardPreviewView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            (
-                Text(card.firstName) +
-                Text(" ") +
-                Text(card.lastName)
-            ).tag(card.firstName + card.lastName)
+            Text(card.name)
+                .tag(card.name)
                 .font(.headline)
                 .allowsTightening(false)
             Text(card.title).font(.subheadline)

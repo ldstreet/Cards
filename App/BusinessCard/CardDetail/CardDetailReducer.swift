@@ -12,7 +12,7 @@ import Combine
 
 extension CardDetail {
     
-    static let reducer: Reducer<State, Action> = { state, action in
+    static let reducer: Reducer<State, Action, Environment> = { state, action, environment in
         switch action {
         case .edit: break
         case .share: break

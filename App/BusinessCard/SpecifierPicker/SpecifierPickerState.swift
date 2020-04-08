@@ -9,7 +9,7 @@
 import Foundation
 
 extension SpecifierPicker {
-    struct State {
+    struct State: Equatable {
         var specifiers: [String]
         var selection: Int
         

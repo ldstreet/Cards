@@ -12,14 +12,25 @@ import Models
 import Redux
 
 enum FieldCell {
+    
+    struct Environment {
+        
+    }
+    
     struct View: SwiftUI.View {
         
         let store: Store<State, Action>
+        @ObservedObject var viewStore: ViewStore<State, Action>
+        
+        init(store: Store<State, Action>) {
+            self.store = store
+            self.viewStore = store.view
+        }
         
         var body: some SwiftUI.View {
             HStack {
-                store.value.type.specifiers.map { specifiers in
-                    SpecifierPicker.View(store: store.view(value: { state in
+                viewStore.value.type.specifiers.map { specifiers in
+                    SpecifierPicker.View(store: store.scope(value: { state in
                         let selectionIndex = specifiers.firstIndex { state.specifier == $0 } ?? specifiers.startIndex
                         return SpecifierPicker.State(specifiers: specifiers, selection: selectionIndex)
                     }, action: { localAction in
@@ -30,8 +41,8 @@ enum FieldCell {
                 Divider()
                 
                 TextField(
-                    store.value.type.rawValue,
-                    text: store.send(
+                    viewStore.value.type.rawValue,
+                    text: viewStore.send(
                         Action.update,
                         binding: \.value
                     )
@@ -69,7 +80,7 @@ enum FieldCell {
         }
     }
     
-    static let _reducer: Reducer<State, Action> = { state, action in
+    static let _reducer: Reducer<State, Action, Environment> = { state, action, environment in
         switch action {
         case .update(let value):
             state.value = value
@@ -78,12 +89,13 @@ enum FieldCell {
         return []
     }
     
-    static let reducer: Reducer<State, Action> = combine(
+    static let reducer: Reducer<State, Action, Environment> = combine(
         _reducer,
         pullback(
             SpecifierPicker.reducer,
             value: \.specifierPickerState,
-            action: \.specifierUpdate
+            action: \.specifierUpdate,
+            environment: { _ in SpecifierPicker.Environment() }
         )
     )
 }
@@ -116,7 +128,8 @@ struct FieldCell_Previews: PreviewProvider {
                             specifier: "cell",
                             value: "555-555-5555"
                         ),
-                        reducer: FieldCell.reducer
+                        reducer: FieldCell.reducer,
+                        environment: .init()
                     )
                 )
                 .previewLayout(.sizeThatFits)

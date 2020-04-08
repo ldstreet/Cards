@@ -34,11 +34,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         return .init(
             initialValue: state ?? .init(cardsState: Cards.State()),
-            reducer:
-            persisting(
-                logging(navigation(cardsIO(App.reducer))),
-                at: stateURL
-            )
+            reducer: navigation(cardsIO(App.reducer)),
+            environment: .init()
+            //logging())
+//            persisting(
+//                ,
+//                at: stateURL
+//            )
         )
     }()
 
