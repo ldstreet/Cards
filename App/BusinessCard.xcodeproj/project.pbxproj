@@ -40,6 +40,7 @@
 		2A5761BD2331848800DA0A8B /* AppAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BC2331848800DA0A8B /* AppAction.swift */; };
 		2A5761BF233184A000DA0A8B /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761BE233184A000DA0A8B /* AppReducer.swift */; };
 		2A5761C1233184EF00DA0A8B /* AppCardsIOReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5761C0233184EF00DA0A8B /* AppCardsIOReducer.swift */; };
+		2A7602BF2482D575007095C6 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 2A7602BE2482D575007095C6 /* Models */; };
 		2A85EF772364C4320014761C /* ImportCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF762364C4310014761C /* ImportCardView.swift */; };
 		2A85EF7A2368679B0014761C /* CardDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF792368679B0014761C /* CardDetail.swift */; };
 		2A85EF7E2369B8C80014761C /* CardDetailAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A85EF7D2369B8C80014761C /* CardDetailAction.swift */; };
@@ -55,9 +56,7 @@
 		2A94F7F12316121100C737C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A94F7EF2316121100C737C6 /* LaunchScreen.storyboard */; };
 		2A94F7FC2316121100C737C6 /* BusinessCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A94F7FB2316121100C737C6 /* BusinessCardTests.swift */; };
 		2A9ECF97231AB33800C6FAC0 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9ECF96231AB33800C6FAC0 /* CardsView.swift */; };
-		2AA699542460A00A00607562 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 2AA699532460A00A00607562 /* ComposableArchitecture */; };
-		2AA699552460A00A00607562 /* ComposableArchitecture in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2AA699532460A00A00607562 /* ComposableArchitecture */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2ABE5B9E233FDAC600B7B0DD /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 2ABE5B9D233FDAC600B7B0DD /* Models */; };
+		2AD6B2192482D694000255F4 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 2AD6B2182482D694000255F4 /* ComposableArchitecture */; };
 		2ADCF01423F076C000F18897 /* Cards.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADCF01323F076C000F18897 /* Cards.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -78,7 +77,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2AA699552460A00A00607562 /* ComposableArchitecture in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,6 +118,7 @@
 		2A5761BE233184A000DA0A8B /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
 		2A5761C0233184EF00DA0A8B /* AppCardsIOReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCardsIOReducer.swift; sourceTree = "<group>"; };
 		2A5C7F7F235A5CE400178821 /* BusinessCard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BusinessCard.entitlements; sourceTree = "<group>"; };
+		2A7602BD2482D567007095C6 /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Models; sourceTree = "<group>"; };
 		2A85EF762364C4310014761C /* ImportCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportCardView.swift; sourceTree = "<group>"; };
 		2A85EF792368679B0014761C /* CardDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetail.swift; sourceTree = "<group>"; };
 		2A85EF7D2369B8C80014761C /* CardDetailAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailAction.swift; sourceTree = "<group>"; };
@@ -139,7 +138,6 @@
 		2A94F7FB2316121100C737C6 /* BusinessCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTests.swift; sourceTree = "<group>"; };
 		2A94F7FD2316121100C737C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2A9ECF96231AB33800C6FAC0 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
-		2ABE5B9C233FDA0C00B7B0DD /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Models; path = ../Models; sourceTree = "<group>"; };
 		2ADCF01223F0766E00F18897 /* card1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = card1.png; sourceTree = "<group>"; };
 		2ADCF01323F076C000F18897 /* Cards.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Cards.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,8 +147,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2ABE5B9E233FDAC600B7B0DD /* Models in Frameworks */,
-				2AA699542460A00A00607562 /* ComposableArchitecture in Frameworks */,
+				2AD6B2192482D694000255F4 /* ComposableArchitecture in Frameworks */,
+				2A7602BF2482D575007095C6 /* Models in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,10 +287,10 @@
 		2A94F7D82316120F00C737C6 = {
 			isa = PBXGroup;
 			children = (
+				2A7602BD2482D567007095C6 /* Models */,
 				2A94F7E32316120F00C737C6 /* BusinessCard */,
 				2A94F7FA2316121100C737C6 /* BusinessCardTests */,
 				2A94F7E22316120F00C737C6 /* Products */,
-				2ABE5B9C233FDA0C00B7B0DD /* Models */,
 				2A94F80D231613F400C737C6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -380,8 +378,8 @@
 			);
 			name = BusinessCard;
 			packageProductDependencies = (
-				2ABE5B9D233FDAC600B7B0DD /* Models */,
-				2AA699532460A00A00607562 /* ComposableArchitecture */,
+				2A7602BE2482D575007095C6 /* Models */,
+				2AD6B2182482D694000255F4 /* ComposableArchitecture */,
 			);
 			productName = BusinessCard;
 			productReference = 2A94F7E12316120F00C737C6 /* BusinessCard.app */;
@@ -670,9 +668,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "BusinessCard/Preview\\ Content";
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				ENABLE_PREVIEWS = YES;
@@ -684,7 +682,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldstreet.Cards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.ldstreet.Cards";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -696,9 +694,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BusinessCard/BusinessCard.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_ASSET_PATHS = "BusinessCard/Preview\\ Content";
 				DEVELOPMENT_TEAM = 9C9LVX9RE8;
 				ENABLE_PREVIEWS = YES;
@@ -710,7 +708,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldstreet.Cards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.ldstreet.Cards";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -797,20 +795,20 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		2AA699532460A00A00607562 /* ComposableArchitecture */ = {
+		2A7602BE2482D575007095C6 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+		2AD6B2182482D694000255F4 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2AA699522460A00A00607562 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
-		};
-		2ABE5B9D233FDAC600B7B0DD /* Models */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Models;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

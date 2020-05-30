@@ -4,7 +4,7 @@ platform :ios do
 	desc "Description of what the lane does"
 	lane :beta do |params|
 		environment = params[:environment] || "develop"
-		build_number = params[:build_number] || "0"
+		build_number = params[:build_number] || "45"
 		
 		match(type: 'appstore', readonly: true)
 		update_plist( # Advanced processing: find URL scheme for particular key and replace value

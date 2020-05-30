@@ -62,28 +62,26 @@ extension CreateCard {
                             content: FieldGroup.View.init
                         )
                         #if targetEnvironment(simulator)
-                        
                         Button(
                             "Import via camera (test)",
                             action: { viewStore.send(.scanResult([UIImage(named: "card1.png")!])) }
                         )
-                        
                         #else
                         NavigationLink(
                             "Import via camera",
                             destination: DocumentCameraView { result in
                                 switch result {
                                 case .didFinishWith(let scan):
-                                    self.store.send(.scanResult(scan))
+                                    viewStore.send(.scanResult(scan.images))
                                 case .didCancel:
-                                    self.store.send(.showCameraImport(false))
+                                    viewStore.send(.showCameraImport(false))
                                 case .didFailWith:
-                                    self.store.send(.showCameraImport(false))
+                                    viewStore.send(.showCameraImport(false))
                                 }
                             },
-                            isActive: self.store.send(
-                                { .showCameraImport($0) },
-                                binding: \.showCameraImport
+                            isActive: viewStore.binding(
+                                get: \.showCameraImport,
+                                send: Action.showCameraImport
                             )
                         )
                         #endif
@@ -104,7 +102,11 @@ extension CreateCard {
     }
 }
 
-
+extension VNDocumentCameraScan {
+    var images: [UIImage] {
+        (0..<self.pageCount).map(imageOfPage(at:))
+    }
+}
 
 extension Sequence {
     func enumeratedArray() -> [(offset: Int, element: Element)] { return Array(enumerated()) }
