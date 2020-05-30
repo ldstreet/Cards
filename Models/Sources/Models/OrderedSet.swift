@@ -26,7 +26,7 @@ public struct OrderedSet<T: Hashable>: IteratorProtocol, Sequence, ExpressibleBy
     //MARK: - Properties
     private var internalArray = [Element]()
     private var hashToIndexMap = [Int: Int]()
-    private var count: Int {
+    public var count: Int {
         return internalArray.count
     }
     
@@ -65,3 +65,6 @@ public struct OrderedSet<T: Hashable>: IteratorProtocol, Sequence, ExpressibleBy
     }
     
 }
+
+extension OrderedSet: Codable where T: Codable {}
+extension OrderedSet: Hashable where T: Hashable {}

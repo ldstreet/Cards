@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 import Models
-import Redux
+import ComposableArchitecture
 
 enum FieldCell {
     
@@ -20,33 +20,34 @@ enum FieldCell {
     struct View: SwiftUI.View {
         
         let store: Store<State, Action>
-        @ObservedObject var viewStore: ViewStore<State, Action>
         
         init(store: Store<State, Action>) {
             self.store = store
-            self.viewStore = store.view
         }
         
         var body: some SwiftUI.View {
-            HStack {
-                viewStore.value.type.specifiers.map { specifiers in
-                    SpecifierPicker.View(store: store.scope(value: { state in
-                        let selectionIndex = specifiers.firstIndex { state.specifier == $0 } ?? specifiers.startIndex
-                        return SpecifierPicker.State(specifiers: specifiers, selection: selectionIndex)
-                    }, action: { localAction in
-                        return .specifierUpdate(localAction)
-                    }))
-                }.fixedSize()
-                
-                Divider()
-                
-                TextField(
-                    viewStore.value.type.rawValue,
-                    text: viewStore.send(
-                        Action.update,
-                        binding: \.value
+            WithViewStore(store) { viewStore in
+                HStack {
+                    
+                    viewStore.type.specifiers.map { specifiers in
+                        SpecifierPicker.View(store: self.store.scope(state: { state in
+                            let selectionIndex = specifiers.firstIndex { state.specifier == $0 } ?? specifiers.startIndex
+                            return SpecifierPicker.State(specifiers: specifiers, selection: selectionIndex)
+                        }, action: { localAction in
+                            return .specifierUpdate(localAction)
+                        }))
+                    }.fixedSize()
+
+                    Divider()
+                    
+                    TextField(
+                        viewStore.type.rawValue,
+                        text: viewStore.binding(
+                          get: \.value,
+                          send: Action.update
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -56,47 +57,22 @@ enum FieldCell {
     enum Action: Equatable {
         case update(value: String)
         case specifierUpdate(SpecifierPicker.Action)
-
-        var update: String? {
-            get {
-                guard case let .update(value) = self else { return nil }
-                return value
-            }
-            set {
-                guard case .update = self, let newValue = newValue else { return }
-                self = .update(value: newValue)
-            }
-        }
-
-        var specifierUpdate: SpecifierPicker.Action? {
-            get {
-                guard case let .specifierUpdate(value) = self else { return nil }
-                return value
-            }
-            set {
-                guard case .specifierUpdate = self, let newValue = newValue else { return }
-                self = .specifierUpdate(newValue)
-            }
-        }
     }
     
-    static let _reducer: Reducer<State, Action, Environment> = { state, action, environment in
-        switch action {
-        case .update(let value):
-            state.value = value
-        case .specifierUpdate: break
-        }
-        return []
-    }
-    
-    static let reducer: Reducer<State, Action, Environment> = combine(
-        _reducer,
-        pullback(
-            SpecifierPicker.reducer,
-            value: \.specifierPickerState,
-            action: \.specifierUpdate,
+    static let reducer: Reducer<State, Action, Environment> =  Reducer<State, Action, Environment>.combine(
+        SpecifierPicker.reducer.optional.pullback(
+            state: \.specifierPickerState,
+            action: /Action.specifierUpdate,
             environment: { _ in SpecifierPicker.Environment() }
-        )
+        ),
+        .init { state, action, environment in
+            switch action {
+            case .update(let value):
+                state.value = value
+            case .specifierUpdate: break
+            }
+            return .none
+        }
     )
 }
 
@@ -117,23 +93,23 @@ extension FieldCell.State {
     }
 }
 
-struct FieldCell_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            Form {
-                FieldCell.View(
-                    store: .init(
-                        initialValue: FieldCell.State(
-                            type: .phoneNumber,
-                            specifier: "cell",
-                            value: "555-555-5555"
-                        ),
-                        reducer: FieldCell.reducer,
-                        environment: .init()
-                    )
-                )
-                .previewLayout(.sizeThatFits)
-            }
-        }
-    }
-}
+//struct FieldCell_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            Form {
+//                FieldCell.View(
+//                    store: .init(
+//                        initialState: FieldCell.State(
+//                            type: .phoneNumber,
+//                            specifier: "cell",
+//                            value: "555-555-5555"
+//                        ),
+//                        reducer: FieldCell.reducer,
+//                        environment: .init()
+//                    )
+//                )
+//                .previewLayout(.sizeThatFits)
+//            }
+//        }
+//    }
+//}

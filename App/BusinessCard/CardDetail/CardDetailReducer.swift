@@ -6,19 +6,19 @@
 //  Copyright © 2019 Luke Street. All rights reserved.
 //
 
-import Redux
+import ComposableArchitecture
 import Models
 import Combine
 
 extension CardDetail {
     
-    static let reducer: Reducer<State, Action, Environment> = { state, action, environment in
+    static let reducer: Reducer<State, Action, Environment> = .init { state, action, environment in
         switch action {
         case .edit: break
         case .share: break
         }
         
-        return []
+        return .none
     }
     
 }

@@ -8,88 +8,94 @@
 
 import SwiftUI
 import Models
-import Redux
+import ComposableArchitecture
 
 enum CardDetail {
     struct Environment {
         
     }
+    
+    typealias State = Card
 }
 
 struct CardDetailView: View {
     
     private let store: Store<CardDetail.State, CardDetail.Action>
-    @ObservedObject var viewStore: ViewStore<CardDetail.State, CardDetail.Action>
     
     init(store: Store<CardDetail.State, CardDetail.Action>) {
         self.store = store
-        self.viewStore = store.view
     }
     
     var body: some View {
-        VStack {
-            header
-            fields
-            HStack {
-                Text("Share")
-                .foregroundColor(Color.white)
-                .padding()
-                .highPriorityGesture(TapGesture().onEnded {
-                    self.viewStore.send(.share(self.viewStore.value.card))
-                })
-                RoundedRectangle(cornerRadius: 4)
-                    .foregroundColor(Color.secondary)
-                    .frame(width: 1, height: 20, alignment: .center)
-                
-                Text("Edit")
+        WithViewStore(store) { viewStore in
+            VStack {
+                self.header
+                self.fields
+                HStack {
+                    Text("Share")
                     .foregroundColor(Color.white)
                     .padding()
                     .highPriorityGesture(TapGesture().onEnded {
-                        self.viewStore.send(.edit(self.viewStore.value.card))
+                        viewStore.send(.share(viewStore.state))
                     })
+                    RoundedRectangle(cornerRadius: 4)
+                        .foregroundColor(Color.secondary)
+                        .frame(width: 1, height: 20, alignment: .center)
+                    
+                    Text("Edit")
+                        .foregroundColor(Color.white)
+                        .padding()
+                        .highPriorityGesture(TapGesture().onEnded {
+                            viewStore.send(.edit(viewStore.state))
+                        })
+                }
+                .background(Color.gray)
+                .clipShape(Capsule())
+                
             }
-            .background(Color.gray)
-            .clipShape(Capsule())
-            
+            .animation(.default)
+            .padding()
         }
-        .animation(.default)
-        .padding()
     }
     
     var header: some View {
         VStack(alignment: .center) {
             ProfileImageHeader()
-            Text(viewStore.value.card.name)
-                .font(.largeTitle)
-            Text(viewStore.value.card.title)
+            WithViewStore(store) { viewStore in
+                Text(viewStore.name)
+                    .font(.largeTitle)
+                Text(viewStore.title)
+            }
         }
     }
     
     var fields: some View {
-        ForEach(0..<viewStore.value.card.groups.count) { groupIndex in
-            ForEach(0..<self.viewStore.value.card.groups[groupIndex].fields.count) { fieldIndex in
-                Text(self.viewStore.value.card.groups[groupIndex].fields[fieldIndex].value)
+        WithViewStore(store) { viewStore in
+            ForEach(0..<viewStore.groups.count) { groupIndex in
+                ForEach(0..<viewStore.groups[groupIndex].fields.count) { fieldIndex in
+                    Text(viewStore.groups[groupIndex].fields[fieldIndex].value)
+                }
             }
         }
     }
 }
 
 
-#if DEBUG
-struct CardDetail_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            CardDetailView(
-                store: .init(initialValue: CardDetail.State(card: .luke), reducer: CardDetail.reducer, environment: .init())
-            )
-                .previewLayout(.sizeThatFits)
-            
-            CardDetailView(
-                store: .init(initialValue: CardDetail.State(card: .luke), reducer: CardDetail.reducer, environment: .init())
-            )
-                .previewLayout(.sizeThatFits)
-        }
-        
-    }
-}
-#endif
+//#if DEBUG
+//struct CardDetail_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            CardDetailView(
+//                store: .init(initialValue: CardDetail.State(card: .luke), reducer: CardDetail.reducer, environment: .init())
+//            )
+//                .previewLayout(.sizeThatFits)
+//
+//            CardDetailView(
+//                store: .init(initialValue: CardDetail.State(card: .luke), reducer: CardDetail.reducer, environment: .init())
+//            )
+//                .previewLayout(.sizeThatFits)
+//        }
+//
+//    }
+//}
+//#endif

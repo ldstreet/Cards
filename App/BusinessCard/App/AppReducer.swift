@@ -6,11 +6,10 @@
 //  Copyright © 2019 Luke Street. All rights reserved.
 //
 
-import Redux
-import CasePaths
+import ComposableArchitecture
 
 extension App {
-    static let _reducer: Reducer<App.State, App.Action, App.Environment> = { state, action, environment in
+    static let _reducer: Reducer<App.State, App.Action, App.Environment> = .init { state, action, environment in
         switch action {
         case .cards(_): break
         case .create(_): break
@@ -24,30 +23,27 @@ extension App {
                 state.showCreateCardCancelDialog = nil
             }
             
-        case .showCreateCard(let cardState): break
-//            state.createCardState = cardState
+        case .showCreateCard(let cardState):
+            state.createCardState = cardState
         }
-        return []
+        return .none
     }
     
-    static let reducer: Reducer<App.State, App.Action, App.Environment> = combine(
+    static let reducer = Reducer<App.State, App.Action, App.Environment>.combine(
         App._reducer,
-        pullback(
-            Cards.reducer,
-            value: \App.State.cardsState,
+        Cards.reducer.pullback(
+            state: \App.State.cardsState,
             action: /App.Action.cards,
             environment: { _ in Cards.Environment() }
+        ),
+        CreateCard.reducer.optional.pullback(
+            state: \App.State.createCardState,
+            action: /App.Action.create,
+            environment: { _ in .init() }
         )
-//        pullback(
-//            CreateCard.reducer,
-//            value: \App.State.createCardState,
-//            action: \App.Action.create,
-//            environment: { _ in .init() }
-//        ),
-//        pullback(
-//            CardDetail.reducer,
-//            value: \App.State.cardsState.detailCard,
-//            action: \App.Action.cards[optional: \.detail],
+//        CardDetail.reducer.optional.pullback(
+//            state: \App.State.cardsState.detailCard,
+//            action: /App.Action.cards..Cards.Action.detail,
 //            environment: { _ in .init() }
 //        )
     )

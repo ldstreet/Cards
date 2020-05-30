@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Redux
+import ComposableArchitecture
 import Combine
 import Models
 
@@ -22,72 +22,88 @@ extension UUID: Identifiable {
 extension Cards {
     struct CardsView: View {
         private let store: Store<Cards.State, Cards.Action>
-        @ObservedObject var viewStore: ViewStore<Cards.State, Cards.Action>
-        
         
         private var shareCancellable: AnyCancellable? = nil
         
         init(store: Store<State, Action>) {
             self.store = store
-            self.viewStore = store.view
         }
         
         var body: some View {
-            List {
-                ForEach(viewStore.value.cards) { card in
-                    NavigationLink(
-                        destination: self.store.scope(
-                            value: { $0.cards.first(where: { $0.id == card.id }).map(CardDetail.State.init) },
-                            action: { .detail($0) }
-                        ).map(CardDetailView.init)
-                    ) { self.cardCell(card) }
-                    
+            WithViewStore(store) { viewStore in
+                List {
+                    self.cards()
+                }.sheet(item: viewStore.binding(
+                    get: \.shareLink,
+                    send: Cards.Action.presentShareLink
+                )) {  url in
+                    ActivityView(activityItems: [url.absoluteString], applicationActivities: nil)
+                }
+            }
+        }
+        
+        func cards() -> some View {
+            WithViewStore(store) { viewStore in
+                ForEachStore(
+                    self.store.scope(
+                        state: \.cards,
+                        action: Cards.Action.detail
+                    )
+                ) { cardStore in
+                    WithViewStore(cardStore) { cardViewStore in
+                        NavigationLink(
+                            destination: CardDetailView(store: cardStore),
+                            tag: cardViewStore.id,
+                            selection: viewStore.binding(
+                                get: \.detailCardID,
+                                send: Cards.Action.showDetail
+                            ),
+                            label: { self.cardCell(cardViewStore.state) }
+                        )
+                    }
                 }
                 .onDelete { indexSet in
                     indexSet.forEach {
-                        let id = self.viewStore.value.cards[$0].id
-                        self.viewStore.send(.proposeCardDelete(id))
+                        let id = viewStore.cards[$0].id
+                        viewStore.send(.proposeCardDelete(id))
                     }
                 }
-            }.sheet(item: viewStore.send(
-                Cards.Action.presentShareLink,
-                binding: \Cards.State.shareLink
-            )) {  url in
-                ActivityView(activityItems: [url.absoluteString], applicationActivities: nil)
             }
         }
         
         func cardCell(_ card: Card) -> some View {
-            HStack {
-                CardPreviewView(card: card)
-                Spacer()
+            WithViewStore(store) { viewStore in
+                HStack {
+                    CardPreviewView(card: card)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+                .contextMenu {
+                    Button("Share") {
+                        viewStore.send(.share(card.id))
+                    }
+                    Button("Delete") {
+                        viewStore.send(.proposeCardDelete(card.id))
+                    }
+                    .actionSheet(
+                        item: viewStore.binding(
+                            get: \.proposedCardDeleteID,
+                            send: Cards.Action.proposeCardDelete
+                        )
+                    ) { id in
+                        ActionSheet(
+                            title: Text("Delete this card?"),
+                            buttons: [
+                                .destructive(Text("Delete")) {
+                                    viewStore.send(.delete(id))
+                                },
+                                .cancel()
+                            ]
+                        )
+                    }
+                }
+                .transition(.scale(scale: 0, anchor: .center))
             }
-            .contentShape(Rectangle())
-            .contextMenu {
-                Button("Share") {
-                    self.viewStore.send(.share(card.id))
-                }
-                Button("Delete") {
-                    self.viewStore.send(.proposeCardDelete(card.id))
-                }
-                .actionSheet(
-                    item: self.viewStore.send(
-                        Cards.Action.proposeCardDelete,
-                        binding: \.proposedCardDeleteID
-                    )
-                ) { id in
-                    ActionSheet(
-                        title: Text("Delete this card?"),
-                        buttons: [
-                            .destructive(Text("Delete")) {
-                                self.viewStore.send(.delete(id))
-                            },
-                            .cancel()
-                        ]
-                    )
-                }
-            }
-            .transition(.scale(scale: 0, anchor: .center))
         }
     }
 }
@@ -102,7 +118,7 @@ struct CardsView_Previews: PreviewProvider {
     static var previews: some View {
         return Group {
             Cards.CardsView(store: .init(
-                initialValue: .init(cards: .all),
+                initialState: .init(cards: .all),
                 reducer: Cards.reducer,
                 environment: .init()
             ))

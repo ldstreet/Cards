@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Redux
+import ComposableArchitecture
 
 enum SpecifierPicker {
     struct Environment {
@@ -19,40 +19,41 @@ extension SpecifierPicker {
     struct View: SwiftUI.View {
         
         private let store: Store<State, Action>
-        @ObservedObject var viewStore: ViewStore<State, Action>
         
         init(store: Store<State, Action>) {
             self.store = store
-            self.viewStore = store.view
         }
         
         var body: some SwiftUI.View {
-            Picker(
-                "",
-                selection: viewStore.send(
-                    SpecifierPicker.Action.selected,
-                    binding: \.selection
-                )
-            ) {
-                ForEach(
-                    viewStore.value.specifiers.enumeratedArray(),
-                    id: \.offset
-                ) { Text($0.element) }
+            WithViewStore(store) { viewStore in
+                Picker(
+                    "",
+                    selection: viewStore.binding(
+                        get: \.selection,
+                        send: SpecifierPicker.Action.selected
+                    )
+                ) {
+                    ForEach(
+                        viewStore.specifiers.enumeratedArray(),
+                        id: \.offset
+                    ) { Text($0.element) }
+                }
             }
+            
         }
     }
 }
 
 
-struct SpecifierPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        let specifiers = ["home", "cell", "work"]
-        return SpecifierPicker.View(
-            store: .init(
-                initialValue: SpecifierPicker.State(specifiers: specifiers, selection: specifiers.startIndex),
-                reducer: SpecifierPicker.reducer,
-                environment: .init()
-            )
-        ).previewLayout(.sizeThatFits)
-    }
-}
+//struct SpecifierPicker_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let specifiers = ["home", "cell", "work"]
+//        return SpecifierPicker.View(
+//            store: .init(
+//                initialValue: SpecifierPicker.State(specifiers: specifiers, selection: specifiers.startIndex),
+//                reducer: SpecifierPicker.reducer,
+//                environment: .init()
+//            )
+//        ).previewLayout(.sizeThatFits)
+//    }
+//}

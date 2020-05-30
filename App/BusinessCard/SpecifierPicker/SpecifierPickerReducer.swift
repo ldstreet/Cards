@@ -7,14 +7,14 @@
 //
 
 import Foundation
-import Redux
+import ComposableArchitecture
 
 extension SpecifierPicker {
-    static let reducer: Reducer<State, Action, Environment> = { state, action, environment in
+    static let reducer: Reducer<State, Action, Environment> = .init { state, action, environment in
         switch action {
         case .selected(let index):
             state.selection = index
         }
-        return []
+        return .none
     }
 }

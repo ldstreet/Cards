@@ -7,7 +7,7 @@
 //
 
 import Combine
-import Redux
+import ComposableArchitecture
 import XCTest
 
 enum StepType {

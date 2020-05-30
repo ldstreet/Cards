@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Redux
+import ComposableArchitecture
 import Models
 
 enum App {
@@ -28,16 +28,9 @@ struct AppView: View {
     }
     
     let store: Store<App.State, App.Action>
-    @ObservedObject var viewStore: ViewStore<App.State, App.Action>
     
     init(store: Store<App.State, App.Action>) {
         self.store = store
-        self.viewStore = store
-//            .scope(
-//                value: State.init,
-//                action: App.Action.init
-//            )
-            .view
     }
     
     var body: some View {
@@ -70,66 +63,67 @@ struct AppView: View {
     }
     
     func cardsView() -> some View {
-        NavigationView {
-            VStack {
-                IfLet(viewStore.value.cardsState) { cardsState in
-                     Cards.CardsView(
+        WithViewStore(store) { viewStore in
+            NavigationView {
+                VStack {
+                    Cards.CardsView(
                         store: self.store.scope(
-                            value: { $0.cardsState },
-                            action: { return .cards($0) }
-                         )
-                     )
-                 }
-                 .navigationBarTitle("My Cards")
-                 .navigationBarItems(
-                    leading: EditButton(),
-                    trailing: Button(
-                        action: { self.viewStore.send(.showCreateCard(CreateCard.State())) },
-                        label: { Image(systemName: "plus").font(.title) }
+                            state: \.cardsState,
+                            action: App.Action.cards
+                        )
                     )
-                )
-                
-                Text("hi")
-                    .frame(width: 0, height: 0, alignment: .center)
-                    .sheet(
-                        item: viewStore.send(
-                            App.Action.showCreateCard,
-                            binding: \App.State.createCardState
-                        ),
-                        onDismiss: {
-                            self.viewStore.send(.confirmCreateCardCancel(self.viewStore.value.createCardState?.card))
-                        },
-                        content: { _ in
-                            self.store.scope(
-                                value: { $0.createCardState },
-                                action: { return .create($0) }
-                            ).map(CreateCard.View.init)
-                        }
+                    .navigationBarTitle("My Cards")
+                    .navigationBarItems(
+                       leading: EditButton(),
+                       trailing: Button(
+                           action: { viewStore.send(.showCreateCard(CreateCard.State())) },
+                           label: { Image(systemName: "plus").font(.title) }
+                       )
                     )
+                    
+                    Text("hi")
+                        .frame(width: 0, height: 0, alignment: .center)
+                        .sheet(
+                            item: viewStore.binding(
+                                get: \.createCardState,
+                                send: App.Action.showCreateCard
+                            ),
+                            onDismiss: {
+                                viewStore.send(.confirmCreateCardCancel(viewStore.createCardState?.card))
+                            },
+                            content: { _ in
+                                IfLetStore(
+                                    self.store.scope(
+                                        state: \.createCardState,
+                                        action: { return .create($0) }
+                                    ),
+                                    then: CreateCard.View.init
+                                )
+                            }
+                        )
+                }
             }
             
-             
+             .actionSheet(
+                 item: viewStore.binding(
+                    get: \.showCreateCardCancelDialog,
+                    send: App.Action.confirmCreateCardCancel
+                 ),
+                 content: { canceledCard in
+                     ActionSheet(
+                         title: Text("Are you shure you want to discard this new business card?"),
+                         buttons: [
+                             .destructive(Text("Discard Changes")) {
+                                 viewStore.send(.create(.cancel))
+                             },
+                             .default(Text("Keep Editing")) {
+                                viewStore.send(.showCreateCard(CreateCard.State(card: canceledCard)))
+                             }
+                         ]
+                     )
+                 }
+            )
         }
-        
-         .actionSheet(
-             item: viewStore.send(
-                 App.Action.confirmCreateCardCancel,
-                 binding: \.showCreateCardCancelDialog
-             ),
-             content: { canceledCard in
-                 ActionSheet(
-                     title: Text("Are you shure you want to discard this new business card?"),
-                     buttons: [
-                         .destructive(Text("Discard Changes")) {
-                             self.viewStore.send(.create(.cancel))
-                         },
-                         .default(Text("Keep Editing")) {
-                            self.viewStore.send(.showCreateCard(CreateCard.State(card: canceledCard)))
-                         }
-                     ]
-                 )
-             }
-        )
     }
 }
 
@@ -154,8 +148,8 @@ struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView(
             store: .init(
-                initialValue: .init(cardsState: .init(cards: .all)),
-                reducer: logging(navigation(cardsIO(App.reducer))),
+                initialState: .init(cardsState: .init(cards: .all)),
+                reducer: App.reducer.cardsIO(),
                 environment: .init()
             )
         )

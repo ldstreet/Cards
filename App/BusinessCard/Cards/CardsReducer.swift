@@ -6,12 +6,12 @@
 //  Copyright © 2019 Luke Street. All rights reserved.
 //
 
-import Redux
+import ComposableArchitecture
 import Models
 import Combine
 
 extension Cards {
-    static let reducer: Reducer<State, Action, Environment> = { state, action, environment in
+    static let reducer: Reducer<State, Action, Environment> =  .init { state, action, environment in
         switch action {
         case .delete(let id):
             state.cards.removeAll { $0.id == id }
@@ -25,7 +25,7 @@ extension Cards {
             state.loading = true
             let newState = state
             guard let card = state.cards.first(where: { $0.id == id }) else { break }
-            return [Request<NetworkEnvironment, ShareLink, Card>
+            return Request<NetworkEnvironment, ShareLink, Card>
                 .share(card: card)
                 .send()
                 .eraseToAnyPublisher()
@@ -35,11 +35,11 @@ extension Cards {
                 }.map { sharePath in
                     let link = Current.environment.url.appendingPathComponent(sharePath.path)
                     return Cards.Action.presentShareLink(link)
-                }.eraseToEffect()]
+                }.eraseToEffect()
         case .showDetail(let id):
             state.detailCardID = id
-        case .detail(_): break
+        case .detail: break
         }
-        return []
+        return .none
     }
 }

@@ -12,44 +12,45 @@ public typealias Value = Codable & Hashable & Equatable
 
 public struct Card: Value, Identifiable {
     public var id: UUID
-    public var firstName: String
-    public var lastName: String
+    public var name: String
     public var title: String
     public var groups: [Group]
     
     public init(
         id: UUID = .init(),
-        firstName: String = "",
-        lastName: String = "",
+        name: String = "",
         title: String = "",
         groups: [Group] = []
     ) {
         self.id = id
-        self.firstName = firstName
-        self.lastName = lastName
+        self.name = name
         self.title = title
         self.groups = groups
     }
     
-    public struct Group: Value {
+    public struct Group: Value, Identifiable {
         public var type: FieldType
         public var fields: [Field]
+        public let id: UUID
         
-        public init(type: FieldType, fields: [Field]) {
+        public init(type: FieldType, fields: [Field], id: UUID = .init()) {
             self.type = type
             self.fields = fields
+            self.id = id
         }
     }
     
-    public struct Field: Value {
+    public struct Field: Value, Identifiable {
         public var type: FieldType
         public var specifier: String
         public var value: String
+        public var id: UUID
         
-        public init(type: FieldType, specifier: String, value: String) {
+        public init(type: FieldType, specifier: String, value: String, id: UUID = .init()) {
             self.type = type
             self.specifier = specifier
             self.value = value
+            self.id = id
         }
     }
     
@@ -75,29 +76,23 @@ public struct Card: Value, Identifiable {
             }
         }
     }
-    
-    
-    
-    
 }
 
 #if DEBUG
 extension Card {
     public static let david: Card = Card(
-        firstName: "David",
-        lastName: "Street",
+        name: "David Street",
         title: "Project Manager",
         groups: [
-            .init(type: .phoneNumber, fields: [.init(type: .phoneNumber, specifier: "cell", value: "555-555-5555")])
+            .init(type: .phoneNumber, fields: [.init(type: .phoneNumber, specifier: "cell", value: "555-555-5555")], id: .init())
         ]
     )
     
     public static let luke: Card = Card(
-        firstName: "Luke",
-        lastName: "Street",
+        name: "Luke Street",
         title: "Software Developer",
         groups: [
-            .init(type: .phoneNumber, fields: [.init(type: .phoneNumber, specifier: "cell", value: "555-555-5555")])
+            .init(type: .phoneNumber, fields: [.init(type: .phoneNumber, specifier: "cell", value: "555-555-5555")], id: .init())
         ]
     )
 }

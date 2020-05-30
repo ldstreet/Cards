@@ -13,21 +13,12 @@ import SwiftUI
 extension Card {
     static func createDefaultCard() -> Card {
         .init(
-            groups: [
+            groups: FieldType.allCases.map {
                 Group(
-                    type: .phoneNumber,
-                    fields: [
-                        .init(type: .phoneNumber, specifier: "cell", value: ""),
-                        .init(type: .phoneNumber, specifier: "work", value: "")
-                    ]
-                ),
-                Group(
-                    type: .emailAddress,
-                    fields: [
-                        .init(type: .emailAddress, specifier: "work", value: "")
-                    ]
+                    type: $0,
+                    fields: []
                 )
-            ]
+            }
         )
     }
     

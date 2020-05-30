@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftUI
-import Redux
+import ComposableArchitecture
 
 extension FileManager {
     var documentsDirectory: URL {
@@ -33,14 +33,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             try? $0.decoded(as: App.State.self)
         }
         return .init(
-            initialValue: state ?? .init(cardsState: Cards.State()),
-            reducer: navigation(cardsIO(App.reducer)),
+            initialState: state ?? .init(cardsState: Cards.State()),
+            reducer: App.reducer.cardsIO().persisting(at: stateURL).navigation(),
             environment: .init()
-            //logging())
-//            persisting(
-//                ,
-//                at: stateURL
-//            )
         )
     }()
 

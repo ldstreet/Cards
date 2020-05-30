@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 import Models
-import Redux
+import ComposableArchitecture
 
 enum FieldGroup {
     
@@ -18,58 +18,52 @@ enum FieldGroup {
     typealias State = Card.Group
     
     enum Action: Equatable {
-        case fields(Indexed<FieldCell.Action>)
-
-        var fields: Indexed<FieldCell.Action>? {
-            get {
-                guard case let .fields(value) = self else { return nil }
-                return value
-            }
-            set {
-                guard case .fields = self, let newValue = newValue else { return }
-                self = .fields(newValue)
-            }
-        }
+        case fields(Int, FieldCell.Action)
+        case addNewField
+        case removeFields(in: IndexSet)
     }
     
     struct View: SwiftUI.View {
         
         private let store: Store<State, Action>
-        @ObservedObject var viewStore: ViewStore<State, Action>
         
         init(store: Store<State, Action>) {
             self.store = store
-            self.viewStore = store.view
         }
         
         var body: some SwiftUI.View {
             Section {
-                ForEach(0..<viewStore.value.fields.count) { index in
-                    FieldCell.View(
-                        store: self.store.scope(
-                            value: { $0.fields[index] },
-                            action: { .fields(Indexed(index: index, value: $0)) }
-                        )
-                    )
+                WithViewStore(store) { viewStore in
+                    ForEachStore(
+                        self.store.scope(
+                            state: \.fields,
+                            action: FieldGroup.Action.fields
+                        ),
+                        content: FieldCell.View.init
+                    ).onDelete { indexSet in
+                        viewStore.send(.removeFields(in: indexSet))
+                    }
+                    Button(action: {
+                        viewStore.send(.addNewField)
+                    }) {
+                        HStack {
+                            Image(systemName: "plus").foregroundColor(Color.green)
+                            Text("\(viewStore.type.rawValue)")
+                        }
+                    }
                 }
             }
         }
     }
     
-    static let _reducer: Reducer<State, Action, Environment> = { state, action, environment in
+    static let reducer: Reducer<State, Action, Environment> = .init { state, action, environment in
         switch action {
         case .fields: break
+        case .addNewField:
+            state.fields.append(.init(type: state.type, specifier: "", value: ""))
+        case .removeFields(let indexSet):
+            indexSet.forEach { state.fields.remove(at: $0) }
         }
-        return []
+        return .none
     }
-    
-    static let reducer: Reducer<State, Action, Environment> = combine(
-        _reducer,
-        indexed(
-            reducer: FieldCell.reducer,
-            \State.fields,
-            \Action.fields,
-            { _ in .init() }
-        )
-    )
 }
